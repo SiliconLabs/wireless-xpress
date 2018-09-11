@@ -1,0 +1,171 @@
+/*
+ * Copyright 2018 Silicon Labs
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * {{ http://www.apache.org/licenses/LICENSE-2.0}}
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#import "DrawerTableViewController.h"
+
+@interface DrawerTableViewController ()
+
+
+
+@property (nonatomic) BOOL firmwareUpdateEnabled;
+
+@end
+
+@implementation DrawerTableViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+  self.firmwareUpdateEnabled = NO;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(enableFirmwareUpdate:)
+                                               name:EnableFirmwareUpdateNotificationName
+                                             object:nil];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(disableFirmwareUpdate:)
+                                               name:DisableFirmwareUpdateNotificationName
+                                             object:nil];
+
+
+  self.tableView.backgroundView = [[UIView alloc] init];
+  self.tableView.backgroundColor = [UIColor colorWithRed:0.831f green:0.483f blue:0.005f alpha:1.0f];
+
+
+  UIImage * logoImg = [UIImage imageNamed:@"WhiteSilabsLogo_small"];
+  UIImageView *  logoImgView = [[UIImageView alloc] initWithImage:logoImg];
+
+  CGSize sz = self.tableView.backgroundView.frame.size;
+
+  double y = sz.height - (3 * logoImg.size.height);
+  double x = 160 - (1.5 * logoImg.size.width);
+
+  [logoImgView setFrame:CGRectMake(x, y, logoImg.size.width, logoImg.size.height)];
+
+  [self.tableView addSubview:logoImgView];
+
+  [self.tableView bringSubviewToFront:logoImgView];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    return self.drawerItems.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"drawer cell" forIndexPath:indexPath];
+    
+    // Configure the cell...
+
+  cell.textLabel.text = [self.drawerItems objectAtIndex:indexPath.row];
+
+  cell.contentView.backgroundColor = [UIColor colorWithRed:0.831f green:0.483f blue:0.005f alpha:1.0f];
+  cell.textLabel.textColor = [UIColor whiteColor];
+  cell.textLabel.textAlignment = NSTextAlignmentRight;
+  cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.0f];
+
+  cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSInteger selectedItemIndex = indexPath.row;
+  if (!self.firmwareUpdateEnabled) {
+    ++selectedItemIndex;
+  }
+
+  switch (selectedItemIndex) {
+    case 0: // Update firmware
+      {
+          NSString * dms_api_key = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"DMS_API_KEY"];
+          if (!dms_api_key || 0 == dms_api_key.length) {
+              UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"DMS API Key missing" message:@"The Info.plist file for this application does not contain a DMS_API_KEY. Contact Silicon Labs for this key to support firmware updates." preferredStyle:UIAlertControllerStyleAlert];
+              UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){}];
+              [alertController addAction:okAction];
+              [self presentViewController:alertController animated:YES completion:nil];
+          } else {
+              [[NSNotificationCenter defaultCenter] postNotificationName:UpdateFirmwareNotificationName object:nil];
+          }
+      }
+      break;
+    case 1:
+      // check if this device can support the tutorial.
+      // it doesn't work on a 4" or smaller screen.
+    {
+      id<UICoordinateSpace> coordinateSpace = [[UIScreen mainScreen] fixedCoordinateSpace];
+
+      if (coordinateSpace.bounds.size.width > 370.f) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:StartTutorialNotificationName object:nil];
+      } else {
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Tutorial Unavailable", @"Error title.")
+                                                                                  message:NSLocalizedString(@"The screen on this device is too small to properly run the tutorial.", @"Error message.")
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+
+        [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"button title")
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:nil]];
+
+        [self presentViewController:alertController animated:YES completion:nil];
+      }
+    }
+      break;
+    case 2: // About
+      [[NSNotificationCenter defaultCenter] postNotificationName:AboutItemNotificationName object:nil];
+      break;
+  }
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  });
+}
+
+
+
+- (void)enableFirmwareUpdate:(NSNotification *)n
+{
+  self.firmwareUpdateEnabled = YES;
+  [self.tableView reloadData];
+}
+
+- (void)disableFirmwareUpdate:(NSNotification *)n
+{
+  self.firmwareUpdateEnabled = NO;
+  [self.tableView reloadData];
+}
+
+-(NSArray *)drawerItems
+{
+  if (self.firmwareUpdateEnabled) {
+    return @[@"Update Firmware…", @"Tutorial",/* @"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit",*/ @"About…"];
+  } else {
+    return @[@"Tutorial", /*@"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit", */@"About…"];
+  }
+}
+
+@end

@@ -1,0 +1,52 @@
+# Global rule to auto-detect text files that are not mentioned
+# specifically below.
+
+* text=auto
+
+# Various kinds of source files that are text
+
+*.c         text
+*.m         text
+*.h         text
+*.pch       text
+*.SRC       text
+*.src       text
+*.ld        text
+*.sh        text
+*.java      text
+*.xml       text
+Makefile    text
+
+# Project files for various tools
+# Some are binary, some text, and some require CRLF
+
+*.pbxproj   text eol=lf
+*.plist     text eol=lf
+*.xib       text eol=lf
+*.storyboard text eol=lf
+*.bat       text eol=crlf
+
+# Documentation files
+
+*.txt       text
+*.md        text
+*.html      text
+*.css       text
+*.sty       text
+*.docx      binary
+*.pdf       binary
+Doxyfile    text
+Doxyfile.*  text
+
+# Misc text files
+
+*.properties text
+
+# Misc binary files
+
+*.png       binary
+*.jpg       binary
+*.tif       binary
+*.class     binary
+*.jar       binary
+

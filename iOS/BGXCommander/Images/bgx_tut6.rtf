@@ -1,0 +1,40 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red170\green13\blue145;
+\red63\green110\blue116;\red38\green71\blue75;\red92\green38\blue153;\red46\green13\blue110;\red100\green56\blue32;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0;\csgray\c100000;\csgenericrgb\c66500\c5200\c56900;
+\csgenericrgb\c24700\c43100\c45600;\csgenericrgb\c14900\c27800\c29400;\csgenericrgb\c35900\c14900\c60100;\csgenericrgb\c18100\c5200\c43100;\csgenericrgb\c39100\c22000\c12500;
+}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs20 \cf0          1.\'a0Add the bgxpress framework to \
+              your Xcode project.\
+         2.\'a0Implement BGXpressDelegate protocol.\
+         3. Create BGXpressManager instance and assign delegate.\
+         4. Call 'startScan' on the BGXpressManager instance:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+\pard\tx272\pardeftab272\pardirnatural\partightenfactor0
+
+\f1\fs20 \cf2 \cb3   [\cf4 self\cf2 .\cf5 bleCommander\cf2  \cf6 \cb3 startScan\cf2 \cb3 ];
+\f0 \cf0 \cb3 \
+
+\f1 \cf2 \cb3   \cf4 self\cf2 .\cf5 isScanning\cf2  = \cf4 YES\cf2 ;
+\f0 \cf0 \cb3 \
+
+\f1 \cf2 \cb3   \cf4 self\cf2 .\cf5 lastScan\cf2  = [\cf7 NSDate\cf2  \cf8 \cb3 date\cf2 \cb3 ];
+\f0 \cf0 \cb3 \
+
+\f1 \cf2 \cb3   \cf8 \cb3 dispatch_after\cf2 \cb3 (\cf8 \cb3 dispatch_time\cf2 \cb3 (\cf9 \cb3 DISPATCH_TIME_NOW\cf2 \cb3 , (\cf7 int64_t\cf2 )(\cf5 kScanInterval\cf2  * \cf9 \cb3 NSEC_PER_SEC\cf2 \cb3 )), \cf8 \cb3 dispatch_get_main_queue\cf2 \cb3 (), ^\{
+\f0 \cf0 \cb3 \
+
+\f1 \cf2 \cb3     [\cf4 self\cf2 .\cf5 bleCommander\cf2  \cf6 \cb3 stopScan\cf2 \cb3 ];
+\f0 \cf0 \cb3 \
+
+\f1 \cf2 \cb3     \cf4 self\cf2 .\cf5 isScanning\cf2  = \cf4 NO\cf2 ;
+\f0 \cf0 \cb3 \
+
+\f1 \cf2 \cb3   \});}

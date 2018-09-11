@@ -1,0 +1,31 @@
+PODS:
+  - MMDrawerController (0.5.7):
+    - MMDrawerController/Core (= 0.5.7)
+    - MMDrawerController/MMDrawerBarButtonItem (= 0.5.7)
+    - MMDrawerController/MMDrawerVisualStates (= 0.5.7)
+    - MMDrawerController/Subclass (= 0.5.7)
+  - MMDrawerController/Core (0.5.7)
+  - MMDrawerController/MMDrawerBarButtonItem (0.5.7):
+    - MMDrawerController/Core
+  - MMDrawerController/MMDrawerVisualStates (0.5.7):
+    - MMDrawerController/Core
+  - MMDrawerController/Subclass (0.5.7):
+    - MMDrawerController/Core
+  - PullToRefresh (0.0.1)
+
+DEPENDENCIES:
+  - MMDrawerController (~> 0.5.7)
+  - PullToRefresh (~> 0.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - MMDrawerController
+    - PullToRefresh
+
+SPEC CHECKSUMS:
+  MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
+  PullToRefresh: 718b902fea1e8db4390bee24d515a37fd49bdbd7
+
+PODFILE CHECKSUM: 54ce266840e1faef8a35b2d1a2f5aa645814795d
+
+COCOAPODS: 1.5.3

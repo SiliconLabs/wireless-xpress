@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:gravity="center_vertical"
+    tools:layout_editor_absoluteX="30dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <View
+        android:id="@+id/ColoredRect"
+        android:layout_width="10dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="16dp"
+
+        android:layout_marginTop="16dp"
+        android:background="#E27F26"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/DeviceNameTextView"
+        android:layout_width="133dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/device_name_tmpvalue_label"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/uuid_label"
+        android:textColor="@color/textColor"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/DeviceUUIDTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DeviceNameTextView" />
+
+    <TextView
+        android:id="@+id/DeviceUUIDTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14sp"
+        android:text="@string/device_uuid_tempvalue_label"
+        android:textColor="@color/textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/rssiLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/rssi_label"
+        android:textColor="@color/textColor"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DeviceUUIDTextView" />
+
+    <TextView
+        android:id="@+id/rssiValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14sp"
+        android:text="@string/rssi_tmpvalue_label"
+        android:textColor="@color/textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rssiLabelTextView" />
+
+</android.support.constraint.ConstraintLayout>
