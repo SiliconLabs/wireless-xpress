@@ -1,0 +1,362 @@
+/* sets body font defaults. most of these are overridden by other
+ * styles so the font stuff has to get repeated a lot.
+ */
+body {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: black;
+    background-color: #fcfcfc;
+    font-weight: normal;
+}
+
+/** Another font override */
+body, table, div, p, dl {
+    font: 400 16px/24px 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+/* get rid of the default color in the heading area and sets it to our
+ * background blue, also sets the 1px border line at the bottom to
+ * the same color. This makes the border line not visible.
+ */
+div#top div#titlearea {
+    background-color: #007695;
+    border-bottom: 1px solid #007695;
+}
+
+/* The header title font size is hard coded into the doxygen html, so
+ * this overrides that so we can have a smaller title.
+ */
+div#top div#titlearea table tbody tr[style] {
+    height: 28px !important;
+}
+
+/* Force the height of the silabs logo on the upper left. Otherwise it
+ * is too big.
+ */
+td#projectlogo img {
+    max-height: 28px;
+    width: auto;
+    height: auto;
+    padding-left: 4px;
+}
+
+/* Another font override so we can have the font we want */
+#projectname {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 14pt;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+/* Gets rid of the rounded edges of the search box. */
+#MSearchBox .left, #MSearchBox .right {
+    background: none;
+}
+
+/* hides the little drop down arrow to the left of the search box.
+ * IMO this is not necessary and looks cleaner without.
+ */
+img#MSearchSelect {
+    visibility: hidden;
+}
+
+/* Force the size and position of the search box */
+div#MSearchBox {
+    top: 4px;
+    width: 320px;
+}
+
+/* Clean up the appearance of the search field (within the search box).
+ * This gets rid of the depth appearance and forces the font we want,
+ * also the size.
+ */
+#MSearchField {
+    background: none;
+    background-color: white;
+    border: none;
+    font: 12pt 'Open Sans', Helvetica, Arial, sans-serif;
+    width: 280px;
+}
+
+/* This changes the draggable vertical bar between the left nav area and
+ * the right content area. The original style has some width and a beveled
+ * appearance. This make it 1px wide and hides it in the background color
+ * of the nav area.
+ */
+.ui-resizable-e {
+    background: none;
+    border-right: 1px solid black;
+    width: 1px;
+}
+
+/* Set the background color of the left side nav area */
+#side-nav {
+/*    padding: 0 0 0 0;*/
+    background-color: black;
+}
+
+/* More background of the nav area. this is the text */
+#nav-tree {
+    background: none;
+    background-color: black;
+}
+
+/* Force the font of the nav tree */
+#nav-tree .label {
+    font: 400 16px/24px 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 90%;
+}
+
+/* sets the normal color of the nav tree text to a gray */
+#nav-tree .label a {
+    color: #b3b3b3;
+}
+
+/* set the background of the selected nav text to the blue themed color */
+#nav-tree .selected {
+    background: none;
+    text-shadow: none;
+    background-color: #007695;
+}
+
+/* Set the selected nav text to white to make it stand out from the blue
+ * background and to make it pop a little from the non-selected gray text
+ */
+#nav-tree .selected a {
+    color: white;
+}
+
+/* set the color of the nav tree arrows to the same as text. I dont really
+ * like these arrows - might get rid of them
+ */
+#nav-tree .arrow {
+    color: #b3b3b3;
+}
+
+/* this is the header of a page in the right content area. This gets rid
+ * of the gradient background and just sets it to be flat the same as for
+ * all the content
+ */
+div#doc-content div.header {
+    background: none;
+    background-color: #fcfcfc;
+    border-bottom: 2px solid black;
+}
+
+/* Force the page title font, color and size */
+.title {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 42px;
+    color: black;
+    font-weight: 300;
+}
+
+/* set the backgound color of the non-header content/page area */
+div#doc-content div.contents {
+    background-color: #fcfcfc;
+}
+
+/* page content paragraph text color */
+div#doc-content p {
+    color: #555555;
+    font-weight: normal;
+}
+
+/* set link style in content area */
+div#doc-content a, div#doc-content a:visited {
+    color: #007695;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+/* set link hover style */
+div#doc-content a:hover {
+    color: #3091d1;
+    text-decoration: underline;
+}
+
+/* set h2 style - section headers within page
+ * this could also be specified as h2.groupheader
+ */
+div#doc-content h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #7c7c7c;
+    border-bottom: 1px solid #7c7c7c;
+}
+
+/* standalone HR between major sections on page - set it to be more
+ * hefty than the minor separators
+ */
+div#doc-content hr {
+    border-top: 2px solid black;
+}
+
+/* there is a hard-coded "diamond" bullet next to the item name
+ * that is a anchor that can be used as a permalink on the page.
+ * This sets the color.
+ */
+div#doc-content .permalink a {
+    color: #7c7c7c;
+    text-decoration: none;
+}
+
+/* The tables with the member item details have a subtle background
+ * color in the doxygen stylesheet. This resets to the same background
+ * as the entire page
+ */
+td.memItemLeft, td.memItemRight, td.mdescLeft, td.mdescRight {
+    background-color: #fcfcfc;
+}
+
+/* The separator between items in various member tables.
+ * This sets the style we want for the separator.
+ */
+td.memSeparator {
+/*    border-bottom: 1px solid #7c7c7c;*/
+    border-bottom: none;
+}
+
+/* Get rid of the "tab" with the border and background that is at the
+ * start of each item documentation section.
+ */
+div#doc-content h2.memtitle {
+    border: none;
+    background-image: none;
+    background-color: unset;
+}
+
+/* Like .memtitle above, get rid of the tabbed appearance that sets of
+ * the item detailed section.
+ */
+div.memproto, div.memdoc {
+    border: none;
+    background-image: none;
+    background-color: unset;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* adds a gray horizontal line at the bottom of the list if members
+ * to set it off from the next section which is member detailed
+ * documentation. The font for the next section is small so it looks
+ * funny unless there is something to set it apart. This line matches
+ * the line that is at the top of this area that appears as part of
+ * the section heading.
+ */
+table.memberdecls {
+    border-bottom: 1px solid #7c7c7c;
+}
+
+/* The use of h4 for these group header produces text that looks too small
+ * for its purpose. This makes it a little bigger and a look that stands
+ * out a little.
+ */
+h4.groupheader {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/* in a parameter list, set the name and type to be a darker gray color
+ */
+td.memname, td.paramtype {
+    color: #555555;
+}
+
+/* when parameter names are in description list, set the color to black */
+td.paramname {
+    color: black;
+}
+
+/* where the parameter name appears in a table this make it be a monospace
+ * font with a slight gray label-like background. This makes it stand
+ * apart from all the other similar looking text.
+ */
+table.params td.paramname {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: normal;
+/*    border-bottom: 1px solid #7c7c7c;
+    border-top: 1px solid #7c7c7c;
+    border-left: 1px solid #7c7c7c;
+    border-right: 1px solid #7c7c7c; */
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
+
+/* This makes the little iOS attribute labels be flat gray background
+ * instead of the recessed blue as in the default theme.
+ */
+span.mlabel {
+    border: none;
+    border-radius: 3px;
+    background-color: #c0c0c0;
+}
+
+/* directory appears in things like module list and summary list.
+ * it has a line above and below the table. This just overrides the
+ * default blue color
+ */
+div.directory {
+    border-top: 1px solid #7c7c7c;
+    border-bottom: 1px solid #7c7c7c;
+}
+
+/* doxygen now apparently supports striped tables, however it is using
+ * a blue-ish color so this sets it to gray
+ */
+.directory tr.even {
+    background-color: #f8f8f8;
+}
+
+/* adjust table defaults. get rid of shadows, set gray border */
+table.fieldtable {
+    box-shadow: none;
+    text-shadow: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 8px;
+}
+
+/* style table heading. Get rid of the gradient, make smooth flat gray color */
+table.fieldtable th {
+    background-image: none;
+    background-color: #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+    color: black;
+}
+
+/* set borders for table rows/columns */
+table.fieldtable td.fieldname {
+    border-right: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+/* set borders for table rows/columns */
+table.fieldtable td.fielddoc {
+    border-bottom: 1px solid #c0c0c0;
+}
+
+/* get rid of bottom border on last row so it doesnt clash with table
+ * bottom border.
+ */
+table.fieldtable tr:last-child td.fieldname,
+table.fieldtable tr:last-child td.fielddoc {
+    border-bottom: none;
+}
+
+/* Auto generated class list has little "C" icons next to names
+ * which I dont care for. This hides those.
+ */
+table.directory span.icona span.icon {
+    visibility: hidden;
+}
+
+/* change blue bars on index page to light gray */
+div.contents div.qindex {
+    border: 1px solid #e0e0e0;
+    background-color: #e0e0e0;
+}
+
+div.contents table.classindex div.ah {
+    background-image: none;
+    box-shadow: none;
+}
