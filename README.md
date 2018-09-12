@@ -4,7 +4,8 @@ README
 This is the repository for holding the source code for the Silicon Labs BGX13
 mobile frameworks and applications.
 
-You can find more information about the BGX13 here https://www.silabs.com/bgx
+You can find more information about the BGX13 here
+https://www.silabs.com/products/wireless/bluetooth/xpress
 
 The official documentation is found here https://docs.silabs.com/bgx, or on
 Github at https://siliconlabs.github.io/wireless-xpress.
