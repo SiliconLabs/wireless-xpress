@@ -1,7 +1,7 @@
 README
 ======
 
-![alt text](http://pages.silabs.com/rs/634-SLU-379/images/BGX-transparent.png)
+![alt text](http://pages.silabs.com/rs/634-SLU-379/images/BGX-transparent 450x450.png)
 
 
 This is the repository for holding the source code for the Silicon Labs BGX13
