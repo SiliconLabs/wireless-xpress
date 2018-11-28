@@ -1,6 +1,9 @@
 README
 ======
 
+![alt text](http://pages.silabs.com/rs/634-SLU-379/images/BGX-transparent.png)
+
+
 This is the repository for holding the source code for the Silicon Labs BGX13
 mobile frameworks and applications.
 
