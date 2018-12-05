@@ -227,8 +227,6 @@ extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
 
   cell.deviceRSSIField.text = [NSString stringWithFormat:@"%d", [rssi intValue]];
 
-  cell.deviceUUIDField.text = uuid;
-
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -236,7 +234,7 @@ extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  return 220.0f;
+  return 138.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

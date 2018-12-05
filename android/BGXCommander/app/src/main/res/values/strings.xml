@@ -27,6 +27,9 @@
     <string name="BGX_CONNECTION_STATUS_LABEL_CONNECTING">Connecting…</string>
     <string name="BGX_CONNECTION_STATUS_LABEL_CONNECTED">Connected</string>
 
+    <string name="BOND_FAIL_LABEL">Bond Fail.</string>
+    <string name="DEVICE_CONNECTION_ERROR_LABEL">Device Connection Error</string>
+
     <string name="OK_Button_Text">OK</string>
     <string name="AboutLabel">About BGX Commander</string>
 

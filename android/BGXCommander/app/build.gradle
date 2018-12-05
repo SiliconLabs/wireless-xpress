@@ -9,8 +9,8 @@ android {
         applicationId "com.silabs.bgxcommander"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 3
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [DMS_API_KEY: System.getenv('DMS_API_KEY')]
     }
@@ -20,7 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
 }
 
 dependencies {

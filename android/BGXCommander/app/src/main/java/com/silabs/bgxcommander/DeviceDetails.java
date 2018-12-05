@@ -111,35 +111,35 @@ public class DeviceDetails extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 switch(intent.getAction()) {
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
-                        Log.d("debug", "BGX Connection State Change");
+                        Log.d("bgx_dbg", "BGX Connection State Change");
 
                         BGX_CONNECTION_STATUS connectionState = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
                         switch (connectionState) {
                             case CONNECTED:
-                                Log.d("debug", "DeviceDetails - connection state changed to CONNECTED");
+                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to CONNECTED");
                                 break;
                             case CONNECTING:
-                                Log.d("debug", "DeviceDetails - connection state changed to CONNECTING");
+                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to CONNECTING");
                                 break;
                             case DISCONNECTING:
-                                Log.d("debug", "DeviceDetails - connection state changed to DISCONNECTING");
+                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to DISCONNECTING");
                                 break;
                             case DISCONNECTED:
-                                Log.d("debug", "DeviceDetails - connection state changed to DISCONNECTED");
+                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to DISCONNECTED");
                                 finish();
                                 break;
                             case INTERROGATING:
-                                Log.d("debug", "DeviceDetails - connection state changed to INTERROGATING");
+                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to INTERROGATING");
                                 break;
                             default:
-                                Log.d("debug", "DeviceDetails - connection state changed to Unknown connection state.");
+                                Log.d("bgx_dbg", "DeviceDetails - connection state changed to Unknown connection state.");
                                 break;
                         }
 
                     }
                     break;
                     case BGXpressService.BGX_MODE_STATE_CHANGE: {
-                        Log.d("debug", "BGX Bus Mode Change");
+                        Log.d("bgx_dbg", "BGX Bus Mode Change");
                         setBusMode(intent.getIntExtra("busmode", BusMode.UNKNOWN_MODE));
                     }
                     break;
@@ -194,7 +194,7 @@ public class DeviceDetails extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (mBusMode != BusMode.REMOTE_COMMAND_MODE) {
+                    if (mBusMode != BusMode.REMOTE_COMMAND_MODE && mBusMode != BusMode.LOCAL_COMMAND_MODE) {
                         sendBusMode(BusMode.REMOTE_COMMAND_MODE);
                         setBusMode(BusMode.REMOTE_COMMAND_MODE);
                     }
@@ -206,10 +206,17 @@ public class DeviceDetails extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("debug", "Send button clicked.");
+                Log.d("bgx_dbg", "Send button clicked.");
 
 
                 String msgText = mMessageEditText.getText().toString();
+
+                if (0 == msgText.compareTo("bytetest")) {
+
+                    bytetest();
+                    return;
+                }
+
                 // let's write it.
                 Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_DATA);
                 writeIntent.putExtra("value", msgText + "\r\n");
@@ -225,7 +232,7 @@ public class DeviceDetails extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("debug", "clear");
+                Log.d("bgx_dbg", "clear");
                 mStreamEditText.setText("");
             }
         });
@@ -264,7 +271,7 @@ public class DeviceDetails extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-        Log.d("debug", "Unregistering the connectionBroadcastReceiver");
+        Log.d("bgx_dbg", "Unregistering the connectionBroadcastReceiver");
         unregisterReceiver(mConnectionBroadcastReceiver);
         super.onDestroy();
     }
@@ -283,7 +290,7 @@ public class DeviceDetails extends AppCompatActivity {
 
         switch(mi.getItemId()) {
             case R.id.update_menuitem: {
-                Log.d("debug", "Update menu item pressed.");
+                Log.d("bgx_dbg", "Update menu item pressed.");
 
                 if ( null == mBGXPartID || BGXpressService.BGXPartID.BGXInvalid == mBGXPartID ) {
                     Toast.makeText(this, "Invalid BGX Part ID", Toast.LENGTH_LONG).show();
@@ -305,7 +312,7 @@ public class DeviceDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d("debug", "Back button pressed.");
+        Log.d("bgx_dbg", "Back button pressed.");
         disconnect();
 
         super.onBackPressed();
@@ -393,6 +400,22 @@ public class DeviceDetails extends AppCompatActivity {
 
         mTextSource = ts;
 
+    }
+
+    /*
+     * The purpose of this function is to test ACTION_WRITE_SERIAL_BIN_DATA
+     * by sending all the possible byte values.
+     */
+    void bytetest() {
+        byte[] myByteArray = new byte[256];
+        for (int i = 0; i < 256; ++i) {
+            myByteArray[i] = (byte)i;
+        }
+
+        Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
+        writeIntent.putExtra("value", myByteArray);
+        writeIntent.setClass(mContext, BGXpressService.class);
+        startService(writeIntent);
     }
 
 }

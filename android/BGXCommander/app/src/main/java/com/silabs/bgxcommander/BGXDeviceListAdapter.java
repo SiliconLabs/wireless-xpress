@@ -91,6 +91,10 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         @Override
         public void onClick(View v) {
 
+            int position = getAdapterPosition();
+
+
+
             if (null != mSelectedRowView) {
                 mSelectedRowView.setBackgroundColor(Color.WHITE);
                 mSelectedRowView = null;
@@ -100,9 +104,12 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
             v.setBackgroundColor(Color.LTGRAY);
             mSelectedRowView = v;
 
-            int position = getAdapterPosition();
+
+            Log.d("bgx_dbg", "Adapter Position: " + position);
 
             HashMap<String, String> deviceRecord = mDataset.get(position);
+            Log.d("bgx_dbg", "Selected Device: " + deviceRecord.get("name"));
+
 
             String deviceAddress = deviceRecord.get("uuid");
 

@@ -83,7 +83,7 @@ public class DMSVersionsAdapter extends RecyclerView.Adapter<DMSVersionsAdapter.
 
 
         } catch (JSONException e) {
-            Log.e("JSONError", "JSONException caught in DMSVersionsAdapter onBindViewHolder");
+            Log.e("bgx_dbg", "JSONException caught in DMSVersionsAdapter onBindViewHolder");
             e.printStackTrace();
         }
 

@@ -16,7 +16,6 @@
 @interface DeviceTableViewCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel * deviceNameField;
-@property (nonatomic, weak) IBOutlet UILabel * deviceUUIDField;
 @property (nonatomic, weak) IBOutlet UILabel * deviceRSSIField;
 
 

@@ -26,6 +26,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import static com.silabs.bgxcommander.BGXpressService.BGX_CONNECTION_ERROR;
+
 public class IndeterminateProgressActivity extends AppCompatActivity {
 
     BroadcastReceiver mBroadcastReceiver;
@@ -44,11 +46,12 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
         mCancelButton = (Button)findViewById(R.id.cancelButton);
 
         mStatusLabel = (TextView)findViewById(R.id.connectionStatusTextView);
-
+        mStatusLabel.setText(R.string.BGX_CONNECTION_STATUS_LABEL_CONNECTING);
+        
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("debug", "cancel button clicked.");
+                Log.d("bgx_dbg", "cancel button clicked.");
 
                 BGXpressService.startActionBGXCancelConnect(myActivity);
 
@@ -60,15 +63,26 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
         mHandler = new Handler();
 
         final IntentFilter bgxpressServiceFilter = new IntentFilter(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
+        bgxpressServiceFilter.addAction(BGX_CONNECTION_ERROR);
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
                 switch(intent.getAction()) {
+                    case BGX_CONNECTION_ERROR:
+                        switch  ( intent.getIntExtra("Status", -1) ) {
+                            case 137: ///< GATT_AUTH_FAIL
+                                mStatusLabel.setText(R.string.BOND_FAIL_LABEL);
+                                break;
+                            default:
+                                mStatusLabel.setText(R.string.DEVICE_CONNECTION_ERROR_LABEL);
+                                break;
+                        }
+                        break;
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
                         BGX_CONNECTION_STATUS stateValue = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
-                        Log.d("debug", "BGX Connection State Change: " + stateValue);
+                        Log.d("bgx_dbg", "BGX Connection State Change: " + stateValue);
                         if ( BGX_CONNECTION_STATUS.CONNECTING == stateValue ) {
                             mStatusLabel.setText(R.string.BGX_CONNECTION_STATUS_LABEL_CONNECTING);
                         } else if (BGX_CONNECTION_STATUS.INTERROGATING == stateValue) {
@@ -82,8 +96,11 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
                                 }
                             }, 500);
 
+                        } else if ( BGX_CONNECTION_STATUS.DISCONNECTED == stateValue) {
+                            myActivity.finish();
                         }
                     }
+                    break;
                 }
             }
         };

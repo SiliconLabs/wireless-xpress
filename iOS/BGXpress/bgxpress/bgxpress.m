@@ -419,7 +419,7 @@ NSErrorDomain NSBGXErrorDomain = @"BGX Error";
         return FALSE;
     }
     
-    if ((self.busMode != LOCAL_COMMAND_MODE) && (newBusMode != LOCAL_COMMAND_MODE) && (self.busMode != newBusMode))
+    if (self.busMode != newBusMode)
     {
         [per writeValue:[NSData dataWithBytes:&newBusMode length:1] forCharacteristic:modeChar type:CBCharacteristicWriteWithResponse];
         return TRUE;

@@ -156,7 +156,9 @@ public class DeviceList extends AppCompatActivity {
         mDeviceListLayoutManager = new LinearLayoutManager(this);
         mDeviceListRecyclerView.setLayoutManager(mDeviceListLayoutManager);
 
-        mScanResults = new ArrayList<Map<String, String> >();
+        if (null == mScanResults) {
+            mScanResults = new ArrayList<Map<String, String>>();
+        }
 
         mDeviceListAdapter = new BGXDeviceListAdapter(this, mScanResults);
         mDeviceListRecyclerView.setAdapter(mDeviceListAdapter);
@@ -166,7 +168,7 @@ public class DeviceList extends AppCompatActivity {
 
         mHandler = new Handler();
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Log.e("Error", "BLE Not Supported.");
+            Log.e("bgx_dbg", "BLE Not Supported.");
             finish();
         }
 
@@ -198,7 +200,7 @@ public class DeviceList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         switch(mi.getItemId()) {
             case R.id.scan_menuitem:
-                Log.d("debug", "Scan now");
+                Log.d("bgx_dbg", "Scan now");
 
                 // clear the scan list
 
@@ -248,13 +250,13 @@ public class DeviceList extends AppCompatActivity {
             case PERMISSION_REQUEST_COARSE_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted, yay! Start the Bluetooth device scan.
-                    Log.d("debug", "Received permissions to use location.");
+                    Log.d("bgx_dbg", "Received permissions to use location.");
                     fLocationPermissionGranted = true;
                     mLocationPermissionDeniedTextView.setVisibility(View.GONE);
                     mDeviceListRecyclerView.setVisibility(View.VISIBLE);
                 } else {
                     // Alert the user that this application requires the location permission to perform the scan.
-                    Log.e("error", "Did not get permissions to use location.");
+                    Log.e("bgx_dbg", "Did not get permissions to use location.");
                     fLocationPermissionGranted = false;
 
                     mLocationPermissionDeniedTextView.setVisibility(View.VISIBLE);
@@ -284,14 +286,14 @@ public class DeviceList extends AppCompatActivity {
 
 
         } catch(Exception e) {
-            Log.d("debug", "Exception caught while calling isEnabled.");
+            Log.d("bgx_dbg", "Exception caught while calling isEnabled.");
             Toast.makeText(this,"Exception caught", Toast.LENGTH_LONG).show();
         }
 
         if (fAdapterEnabled && fLocationPermissionGranted) {
 
             if (null == BluetoothAdapter.getDefaultAdapter() || !fAdapterEnabled) {
-                Log.d("debug", "bluetooth adapter is not available.");
+                Log.d("bgx_dbg", "bluetooth adapter is not available.");
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             } else {
@@ -305,11 +307,11 @@ public class DeviceList extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.d("debug","Result canceled.");
+                Log.d("bgx_dbg","Result canceled.");
                 finish();
                 return;
             }
-            Log.d("debug", "request enabled");
+            Log.d("bgx_dbg", "request enabled");
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -318,14 +320,15 @@ public class DeviceList extends AppCompatActivity {
     private void scanForDevices() {
         final Context myContext = this;
 
-        mScanResults = new ArrayList<Map<String, String> >();
+        mScanResults.clear();
+
         mDeviceListAdapter = new BGXDeviceListAdapter(getApplicationContext(), mScanResults);
         mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
 
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("debug", "starting scan");
+                Log.d("bgx_dbg", "starting scan");
 
                 BGXpressService.startActionStartScan(myContext);
             }
@@ -334,7 +337,7 @@ public class DeviceList extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("debug", "stopping scan");
+                Log.d("bgx_dbg", "stopping scan");
                 BGXpressService.startActionStopScan(myContext);
 
             }

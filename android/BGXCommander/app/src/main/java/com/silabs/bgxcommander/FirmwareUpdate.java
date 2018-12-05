@@ -86,7 +86,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
     @Override
     public void selectionDidChange(int position, JSONObject selectedObject) {
         mSelectedObject = selectedObject;
-        Log.d("debug", "selectionDidChange called.");
+        Log.d("bgx_dbg", "selectionDidChange called.");
 
         if (position != -1) {
             installUpdateButton.setEnabled(true);
@@ -195,7 +195,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                     case BGXpressService.DMS_VERSION_LOADED: {
 
                         String versionFilePath = intent.getStringExtra("file_path");
-                        Log.d("debug", "path: "+versionFilePath);
+                        Log.d("bgx_dbg", "path: "+versionFilePath);
 
                         // tell BGXpressService to install it.
                         Intent updateIntent = new Intent(mContext, BGXpressService.class);
@@ -222,7 +222,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 try {
 
                     assert (null != mSelectedObject);
-                    Log.d("debug", "Install update");
+                    Log.d("bgx_dbg", "Install update");
                     selectionContents.setVisibility(GONE);
                     updateContents.setVisibility(View.VISIBLE);
 
@@ -293,7 +293,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 }
             } else {
                 tmpArray = new JSONArray(mDMSVersions.toString());
-                Log.d("debug", "Just set the tmpArray to the total list: " + tmpArray.toString());
+                Log.d("bgx_dbg", "Just set the tmpArray to the total list: " + tmpArray.toString());
 
             }
 
@@ -352,7 +352,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
     void OTA_Finished()
     {
-        Log.d("Debug", "OTA is finished.");
+        Log.d("bgx_dbg", "OTA is finished.");
 
         CancelUpdateButton.setVisibility(View.INVISIBLE);
 

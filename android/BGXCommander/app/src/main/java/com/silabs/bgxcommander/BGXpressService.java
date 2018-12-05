@@ -30,6 +30,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.util.Log;
@@ -45,7 +46,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.HashMap;
 import java.net.URL;
@@ -170,6 +174,14 @@ public class BGXpressService extends IntentService {
      */
     public static final String ACTION_WRITE_SERIAL_DATA = "com.silabs.bgx.action.WriteSerialData";
 
+    /**
+     * Writes byte data to the BGX
+     *
+     * value - byte [] - the byte array to be written.
+     *
+     */
+    public static final String ACTION_WRITE_SERIAL_BIN_DATA = "com.silabs.bgx.action.WriteSerialBinData";
+
     /* BGX Misc Actions */
 
     /**
@@ -273,7 +285,7 @@ public class BGXpressService extends IntentService {
      */
     public static final String OTA_STATUS_MESSAGE           = "com.silabs.bgx.ota.status";
 
-    /**
+   /**
      * a value that indicates the type of part.
      */
     public enum BGXPartID {
@@ -296,6 +308,14 @@ public class BGXpressService extends IntentService {
      *  param: bgx-part-id - a BGXPartID
      */
     public static final String BGX_DEVICE_INFO              = "com.silabs.bgx.intent.device-info";
+
+    /**
+     *  This is sent when the BGXConnectionState moves from Connecting to Disconnecting
+     *  due to an error.
+     *
+     *  param: status - a GATT Status value as returned by the Android GATT API.
+     */
+    public static final String BGX_CONNECTION_ERROR         = "com.silabs.bgx.intent.connection_error";
 
     /**
      * Broadcast intent sent when the list of versions is retrieved from DMS.
@@ -330,6 +350,7 @@ public class BGXpressService extends IntentService {
      */
     private static final String ACTION_ENABLE_MODE_CHANGE_NOTIFICATION = "com.silabs.bgx.mode.notification.setup";
     private static final String ACTION_ENABLE_TX_CHANGE_NOTIFICATION = "com.silabs.bgx.tx.notification.setup";
+    private static final String ACTION_SET_2M_PHY = "com.silabs.bgx.set2mphy";
 
     private String getDmsAPIKey() {
         String api_key = null;
@@ -362,6 +383,18 @@ public class BGXpressService extends IntentService {
 
         private BluetoothGatt mBluetoothGatt;
 
+        /*
+         * mConnectionTimer is being added in order to periodically check
+         * the Bond state for a device during Interrogation. The reason
+         * is that we want to be able to detect bond errors. So far I have
+         * been unable to capture an ACTION_BOND_STATE_CHANGE intent either
+         * using a broadcast receiver with an intent filter inside this service
+         * or inside an activity. So we will try polling for it and see how that
+         * works.
+         */
+        private Timer mConnectionTimer;
+
+        private BGX_CONNECTION_STATUS mBGXDeviceConnectionState;
         private int mDeviceConnectionState;
 
         private BluetoothGattService mBGXSS;
@@ -389,7 +422,7 @@ public class BGXpressService extends IntentService {
         /**
          * These variables are used to write data a bit at a time.
          */
-        private String mString2Write;
+        private byte[] mData2Write;
         private int mWriteOffset;
 
         /**
@@ -421,7 +454,7 @@ public class BGXpressService extends IntentService {
 
         private void clearGattBusyFlagAndExecuteNext() {
             if (fOTAInProgress) {
-                Log.d("Debug", "clearGattBusyFlagAndExecuteNext called during fOTAInProgress");
+                Log.d("bgx_dbg", "clearGattBusyFlagAndExecuteNext called during fOTAInProgress");
                 return;
             }
             if (fGattBusy) {
@@ -474,31 +507,40 @@ public class BGXpressService extends IntentService {
 
                                 boolean result = mProperties.mBluetoothGatt.writeCharacteristic(mProperties.mBGXSSModeCharacteristic);
                                 if (!result) {
-                                    Log.e("BGX Warning", "mBGXSSModeCharacteristic write failed.");
+                                    Log.e("bgx_dbg", "mBGXSSModeCharacteristic write failed.");
                                 }
 
                             }
                             break;
 
                             case ACTION_WRITE_SERIAL_DATA: {
-                                mString2Write = intent.getStringExtra("value");
+                                String string2Write = intent.getStringExtra("value");
+                                mData2Write = string2Write.getBytes();
+                                mWriteOffset = 0;
+                                writeChunkOfData();
+                            }
+                            break;
+                            case ACTION_WRITE_SERIAL_BIN_DATA: {
+                                mData2Write = intent.getByteArrayExtra("value");
                                 mWriteOffset = 0;
                                 writeChunkOfData();
                             }
                             break;
                             case ACTION_READ_BUS_MODE: {
+                                assert(null != mProperties.mBGXSSModeCharacteristic);
                                 boolean result = mProperties.mBluetoothGatt.readCharacteristic(mProperties.mBGXSSModeCharacteristic);
                                 if (!result) {
-                                    Log.e("Warning", "mBluetoothGatt.readCharacteristic failed.");
+                                    Log.e("bgx_dbg", "mBluetoothGatt.readCharacteristic failed.");
                                 }
                             }
                             break;
                             case ACTION_BGX_GET_INFO: {
+                                assert(null != mProperties.mOTADeviceIDCharacterisitc);
                                 boolean readResult = mProperties.mBluetoothGatt.readCharacteristic(mProperties.mOTADeviceIDCharacterisitc);
                                 if (!readResult) {
-                                    Log.e("Warning", "Read initiation failed.");
+                                    Log.e("bgx_dbg", "Read initiation failed.");
                                 } else {
-                                    Log.d("debug", "Began reading the OTADeviceIDCharacteristic");
+                                    Log.d("bgx_dbg", "Began reading the OTADeviceIDCharacteristic");
                                 }
                             }
                             break;
@@ -513,37 +555,41 @@ public class BGXpressService extends IntentService {
                             break;
 
                             case ACTION_ENABLE_MODE_CHANGE_NOTIFICATION: {
+                                assert(null != mBGXSSModeCharacteristic);
                                 BluetoothGattDescriptor desc = mBGXSSModeCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+                                assert(null != desc);
                                 desc.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                                 boolean fresult = mBluetoothGatt.writeDescriptor(desc);
 
                                 if (!fresult) {
-                                    Log.e("Error", "An error occurred writing to the characteristic descriptor for BGXSSMode.");
+                                    Log.e("bgx_dbg", "An error occurred writing to the characteristic descriptor for BGXSSMode.");
                                 }
 
                                 fresult = mBluetoothGatt.setCharacteristicNotification(mBGXSSModeCharacteristic, true);
                                 if (!fresult) {
-                                    Log.e("Error", "Failed to set characterisitic notification for bgxss mode.");
+                                    Log.e("bgx_dbg", "Failed to set characterisitic notification for bgxss mode.");
                                 }
 
                             }
                             break;
                             case ACTION_ENABLE_TX_CHANGE_NOTIFICATION: {
+                                assert(null != mTxCharacteristic);
                                 BluetoothGattDescriptor desc = mTxCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
                                 desc.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                                 boolean fresult = mBluetoothGatt.writeDescriptor(desc);
 
                                 if (!fresult) {
-                                    Log.e("Error", "An error occurred writing to the characteristic descriptor for Tx.");
+                                    Log.e("bgx_dbg", "An error occurred writing to the characteristic descriptor for Tx.");
                                 }
                                 mBluetoothGatt.setCharacteristicNotification(mTxCharacteristic, true);
+                               // queueGattIntent(new Intent(BGXpressService.ACTION_READ_BUS_MODE));
 
-                                Intent broadcastIntent = new Intent();
-                                broadcastIntent.setAction(BGX_CONNECTION_STATUS_CHANGE);
-                                broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.CONNECTED);
-                                broadcastIntent.putExtra("device", mBluetoothGatt.getDevice());
-                                Log.d("debug", "Services Discovered!");
-                                sendBroadcast(broadcastIntent);
+                            }
+                            break;
+                            case ACTION_SET_2M_PHY: {
+                                if (Build.VERSION.SDK_INT >= 26) {
+                                    mBluetoothGatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK, BluetoothDevice.PHY_LE_2M_MASK, BluetoothDevice.PHY_OPTION_NO_PREFERRED);
+                                }
                             }
                             break;
 
@@ -559,12 +605,47 @@ public class BGXpressService extends IntentService {
                 if (null != nextIntent) {
                     nextAction = nextIntent.getAction();
                 }
-                Log.d("debug", "GattBusy - can't execute. Last intent action: " + mLastExecutedIntent.getAction() + " Next intent action: " + nextAction);
+                Log.d("bgx_dbg", "GattBusy - can't execute. Last intent action: " + mLastExecutedIntent.getAction() + " Next intent action: " + nextAction);
             }
         }
 
 
         private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+
+            @Override
+            public void onPhyUpdate(BluetoothGatt gatt, int txPhy, int rxPhy, int status) {
+                if (BluetoothGatt.GATT_SUCCESS == status) {
+                    
+                    switch (txPhy) {
+                        case BluetoothDevice.PHY_LE_1M:
+                            Log.d("bgx_dbg", "txPhy: 1M PHY");
+                            break;
+                        case BluetoothDevice.PHY_LE_2M:
+                            Log.d("bgx_dbg", "txPhy: 2M PHY");
+                            break;
+                        case BluetoothDevice.PHY_LE_CODED:
+                            Log.d("bgx_dbg", "txPhy: CODED PHY");
+                            break;
+                    }
+
+                    switch (rxPhy) {
+                        case BluetoothDevice.PHY_LE_1M:
+                            Log.d("bgx_dbg", "rxPhy: 1M PHY");
+                            break;
+                        case BluetoothDevice.PHY_LE_2M:
+                            Log.d("bgx_dbg", "rxPhy: 2M PHY");
+                            break;
+                        case BluetoothDevice.PHY_LE_CODED:
+                            Log.d("bgx_dbg", "rxPhy: CODED PHY");
+                            break;
+                    }
+
+                } else {
+                    Log.e("bgx_dbg", "onPhyUpdate: ERROR");
+                }
+                clearGattBusyFlagAndExecuteNext();
+            }
+
             @Override
             public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
                 super.onConnectionStateChange(gatt, status, newState);
@@ -581,43 +662,53 @@ public class BGXpressService extends IntentService {
 
                     switch (mDeviceConnectionState) {
                         case BluetoothProfile.STATE_CONNECTING:
+                            mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.CONNECTING;
                             broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.CONNECTING);
-                            Log.d("debug", "connection state: CONNECTING.");
+                            Log.d("bgx_dbg", "connection state: CONNECTING.");
                             if (!mProperties.fUserConnectionCanceled) {
                                 sendBroadcast(broadcastIntent);
                             }
                             break;
                         case BluetoothProfile.STATE_CONNECTED: {
-                            if (!mProperties.fUserConnectionCanceled) {
-                                broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.INTERROGATING);
 
-                                Log.d("debug", "Connected. Call discoverServices.");
-                                boolean fDiscoverServices = mBluetoothGatt.discoverServices();
-                                if (fDiscoverServices) {
-                                    Log.d("debug", "Discover Services returned true.");
-                                } else {
-                                    Log.d("debug", "Discover Services returned false.");
+                            if (!mProperties.fUserConnectionCanceled) {
+                                Boolean fBond = mBluetoothGatt.getDevice().createBond();
+                                if (!fBond) {
+                                    Log.e("bgx_dbg", "BluetoothDevice.createBond() returned false.");
                                 }
+                                mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.INTERROGATING;
+                                broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.INTERROGATING);
+                                startConnectionTimer();
+
+
                                 sendBroadcast(broadcastIntent);
+                            } else {
+                                mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.DISCONNECTED;
                             }
                         }
                         break;
                         case BluetoothProfile.STATE_DISCONNECTING:
+                            mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.DISCONNECTING;
                             broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.DISCONNECTING);
-                            Log.d("debug", "connection state: DISCONNECTING.");
+                            Log.d("bgx_dbg", "connection state: DISCONNECTING.");
                             sendBroadcast(broadcastIntent);
                             break;
                         case BluetoothProfile.STATE_DISCONNECTED:
+                            cancelConnectionTimer();
+                            mBluetoothGatt.disconnect();
+
+                            mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.DISCONNECTED;
                             broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.DISCONNECTED);
-                            Log.d("debug", "connection state: DISCONNECTED.");
+                            Log.d("bgx_dbg", "connection state: DISCONNECTED.");
                             sendBroadcast(broadcastIntent);
                             break;
                         default:
-                            Log.d("debug", "connection state: OTHER.");
+                            Log.d("bgx_dbg", "connection state: OTHER.");
                             break;
                     }
                 }
             }
+
 
 
 
@@ -627,42 +718,42 @@ public class BGXpressService extends IntentService {
                 final BluetoothGatt gatt = gatt_param;
 
                 super.onServicesDiscovered(gatt, status);
-                Log.d("debug", "onServicesDiscovered.");
+                Log.d("bgx_dbg", "onServicesDiscovered.");
                 // look for BGX Streaming Service (BGXSS).
 
                 mProperties.mBGXSS = gatt.getService(UUID.fromString("331a36f5-2459-45ea-9d95-6142f0c4b307"));
                 if (null != mBGXSS) {
-                    Log.d("debug", "BGXSS found.");
+                    Log.d("bgx_dbg", "BGXSS found.");
                 }
                 mProperties.mRxCharacteristic = mBGXSS.getCharacteristic(UUID.fromString("a9da6040-0823-4995-94ec-9ce41ca28833"));
                 if (null != mRxCharacteristic) {
-                    Log.d("debug", "RxCharacteristic discovered.");
+                    Log.d("bgx_dbg", "RxCharacteristic discovered.");
                 }
                 mProperties.mTxCharacteristic = mBGXSS.getCharacteristic(UUID.fromString("a73e9a10-628f-4494-a099-12efaf72258f"));
                 if (null != mTxCharacteristic) {
-                    Log.d("debug", "TxCharacteristic discovered.");
+                    Log.d("bgx_dbg", "TxCharacteristic discovered.");
                 }
                 mProperties.mBGXSSModeCharacteristic = mBGXSS.getCharacteristic(UUID.fromString("75a9f022-af03-4e41-b4bc-9de90a47d50b"));
                 if (null != mBGXSSModeCharacteristic) {
-                    Log.d("debug", "BGXSS Mode Characteristic discovered.");
+                    Log.d("bgx_dbg", "BGXSS Mode Characteristic discovered.");
                 }
 
                 mProperties.mOTAService = gatt.getService(UUID.fromString("169b52a0-b7fd-40da-998c-dd9238327e55"));
                 if (null != mProperties.mOTAService) {
-                    Log.d("debug", "Found the OTA Service.");
+                    Log.d("bgx_dbg", "Found the OTA Service.");
                     mProperties.mOTAControlCharacteristic = mOTAService.getCharacteristic(UUID.fromString("902ee692-6ef9-48a8-a430-5212eeb3e5a2"));
                     if (null != mProperties.mOTAControlCharacteristic) {
-                        Log.d("debug", "Found the OTA Control Characteristic");
+                        Log.d("bgx_dbg", "Found the OTA Control Characteristic");
                     }
 
                     mProperties.mOTADataCharacteristic = mOTAService.getCharacteristic(UUID.fromString("503a5d70-b443-466e-9aeb-c342802b184e"));
                     if (null != mProperties.mOTADataCharacteristic) {
-                        Log.d("debug", "Found the OTADataCharacteristic");
+                        Log.d("bgx_dbg", "Found the OTADataCharacteristic");
                     }
                     mProperties.mOTADeviceIDCharacterisitc = mOTAService.getCharacteristic(UUID.fromString("12e868e7-c926-4906-96c8-a7ee81d4b1b3"));
 
                     if (null != mProperties.mOTADeviceIDCharacterisitc) {
-                        Log.d("debug", "Found OTADeviceIDCharaceteristic");
+                        Log.d("bgx_dbg", "Found OTADeviceIDCharaceteristic");
                     }
 
                 }
@@ -675,6 +766,20 @@ public class BGXpressService extends IntentService {
                 setupIntent.setAction(ACTION_ENABLE_TX_CHANGE_NOTIFICATION);
                 queueGattIntent(setupIntent);
 
+                if (Build.VERSION.SDK_INT >= 26) {
+                    if (BluetoothAdapter.getDefaultAdapter().isLe2MPhySupported()) {
+                        Log.d("bgx_dbg", "Queuing the 2m phy action");
+                        queueGattIntent(new Intent(ACTION_SET_2M_PHY));
+                    }
+                }
+
+                mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.CONNECTED;
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction(BGX_CONNECTION_STATUS_CHANGE);
+                broadcastIntent.putExtra("bgx-connection-status", BGX_CONNECTION_STATUS.CONNECTED);
+                broadcastIntent.putExtra("device", mBluetoothGatt.getDevice());
+                sendBroadcast(broadcastIntent);
+
             }
 
             @Override
@@ -685,7 +790,7 @@ public class BGXpressService extends IntentService {
                     intent.setAction(BGX_MODE_STATE_CHANGE);
                     intent.putExtra("busmode", BusMode);
                     sendBroadcast(intent);
-                    Log.d("debug", "BusMode: " + BusMode);
+                    Log.d("bgx_dbg", "BusMode: " + BusMode);
                 } else if (mTxCharacteristic == characteristic) {
 
                     final String myValue = mTxCharacteristic.getStringValue(0);
@@ -701,6 +806,7 @@ public class BGXpressService extends IntentService {
             public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status ) {
 
                 if (BluetoothGatt.GATT_SUCCESS == status) {
+
                     if (mProperties.mBGXSSModeCharacteristic == characteristic) {
                         int busMode = mProperties.mBGXSSModeCharacteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
                         Intent sintent = new Intent();
@@ -727,17 +833,15 @@ public class BGXpressService extends IntentService {
                         } else if (bgxDeviceUUID.startsWith(BGX_Invalid_Device_Prefix)) {
                             devicePartID = BGXPartID.BGXInvalid;
                         } else {
-                            Log.e("Warning", "Unknown BGX PartID");
+                            Log.e("bgx_dbg", "Unknown BGX PartID");
                             devicePartID = BGXPartID.BGXInvalid;
                         }
                         intent.putExtra("bgx-part-id", devicePartID);
 
-                        Log.d("debug", "**** Read the BGX Device UUID: " + bgxDeviceUUID + " ****");
+                        Log.d("bgx_dbg", "**** Read the BGX Device UUID: " + bgxDeviceUUID + " ****");
 
                         sendBroadcast(intent);
                     }
-                } else {
-                    Log.e("Warning", "An error occurred while trying to read a characteristic: " + status);
                 }
 
                 mProperties.clearGattBusyFlagAndExecuteNext();
@@ -751,7 +855,7 @@ public class BGXpressService extends IntentService {
 
 
                 if (mProperties.mOTAControlCharacteristic == characteristic) {
-                    Log.d("debug", "onCharacteristicWrite OTAControlCharacteristic");
+                    Log.d("bgx_dbg", "onCharacteristicWrite OTAControlCharacteristic");
                     if ( OTA_State.WrittenZeroToControlCharacteristic == mProperties.mOTAState ) {
 
                         if (BluetoothGatt.GATT_SUCCESS == status) {
@@ -761,7 +865,7 @@ public class BGXpressService extends IntentService {
 
                         } else {
                             // OTA Failed.
-                            Log.e("Error", "OTA Failed. Bad status on write to OTAControlCharacteristic.");
+                            Log.e("bgx_dbg", "OTA Failed. Bad status on write to OTAControlCharacteristic.");
                             Intent intent = new Intent();
                             intent.setAction(OTA_STATUS_MESSAGE);
                             intent.putExtra("ota_status", OTA_Status.Idle);
@@ -781,7 +885,7 @@ public class BGXpressService extends IntentService {
                         mProperties.clearGattBusyFlagAndExecuteNext();
                     }
                 } else if (mProperties.mOTADataCharacteristic == characteristic) {
-                    Log.d("debug", "onCharacteristicWrite OTADataCharacteristic");
+                    Log.d("bgx_dbg", "onCharacteristicWrite OTADataCharacteristic");
                     if (BluetoothGatt.GATT_SUCCESS == status) {
                         if ( OTA_State.WritingOTAImage == mProperties.mOTAState ) {
                             writeOTAImageChunk();
@@ -789,7 +893,7 @@ public class BGXpressService extends IntentService {
                             finishOTA();
                         }
                     } else {
-                        Log.e("Error", "OTA Failed. onWrite failed for OTA_Data_Characteristic.");
+                        Log.e("bgx_dbg", "OTA Failed. onWrite failed for OTA_Data_Characteristic.");
                         Intent intent = new Intent();
                         intent.setAction(OTA_STATUS_MESSAGE);
                         intent.putExtra("ota_status", OTA_Status.Idle);
@@ -798,18 +902,18 @@ public class BGXpressService extends IntentService {
                     }
                 } else if (mProperties.mRxCharacteristic == characteristic) {
 
-                    if (null != mProperties.mString2Write) {
+                    if (null != mProperties.mData2Write) {
                         writeChunkOfData();
                     } else {
                         mProperties.clearGattBusyFlagAndExecuteNext();
                     }
 
                 } else if (mProperties.mBGXSSModeCharacteristic == characteristic) {
-                    Log.d("debug", "onCharacteristicWrite - mode characteristic. Status: " + status);
+                    Log.d("bgx_dbg", "onCharacteristicWrite - mode characteristic. Status: " + status);
                     mProperties.clearGattBusyFlagAndExecuteNext();
 
                 } else {
-                    Log.d("debug", "onCharacteristicWrite - other");
+                    Log.d("bgx_dbg", "onCharacteristicWrite - other");
                     mProperties.clearGattBusyFlagAndExecuteNext();
                 }
             }
@@ -820,14 +924,13 @@ public class BGXpressService extends IntentService {
                                       int status) {
 
                 if (BluetoothGatt.GATT_SUCCESS != status) {
-                    Log.e("Error", "onDescriptorWrite failed.");
+                    Log.e("bgx_dbg", "onDescriptorWrite failed.");
                 }
 
             mProperties.clearGattBusyFlagAndExecuteNext();
         }
 
         };
-
 
         private ScanCallback mScanCallback = new ScanCallback() {
             @Override
@@ -861,7 +964,7 @@ public class BGXpressService extends IntentService {
 
             @Override
             public void onScanFailed(int errorCode) {
-                Log.e("Scan failed.", "Error Code: " + errorCode);
+                Log.e("bgx_dbg", "Scan Failed. Error Code: " + errorCode);
                 Intent intent = new Intent();
                 intent.setAction(BGX_SCAN_MODE_CHANGE);
                 intent.putExtra("isscanning", false);
@@ -870,6 +973,56 @@ public class BGXpressService extends IntentService {
             }
         };
 
+
+        public void startConnectionTimer() {
+            assert(null == mConnectionTimer);
+
+            mConnectionTimer = new Timer();
+            mConnectionTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                    Boolean fTrigger = false;
+
+                    switch (mBluetoothGatt.getDevice().getBondState()) {
+                        case BluetoothDevice.BOND_NONE: {
+                            Log.d("bgx_dbg", "BOND_NONE");
+                            if (!mBluetoothGatt.getDevice().createBond()) {
+                                Log.e("bgx_dbg", "Error createBond returned false.");
+                            }
+                        }
+                            break;
+                        case BluetoothDevice.BOND_BONDING:
+                            Log.d("bgx_dbg", "BOND_BONDING");
+                            break;
+                        case BluetoothDevice.BOND_BONDED:
+                            Log.d("bgx_dbg", "BOND_BONDED");
+                            fTrigger = true;
+                            break;
+                    }
+
+                    if (fTrigger) {
+
+                        boolean fDiscoverServices = mBluetoothGatt.discoverServices();
+                        if (fDiscoverServices) {
+                            Log.d("bgx_dbg", "Discover Services returned true.");
+                        } else {
+                            Log.d("bgx_dbg", "Discover Services returned false.");
+                        }
+
+                        cancelConnectionTimer();
+                    }
+
+                }
+            }, 200, 200);
+        }
+
+        public void cancelConnectionTimer() {
+            if (null != mConnectionTimer) {
+                mConnectionTimer.cancel();
+                mConnectionTimer = null;
+            }
+        }
 
 
     };
@@ -892,26 +1045,26 @@ public class BGXpressService extends IntentService {
         int ibegin, iend;
 
         ibegin = mProperties.mWriteOffset;
-        iend = mProperties.mString2Write.length() - 1;
+        iend = mProperties.mData2Write.length - 1;
 
         if (iend - ibegin > kDataWriteChunkSize) {
-            iend = ibegin + kDataWriteChunkSize - 1;
+            iend = ibegin + kDataWriteChunkSize;
         }
 
-        mProperties.mRxCharacteristic.setValue(mProperties.mString2Write.substring(ibegin, iend));
 
-        boolean writeResult = mProperties.mBluetoothGatt.writeCharacteristic(mProperties.mRxCharacteristic);
-        if (!writeResult) {
-            Log.e("BGX Warning", "An error occurred while writing to the rx characteristic of the bgxss service.");
-        }
+        mProperties.mRxCharacteristic.setValue( Arrays.copyOfRange(mProperties.mData2Write, ibegin, iend));
 
-        if (mProperties.mString2Write.length()-1 > iend) {
+        if (mProperties.mData2Write.length-1 > iend) {
             mProperties.mWriteOffset = iend ;
         } else {
             mProperties.mWriteOffset = 0;
-            mProperties.mString2Write = null;
+            mProperties.mData2Write = null;
         }
 
+        boolean writeResult = mProperties.mBluetoothGatt.writeCharacteristic(mProperties.mRxCharacteristic);
+        if (!writeResult) {
+            Log.e("bgx_dbg", "An error occurred while writing to the rx characteristic of the bgxss service.");
+        }
     }
 
     public BGXpressService() {
@@ -935,6 +1088,7 @@ public class BGXpressService extends IntentService {
             mProperties.mIntentArray = new ArrayList<Intent>();
             mProperties.mOTAState = OTA_State.OTA_Idle;
             mProperties.fOTAUserCanceled = false;
+            mProperties.mConnectionTimer = null;
         }
 
         if (null == mProperties.mLEScanner) {
@@ -1023,7 +1177,7 @@ public class BGXpressService extends IntentService {
      */
     public static void clearCancelFlag() {
         if (mProperties.fUserConnectionCanceled) {
-            Log.d("debug", "Clearing the cancel flag.");
+            Log.d("bgx_dbg", "Clearing the cancel flag.");
         }
         mProperties.fUserConnectionCanceled = false;
     }
@@ -1065,7 +1219,8 @@ public class BGXpressService extends IntentService {
 
             } else if (ACTION_WRITE_SERIAL_DATA.equals(action)) {
                 mProperties.queueGattIntent(intent);
-
+            } else if (ACTION_WRITE_SERIAL_BIN_DATA.equals(action)) {
+                mProperties.queueGattIntent(intent);
             } else if (ACTION_READ_BUS_MODE.equals(action)) {
                 mProperties.queueGattIntent(intent);
             } else if (ACTION_BGX_CANCEL_CONNECTION.equals(action)) {
@@ -1087,7 +1242,7 @@ public class BGXpressService extends IntentService {
                 String dmsVersion = intent.getStringExtra("dms-version");
                 String apiKey = getDmsAPIKey();
                 BGXPartID partID = (BGXPartID) intent.getSerializableExtra("bgx-part-id");
-                Log.d("debug", "Version Record: " + dmsVersion);
+                Log.d("bgx_dbg", "Version Record: " + dmsVersion);
 
                 handleActionGetDMSVersion(apiKey, partID, dmsVersion);
 
@@ -1109,7 +1264,7 @@ public class BGXpressService extends IntentService {
      * Handle action StartScan in the provided background thread.
      */
     private void handleActionStartScan() {
-        Log.d("debug", "BGXpressService::StartScan");
+        Log.d("bgx_dbg", "BGXpressService::StartScan");
 
         mProperties.mScanResults = new ArrayList<BluetoothDevice>();
         mProperties.mLEScanner.startScan(mProperties.filters, mProperties.settings, mProperties.mScanCallback);
@@ -1124,7 +1279,7 @@ public class BGXpressService extends IntentService {
      */
     private void handleActionStopScan() {
 
-        Log.d("debug", "BGXpressService::StopScan");
+        Log.d("bgx_dbg", "BGXpressService::StopScan");
 
         mProperties.mLEScanner.stopScan(mProperties.mScanCallback);
         Intent intent = new Intent();
@@ -1156,7 +1311,7 @@ public class BGXpressService extends IntentService {
 
         if (null != btDevice && !mProperties.fUserConnectionCanceled) {
             // connect to it.
-            Log.d("debug", "Found the device. Connect now.");
+            Log.d("bgx_dbg", "Found the device. Connect now.");
             if (null == mProperties.mBluetoothGatt) {
                 mProperties.mBluetoothGatt = btDevice.connectGatt(this, false, mProperties.mGattCallback);
             } else {
@@ -1187,7 +1342,7 @@ public class BGXpressService extends IntentService {
             } else if (BGXPartID.BGX13S == partID) {
                 dmsVersionsURL = new URL(BGXpressService.DMS_VERSIONS_URL_S);
             } else {
-                Log.e("Error", "Invalid partID");
+                Log.e("bgx_dbg", "Invalid partID");
                 return;
             }
 
@@ -1198,7 +1353,7 @@ public class BGXpressService extends IntentService {
 
             int response = versConnection.getResponseCode();
             if (HttpURLConnection.HTTP_OK == response) {
-                Log.d("debug", "HTTP OK");
+                Log.d("bgx_dbg", "HTTP OK");
 
                 byte[] contents = new byte[1024];
                 String dmsResponse = new String();
@@ -1214,7 +1369,7 @@ public class BGXpressService extends IntentService {
                 intent.putExtra("versions-available-json", dmsResponse);
                 sendBroadcast(intent);
             } else {
-                Log.e("HTTP Error", "Error occurred while getting DMS versions: " + response);
+                Log.e("bgx_dbg", "HTTP Error occurred while getting DMS versions: " + response);
             }
 
         }  catch (MalformedURLException e) {
@@ -1254,15 +1409,15 @@ public class BGXpressService extends IntentService {
         if (!partFolder.exists()) {
             fResult = partFolder.mkdir();
             if (fResult) {
-                Log.d("debug", "Create directory: success.");
+                Log.d("bgx_dbg", "Create directory: success.");
             } else {
-                Log.d("debug", "Create directory: failed.");
+                Log.d("bgx_dbg", "Create directory: failed.");
             }
         }
 
         versionFile = new File(partFolder, dmsVersion);
 
-        Log.d("debug", "File for dmsversion: " + versionFile.toString());
+        Log.d("bgx_dbg", "File for dmsversion: " + versionFile.toString());
 
         if (!versionFile.exists()) {
 
@@ -1273,7 +1428,7 @@ public class BGXpressService extends IntentService {
                 } else if (BGXPartID.BGX13S == partID) {
                     dmsVersionsURL = new URL(BGXpressService.DMS_VERSIONS_URL_S + "/" + dmsVersion);
                 } else {
-                    Log.e("Error", "Invalid partID");
+                    Log.e("bgx_dbg", "Invalid partID");
                     return;
                 }
 
@@ -1284,7 +1439,7 @@ public class BGXpressService extends IntentService {
 
                 int response = versConnection.getResponseCode();
                 if (HttpURLConnection.HTTP_OK == response) {
-                    Log.d("debug", "HTTP OK");
+                    Log.d("bgx_dbg", "HTTP OK");
 
                     versionFile.createNewFile();
                     FileOutputStream fos = new FileOutputStream(versionFile);
@@ -1360,7 +1515,7 @@ public class BGXpressService extends IntentService {
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
             // report OTA Failure.
-            Log.e("Error", "OTA Image file not found: " + ota_image_path);
+            Log.e("bgx_dbg", "Error OTA Image file not found: " + ota_image_path);
             return;
         }
 
@@ -1375,7 +1530,7 @@ public class BGXpressService extends IntentService {
 
         mProperties.mOTAControlCharacteristic.setValue(zeroValue);
         if (!mProperties.mBluetoothGatt.writeCharacteristic( mProperties.mOTAControlCharacteristic )) {
-            Log.e("Error", "Failed to write to OTAControlCharacteristic");
+            Log.e("bgx_dbg", "Failed to write to OTAControlCharacteristic");
         }
 
     }
@@ -1396,12 +1551,12 @@ public class BGXpressService extends IntentService {
             byte[] buffer = new byte[kChunkSize];
             int bytesRead = mOTAImageFileInputStream.read(buffer);
 
-            Log.d("debug", "mOTAImageFileInputStream.read(buffer) called returned "+bytesRead);
+            Log.d("bgx_dbg", "mOTAImageFileInputStream.read(buffer) called returned "+bytesRead);
 
             if (-1 == bytesRead) {
                 // this indicates an error or EOF which in this case
                 // can be treated as an error.
-                Log.e("Error", "An error occurred while trying to read the OTA image.");
+                Log.e("bgx_dbg", "Error: An error occurred while trying to read the OTA image.");
                 Intent intent = new Intent();
                 intent.setAction(OTA_STATUS_MESSAGE);
                 intent.putExtra("ota_status", OTA_Status.Idle);
@@ -1419,20 +1574,20 @@ public class BGXpressService extends IntentService {
             sendBroadcast(intent);
 
             if (bytesRead < kChunkSize) {
-                Log.d("Debug", "Writing the final chunk (" + bytesRead + " bytes) of the OTA image. " + ota_bytes_sent + " bytes written");
+                Log.d("bgx_dbg", "Writing the final chunk (" + bytesRead + " bytes) of the OTA image. " + ota_bytes_sent + " bytes written");
 
                 mProperties.mOTAState = OTA_State.WriteThreeToControlCharacteristic;
-                Log.d("debug", "Change OTA_State to WriteThreeToControlCharacteristic.");
+                Log.d("bgx_dbg", "Change OTA_State to WriteThreeToControlCharacteristic.");
                 byte[] tempBuffer = new byte[bytesRead];
                 System.arraycopy(buffer, 0, tempBuffer, 0, bytesRead);
                 mProperties.mOTADataCharacteristic.setValue(tempBuffer);
             } else {
-                Log.d("debug", "Writing 244 bytes of the OTA image. "+ota_bytes_sent + " bytes written");
+                Log.d("bgx_dbg", "Writing 244 bytes of the OTA image. "+ota_bytes_sent + " bytes written");
                 mProperties.mOTADataCharacteristic.setValue(buffer);
             }
 
             if (!mProperties.mBluetoothGatt.writeCharacteristic(mProperties.mOTADataCharacteristic)) {
-                Log.e("Error", "Failed to write to OTADataCharacteristic.");
+                Log.e("bgx_dbg", "Failed to write to OTADataCharacteristic.");
             }
 
 
@@ -1458,12 +1613,12 @@ public class BGXpressService extends IntentService {
         intent.putExtra("ota_status", OTA_Status.Finishing);
         sendBroadcast(intent);
 
-        Log.d("debug", "finishOTA called.");
+        Log.d("bgx_dbg", "finishOTA called.");
         byte[] finalThree = new byte[1];
         finalThree[0] = 3;
         mProperties.mOTAControlCharacteristic.setValue(finalThree);
         if (!mProperties.mBluetoothGatt.writeCharacteristic(mProperties.mOTAControlCharacteristic)) {
-            Log.e("Error", "Failed to write to OTAControlCharacteristic.");
+            Log.e("bgx_dbg", "Failed to write to OTAControlCharacteristic.");
         }
     }
 
@@ -1477,6 +1632,7 @@ public class BGXpressService extends IntentService {
         mProperties.mOTAState = OTA_State.OTA_Idle;
         mProperties.clearGattBusyFlagAndExecuteNext();
     }
+
 }
 
 /** @} */
