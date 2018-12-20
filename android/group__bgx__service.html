@@ -234,6 +234,9 @@ Classes</h2></td></tr>
 <tr class="memitem:a732a2d4777e3778c89e157b92223f7be"><td class="memItemLeft" align="right" valign="top">static final String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bgx__service.html#a732a2d4777e3778c89e157b92223f7be">BGX_DEVICE_INFO</a></td></tr>
 <tr class="memdesc:a732a2d4777e3778c89e157b92223f7be"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is sent when connection state becomes connected for the device.  <a href="#a732a2d4777e3778c89e157b92223f7be">More...</a><br /></td></tr>
 <tr class="separator:a732a2d4777e3778c89e157b92223f7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16a66e020897f14d611fe7013129fb2e"><td class="memItemLeft" align="right" valign="top">static final String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bgx__service.html#a16a66e020897f14d611fe7013129fb2e">BGX_CONNECTION_ERROR</a></td></tr>
+<tr class="memdesc:a16a66e020897f14d611fe7013129fb2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is sent when the BGXConnectionState moves from Connecting to Disconnecting due to an error.  <a href="#a16a66e020897f14d611fe7013129fb2e">More...</a><br /></td></tr>
+<tr class="separator:a16a66e020897f14d611fe7013129fb2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeabf92528827132bf4fc510cd043bcf"><td class="memItemLeft" align="right" valign="top">static final String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bgx__service.html#afeabf92528827132bf4fc510cd043bcf">DMS_VERSIONS_AVAILABLE</a></td></tr>
 <tr class="memdesc:afeabf92528827132bf4fc510cd043bcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcast intent sent when the list of versions is retrieved from DMS.  <a href="#afeabf92528827132bf4fc510cd043bcf">More...</a><br /></td></tr>
 <tr class="separator:afeabf92528827132bf4fc510cd043bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1079,6 +1082,31 @@ Classes</h2></td></tr>
 
 </div>
 </div>
+<a id="a16a66e020897f14d611fe7013129fb2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16a66e020897f14d611fe7013129fb2e">&#9670;&nbsp;</a></span>BGX_CONNECTION_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final String com.silabs.bgxcommander.BGXpressService.BGX_CONNECTION_ERROR</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is sent when the BGXConnectionState moves from Connecting to Disconnecting due to an error. </p>
+<p>param: status - a GATT Status value as returned by the Android GATT API. </p>
+
+</div>
+</div>
 <a id="afeabf92528827132bf4fc510cd043bcf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afeabf92528827132bf4fc510cd043bcf">&#9670;&nbsp;</a></span>DMS_VERSIONS_AVAILABLE</h2>
 
@@ -1107,7 +1135,7 @@ Classes</h2></td></tr>
 
 </div>
 </div>
-<div style="border-top: 1px solid #c0c0c0; margin-top: 8px; font-size: 12px; color: #c0c0c0;"><span style="float: left;">Copyright 2018 Silicon Labs</span><span style="float: right">536bbb94 Tue Sep 11 14:27:22 CDT 2018</span></div></div><!-- pagefooter-contents -->
+<div style="border-top: 1px solid #c0c0c0; margin-top: 8px; font-size: 12px; color: #c0c0c0;"><span style="float: left;">Copyright 2018 Silicon Labs</span><span style="float: right">d98f7f46 Thu Dec 20 15:52:57 CST 2018</span></div></div><!-- pagefooter-contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->

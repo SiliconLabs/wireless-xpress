@@ -38,6 +38,7 @@ var group__bgx__service =
       [ "DMS_VERSION_LOADED", "group__bgx__service.html#a1848892f9189b750d6504af63b45fad2", null ],
       [ "OTA_STATUS_MESSAGE", "group__bgx__service.html#aeba70ae0cb0ff18e31c2a64f97b18ecc", null ],
       [ "BGX_DEVICE_INFO", "group__bgx__service.html#a732a2d4777e3778c89e157b92223f7be", null ],
+      [ "BGX_CONNECTION_ERROR", "group__bgx__service.html#a16a66e020897f14d611fe7013129fb2e", null ],
       [ "DMS_VERSIONS_AVAILABLE", "group__bgx__service.html#afeabf92528827132bf4fc510cd043bcf", null ]
     ] ]
 ];

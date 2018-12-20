@@ -2,6 +2,7 @@ var searchData=
 [
   ['bgx13p',['BGX13P',['../group__bgx__service.html#a15c6f821823cb5c4b8c05417fc35af21',1,'com::silabs::bgxcommander::BGXpressService::BGXPartID']]],
   ['bgx13s',['BGX13S',['../group__bgx__service.html#aa9370be0ed8698b8775012f314ddee74',1,'com::silabs::bgxcommander::BGXpressService::BGXPartID']]],
+  ['bgx_5fconnection_5ferror',['BGX_CONNECTION_ERROR',['../group__bgx__service.html#a16a66e020897f14d611fe7013129fb2e',1,'com::silabs::bgxcommander::BGXpressService']]],
   ['bgx_5fconnection_5fstatus_5fchange',['BGX_CONNECTION_STATUS_CHANGE',['../group__bgx__service.html#a916c8e905c36f35acae18bb7467b15d8',1,'com::silabs::bgxcommander::BGXpressService']]],
   ['bgx_5fdata_5freceived',['BGX_DATA_RECEIVED',['../group__bgx__service.html#a25e9383ace9688452ea1917bdeae8df4',1,'com::silabs::bgxcommander::BGXpressService']]],
   ['bgx_5fdevice_5finfo',['BGX_DEVICE_INFO',['../group__bgx__service.html#a732a2d4777e3778c89e157b92223f7be',1,'com::silabs::bgxcommander::BGXpressService']]],

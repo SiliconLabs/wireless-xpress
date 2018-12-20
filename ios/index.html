@@ -107,6 +107,10 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="textblock"><p><a href="..">Link to top level documentation.</a></p>
 <h1>Introduction</h1>
 <p>The Silicon Labs BGX device provides a bridge between Bluetooth Low Energy (BLE) and Serial communication. BGXpress.framework makes it easy to write an iOS app that interacts with BGX. It supports discovery of BGX devices, connecting and disconnecting, setting and detecting the bus mode of the BGX, sending and receiving data, and OTA (Over The Air) Firmware Updates of the BGX accessed through the Silicon Labs DMS (Device Management Service).</p>
+<h3>Source Code and License</h3>
+<p>The BGX mobile libraries are licensed under a permissive open source license and can be found on Github.</p>
+<p><a href="https://github.com/SiliconLabs/wireless-xpress">https://github.com/SiliconLabs/wireless-xpress</a></p>
+<p>Please refer to the <a class="el" href="license.html">license file</a>.</p>
 <h2>Getting Started</h2>
 <h3>Design Limitations</h3>
 <h4>Designed for iOS</h4>
@@ -118,6 +122,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <h3>BGXEmptyProject</h3>
 <p>BGXEmptyProject provides you with a starting point for new development using the BGXpress.framework. You can open it by locating the file <b>BGXEmptyProject.xcworkspace</b> and opening it with Xcode. Just like BGXCommander, this app requires a real device and a signing certificate from Apple to interact with BGXdevices.</p>
 <h3>BGXCommander</h3>
+<p><em><b>BGXCommander</b></em> uses CocoaPods to get the latest versions of certain third party libraries. In order for it to build properly, you should install Cocoapods. Visit <a href="https://cocoapods.org">https://cocoapods.org</a> for more information about installing CocoaPods.</p>
 <p>To get started with BGXpress.framework, it may be useful to build, run, and examine the BGXCommander sample app. To open it, locate the file called <b>BGXCommander.xcworkspace</b> and open it using Xcode. Note that of this writing Apple does not support CoreBluetooth in the iOS Simulator. The BGXCommander app does run in the Simulator, but does not support connecting to a real BGX device. Instead it uses dummy devices to populate the device list. In order to interact with a BGX device, you will need an iOS device that supports BLE (iPhone 4s or better) and a signing certificate in order to build/run BGXCommander on your device. See <a href="http://developer.apple.com">http://developer.apple.com</a> for details on how to obtain a signing certificate. While you can also get BGXCommander from the iOS App Store, building it yourself allows you to inspect the running code to see how it uses the BGXpress framework.</p>
 <h2>Understanding BGX</h2>
 <h3>Discovery</h3>
@@ -128,12 +133,12 @@ $(document).ready(function(){initNavTree('index.html','');});
 <h3>Serial Communication</h3>
 <p>You iOS app can send data to and receive data from the connected BGX device.</p>
 <h3>Firmware Update</h3>
-<p>You can use BGXpress.framework to detect when a new version of firmware is available for your BGX. In order to use this feature, contact <a href="#" onclick="location.href='mai'+'lto:'+'xpr'+'es'+'s@s'+'il'+'abs'+'.c'+'om'; return false;">xpres<span style="display: none;">.nosp@m.</span>s@si<span style="display: none;">.nosp@m.</span>labs.<span style="display: none;">.nosp@m.</span>com</a> for a DMS API Key. When you receive this key, add it to the Info.plist file for your app under the key name <b>DMS_API_KEY</b>. BGXpress.framework will access it from this location.</p>
+<p>You can use BGXpress.framework to detect when a new version of firmware is available for your BGX. In order to use this feature, contact <a href="#" onclick="location.href='mai'+'lto:'+'xpr'+'es'+'s@s'+'il'+'abs'+'.c'+'om'; return false;">xpres<span style="display: none;">.nosp@m.</span>s@si<span style="display: none;">.nosp@m.</span>labs.<span style="display: none;">.nosp@m.</span>com</a> for a DMS API Key. Note that this address is to be used to request secure tokens only. For technical support questions, please submit your question to <a href="https://www.silabs.com/support">https://www.silabs.com/support</a>. When you receive this key, add it to the Info.plist file for your app under the key name <b>DMS_API_KEY</b>. BGXpress.framework will access it from this location.</p>
 <h4>DMS</h4>
 <p>DMS (Device Managemnt Service) is used to retrieve available firmware for BGX. There is a module built into BGXpress.framework that supports the operations of retriving a list of the available firmware for your BGX and loading the firmware onto your mobile device.</p>
 <h4>OTA Update</h4>
 <p>BGXpress.frameowrk can be used to update the firmware on BGX devices using a firmware image retrieved through DMS. Your app can register to receive notifications about the progress of the OTA update process in order to display status/progress of the update to the user. </p>
-</div><div style="border-top: 1px solid #c0c0c0; margin-top: 8px; font-size: 12px; color: #c0c0c0;"><span style="float: left;">Copyright 2018 Silicon Labs</span><span style="float: right">536bbb94 Tue Sep 11 14:27:22 CDT 2018</span></div></div><!-- pagefooter-contents -->
+</div><div style="border-top: 1px solid #c0c0c0; margin-top: 8px; font-size: 12px; color: #c0c0c0;"><span style="float: left;">Copyright 2018 Silicon Labs</span><span style="float: right">d98f7f46 Thu Dec 20 15:52:57 CST 2018</span></div></div><!-- pagefooter-contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
