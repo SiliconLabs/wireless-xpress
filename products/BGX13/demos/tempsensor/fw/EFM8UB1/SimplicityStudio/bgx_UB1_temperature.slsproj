@@ -1,0 +1,33 @@
+<project name="BGX_UB1_temperature" contentRoot=".." partCompatibility="mcu.8051.efm8.ub1" boardCompatibility="brd5000a">
+  <property key="category" value="Demos"/>
+  <folder includeAllFiles="false" includeAllFolders="false" name="inc" uri="inc">
+    <folder includeAllFiles="false" includeAllFolders="false" name="config" uri="config">
+      <file name="efm8_config.h"/>
+    </folder>
+    <folder includeAllFiles="false" includeAllFolders="false" name="stk" uri="config">
+    </folder>
+	<file name="InitDevice.h"/>
+  </folder>
+  <folder includeAllFiles="false" includeAllFolders="true" name="utility" uri="utility">
+  </folder>
+  <folder includeAllFiles="false" includeAllFolders="false" name="src" uri="src">
+    <file name="InitDevice.c"/>
+	<file name="main.c"/>
+  </folder>
+  <file name="EFM8UB1_BGX.hwconf"/>
+  <file name="README.txt"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.uart1"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.pwr"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_bsp"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.pwr"/>
+  <includePath languageCompatibility="c" uri="studio:/project/inc/"/>
+  <includePath languageCompatibility="c" uri="studio:/project/inc/config/"/>
+  <includePath languageCompatibility="c" uri="studio:/project/utility/"/>
+  <module id="com.silabs.sdk.si8051.shared"/>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.assembler" optionId="com.silabs.ide.si8051.keil.assembler.category.symbols.def">
+   <toolListOption value="SILABS_STARTUP=1"/>
+  </toolOption>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_linker" value="true"/>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_assembler" value="true"/>
+
+  </project>

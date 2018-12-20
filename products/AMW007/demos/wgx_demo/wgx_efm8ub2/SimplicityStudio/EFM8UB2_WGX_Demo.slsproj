@@ -1,0 +1,41 @@
+<project name="EFM8UB2_WGX_Demo" contentRoot=".." partCompatibility="mcu.8051.efm8.ub2" boardCompatibility="brd5001a">
+  <property key="category" value="WGX"/>
+  <file name="EFM8UB2_WGX.hwconf"/>
+  <folder includeAllFiles="false" includeAllFolders="false" name="inc" uri="inc">
+    <folder includeAllFiles="false" includeAllFolders="false" name="config" uri="config">
+      <file name="efm8_config.h"/>
+      <file name="joystick_config.h"/>
+      <file name="memory_lcd_config.h"/>
+      <file name="oscilloscope_config.h"/>
+      <file name="rgb_led_config.h"/>
+      </folder>
+  </folder>
+  <folder includeAllFiles="true" includeAllFolders="true" name="inc" uri="inc"/>
+  <folder includeAllFiles="true" includeAllFolders="true" name="ui" uri="../common/ui"/>
+  <folder includeAllFiles="true" includeAllFolders="true" name="wgx" uri="../../../lib/wgx"/>
+  <folder includeAllFiles="true" includeAllFolders="true" name="src" uri="src"/>
+  <sourceFolder>src</sourceFolder>
+  <sourceFolder>ui/src</sourceFolder>
+  <sourceFolder>wgx/src</sourceFolder>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.spi0"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.uart1"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.wdt0"/>
+  <module id="com.silabs.sdk.si8051.external.efm8Library.assert"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_joystick"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_memory_lcd"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_rgb_led"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_bsp"/>  
+  <includePath languageCompatibility="c" uri="studio:/project/inc/"/>
+    <includePath languageCompatibility="c" uri="studio:/project/inc/config/"/>
+  <includePath languageCompatibility="c" uri="studio:/project/ui/inc/"/>
+  <includePath languageCompatibility="c" uri="studio:/project/wgx/inc/"/>
+  <property key="initiallyOpenedResource" value="src/main.c"/>
+  <module id="com.silabs.sdk.si8051.shared"/>
+  <!-- IAR printf_P formatter: Large -->
+<toolOption toolId="com.silabs.ide.si8051.keil.toolchain.assembler" optionId="com.silabs.ide.si8051.keil.assembler.category.symbols.def">
+  <toolListOption value="SILABS_STARTUP=1"/>
+</toolOption>
+<toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.memory_model" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="com.silabs.ide.si8051.keil.toolchain.category.general.memory_model.large"/>
+<toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_linker" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="true"/>
+<toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_assembler" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="true"/>
+</project>

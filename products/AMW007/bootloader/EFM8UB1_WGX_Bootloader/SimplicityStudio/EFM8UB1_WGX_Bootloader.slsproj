@@ -1,0 +1,24 @@
+<project name="EFM8UB1_WGX_BootloaderNEW" contentRoot=".." partCompatibility="mcu.8051.efm8.ub1" boardCompatibility="brd5000a">
+  <property key="category" value="WGX"/>
+  
+  <folder includeAllFiles="true" includeAllFolders="true" name="inc" uri="inc"/>
+  <folder includeAllFiles="true" includeAllFolders="true" name="src" uri="src"/>
+  <sourceFolder>src</sourceFolder> 
+  <includePath uri="studio:/project/inc/"/>
+  <property key="initiallyOpenedResource" value="src/main.c"/>
+
+  
+  <includePath languageCompatibility="c asm" uri="studio:/project/inc/"/>
+  <toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_assembler" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="true"/>
+  <toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_linker" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="true"/>
+  <toolOption optionId="com.silabs.ide.si8051.keil.compiler.category.general.code" toolId="com.silabs.ide.si8051.keil.toolchain.compiler" value="com.silabs.ide.si8051.keil.compiler.category.general.code.large"/>
+  <toolOption optionId="com.silabs.ide.si8051.keil.linker.category.misc.extraflags" toolId="com.silabs.ide.si8051.keil.toolchain.linker" value="CLASSES(CODE(C:0x3C00-C:0xfbff)) SEGMENTS(?BL_START, ?PR?_WRITEBYTE?FLASH, ?BL_EXTRA, ?PR?*, ?CO?*)"/>
+  <toolOption optionId="com.silabs.ide.si8051.keil.linker.category.ordering.selection" toolId="com.silabs.ide.si8051.keil.toolchain.linker" value="./src/boot_startup.OBJ;./src/main.OBJ;./src/flash.OBJ;./src/boot_init.OBJ;./src/boot_UART0.OBJ;./src/hboot.OBJ"/>
+  <module id="com.silabs.sdk.si8051.shared">
+  <exclude pattern="src/SILABS_STARTUP.A51" />
+  </module>
+<toolOption toolId="com.silabs.ide.si8051.keil.toolchain.assembler" optionId="com.silabs.ide.si8051.keil.assembler.category.symbols.def">
+   <toolListOption value="SILABS_STARTUP=1"/>
+  </toolOption>
+
+</project>

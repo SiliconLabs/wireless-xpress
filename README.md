@@ -4,14 +4,19 @@ README
 ![alt text](http://pages.silabs.com/rs/634-SLU-379/images/BGX-transparent-450x450.png)
 
 
-This is the repository for holding the source code for the Silicon Labs BGX13
-mobile frameworks and applications.
+This is the repository for holding the source code for the Wireless Xpress 
+code bases, including Silicon Labs BGX13 mobile frameworks and applications, 
+and demos for AMW007 and BGX13.
 
 You can find more information about the BGX13 here
 https://www.silabs.com/products/wireless/bluetooth/xpress
 
+You can find more information about the AMW007 here
+https://www.silabs.com/products/wireless/wi-fi/xpress
+
 The official documentation is found here https://docs.silabs.com/bgx, or on
-Github at https://siliconlabs.github.io/wireless-xpress.
+Github at https://siliconlabs.github.io/wireless-xpress.  Documentation for 
+AMW007 can be found at https://docs.silabs.com/wgx.
 
 The source code repository is on Github at
 https://github.com/SiliconLabs/wireless-xpress
@@ -27,6 +32,7 @@ Repo Organization
 
 - `iOS` - iOS related source code and projects
 - `android` - Android related source code and projects
+- `products`  - Wireless Xpress demo code bases
 
 Support
 -------
