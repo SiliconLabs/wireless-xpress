@@ -8,7 +8,8 @@ Getting Started
 ---------------
 
 * Import the bootloader project into Simplicity Studio: Click `File >> Import` 
-in Simplicity Studio and select the SimplicityStudio folder in this project.
+in the Simplicity Studio IDE view and select the SimplicityStudio folder (or the
+`EFM8UB1_WGX_Bootloader.slsproj` file directly on some systems).
 
 * Build and download the project to the EFM8: Right click on the project in the
 Project Explorer and select `Run As >> Silicon Labs 8051 Program`.
