@@ -7,7 +7,6 @@ Hardware
 This guide uses the EFM8UB1 or EFM8UB2 Starter Kit connected to an 
 AMW007-E04 Starter Kit.
 
-
 Before you get started
 ----------------------
 
@@ -16,15 +15,19 @@ itself, before connecting it to an EFM8.  The AMW007 user guide
 is here: 
 https://www.silabs.com/documents/public/user-guides/ug370-amw007-user-guide.pdf
 
-
 Quick Start
 -----------
 
-1. Ensure you have the latest firmware for the AMW007:
-	> dms_activate SILABS-EFM8STK
-	> ota
+1. Ensure you have the latest firmware for the AMW007, by running the following
+commands on the serial console of the AMW007:
 
-2. Ensure Simplicity Studio has been updated to the latest EFM8 SDK.
+```bash
+dms_activate SILABS-EFM8STK
+ota
+```
+
+2. Ensure Simplicity Studio has been updated to the latest EFM8 SDK (8051 SDK
+v4.1.6 or greater).
 
 3. Install the WGX bootloader demo to the EFM8. This can be found by 
 selecting your device in Simplicity Studio and then selecting the 
@@ -41,7 +44,6 @@ The demo image can also display a listing of other EFM8 demo programs
 stored on the AMW007 and request one be loaded.  After running a demo, 
 a reset or power cycle will restore main demo application and you can 
 choose another demo image.
-
 
 Creating bootable images of EFM8 applications
 ---------------------------------------------
