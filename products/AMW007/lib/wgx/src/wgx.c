@@ -7,6 +7,7 @@
 #include "tick.h"
 #include "wgx_config.h"
 #include "wgx_commands.h"
+#include "sfr_page.h"
 
 #if WGX_USE_WATCHDOG == 1
 #include "wdt_0.h"
@@ -62,7 +63,7 @@ static SI_SEGMENT_VARIABLE (setup_state, uint8_t, SI_SEG_XDATA) = SETUP_IDLE;
 #define CONNECTED_SOFTAP  2
 static SI_SEGMENT_VARIABLE (connection_state, uint8_t, SI_SEG_XDATA) = DISCONNECTED;
 
-static SI_SEGMENT_VARIABLE (current_stream, wgx_stream_t, SI_SEG_XDATA) = -1;
+static SI_SEGMENT_VARIABLE (process_stream, wgx_stream_t, SI_SEG_XDATA) = -1;
 
 static SI_SEGMENT_VARIABLE (response_err, uint8_t, SI_SEG_XDATA);
 static SI_SEGMENT_VARIABLE (response_len, uint8_t, SI_SEG_XDATA);
@@ -102,6 +103,18 @@ static bool is_handle_open(uint8_t handle)
   }
 
   return false;
+}
+
+static void write_uart_buffer(SI_VARIABLE_SEGMENT_POINTER(buffer, uint8_t, EFM8PDL_UART1_RX_BUFTYPE),
+                              uint8_t length)
+{
+
+  DECL_PAGE;
+  SET_PAGE(UART1_SFR_PAGE);
+  
+  UART_writeBuffer(buffer, length);
+
+  RESTORE_PAGE;
 }
 
 static wgx_status_t send_cmd(char *cmd0, 
@@ -168,7 +181,7 @@ static wgx_status_t send_cmd(char *cmd0,
     
   // begin transmission
   tx_busy = true;
-  UART_writeBuffer(buffer, len);
+  write_uart_buffer(buffer, len);
 
   // wait while buffered command is sent
   while (tx_busy);
@@ -706,6 +719,8 @@ static void init_comms(void)
   WGX_Cmd(cmd_network_down, cmd_network_wlan, 0, 0);
   WGX_Cmd(cmd_network_down, cmd_network_softap, 0, 0);
   // WGX_Cmd(cmd_save, 0, 0, 0);
+
+  process_stream = -1;
 }
 
 static void reboot(void)
@@ -769,7 +784,33 @@ void WGX_Poll(void)
   uint8_t i;
   wgx_stream_state_t *stream_state;
 
-  if (comm_state == STATE_HEADER)
+  if (comm_state == STATE_IDLE)
+  {
+    // check if any streams need to be closed
+    if (process_stream < 0)
+    {
+      for (i = 0; i < WGX_MAX_STREAMS; i++)
+      {
+        stream_state = &streams[i];
+
+        if (stream_state->status == WGX_STATUS_CLOSE_ASYNC)
+        {
+          // try to close
+          u16toa(stream_state->handle, temp_buf);
+          if (send_cmd(cmd_stream_close, 0, temp_buf, 0) >= 0)
+          {
+            process_stream = i;  
+            stream_state->status = WGX_STATUS_CLOSING;
+
+            async_recv();
+          }          
+
+          break;
+        }
+      }
+    }
+  }
+  else if (comm_state == STATE_HEADER)
   {
     // check receiver status
     if ((WGX_BUFFER_SIZE - UART_rxBytesRemaining()) < RX_HEADER_LEN)
@@ -801,32 +842,10 @@ void WGX_Poll(void)
     // disable RX interrupt
     UART_enableRxFifoInt(false);
 
-    // check if any streams need to be closed
-    if (current_stream < 0)
+    // check if a stream needs to be serviced
+    if (process_stream >= 0)
     {
-      for (i = 0; i < WGX_MAX_STREAMS; i++)
-      {
-        stream_state = &streams[i];
-
-        if (stream_state->status == WGX_STATUS_CLOSE_ASYNC)
-        {
-          // try to close
-          u16toa(stream_state->handle, temp_buf);
-          if (send_cmd(cmd_stream_close, 0, temp_buf, 0) >= 0)
-          {
-            current_stream = i;  
-            stream_state->status = WGX_STATUS_CLOSING;
-
-            async_recv();
-          }          
-
-          break;
-        }
-      }
-    }
-    else
-    {
-      stream_state = &streams[current_stream];
+      stream_state = &streams[process_stream];
 
       if (stream_state->status == WGX_STATUS_CONNECTING)
       {
@@ -863,7 +882,7 @@ void WGX_Poll(void)
       }
     }
 
-    current_stream = -1;
+    process_stream = -1;
     comm_state = STATE_IDLE;
   }
   else if (comm_state == STATE_SLEEP)
@@ -1068,7 +1087,7 @@ wgx_status_t WGX_Client(wgx_protocol_t protocol,
     return WGX_STATUS_ALREADY_OPEN;
   }
 
-  if (busy() || not_connected() || (setup_state != SETUP_IDLE) || (current_stream >= 0))
+  if (busy() || not_connected() || (setup_state != SETUP_IDLE) || (process_stream >= 0))
   {
     return WGX_STATUS_BUSY;
   }
@@ -1134,7 +1153,7 @@ wgx_status_t WGX_Client(wgx_protocol_t protocol,
 
   async_recv();
 
-  current_stream = stream;
+  process_stream = stream;
 
   stream_state->type = stream_type;
   stream_state->status = WGX_STATUS_CONNECTING;
@@ -1404,7 +1423,7 @@ int16_t WGX_StreamWrite(wgx_stream_t stream,
 
   // write stream data
   tx_busy = true;
-  UART_writeBuffer(buffer, len);
+  write_uart_buffer(buffer, len);
   
   // wait while buffer is sent
   while (tx_busy);

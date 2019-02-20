@@ -1,0 +1,36 @@
+<project name="EFM8UB1__LongRangeDemo_BGX" contentRoot=".." partCompatibility="mcu.8051.efm8.ub1" boardCompatibility="brd5000a">
+  <property key="category" value="Demos"/>
+  <folder includeAllFiles="false" includeAllFolders="false" name="inc" uri="inc">
+    <folder includeAllFiles="false" includeAllFolders="false" name="config" uri="config">
+      <file name="efm8_config.h"/>
+      <file name="joystick_config.h"/>
+      <file name="memory_lcd_config.h"/>
+    </folder>
+	<file name="InitDevice.h"/>
+  </folder>
+  <folder includeAllFiles="false" includeAllFolders="false" name="src" uri="src">
+    <file name="InitDevice.c"/>
+	<file name="main.c"/>
+  </folder>
+  <folder includeAllFiles="true" includeAllFolders="false" name="utility" uri="utility"/>
+  <folder includeAllFiles="true" includeAllFolders="false" name="bgx" uri="bgx"/>
+  <file name="EFM8UB1_BGX.hwconf"/>
+  <file name="README.txt"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.spi0"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.uart1"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.pwr"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_bsp"/>
+  <module id="com.silabs.sdk.si8051.external.bsp.efm8_joystick"/>
+    <module id="com.silabs.sdk.si8051.external.bsp.efm8_memory_lcd"/>
+  <module id="com.silabs.sdk.si8051.external.efm8PeripheralDriver.pwr"/>
+  <includePath languageCompatibility="c" uri="studio:/project/inc/"/>
+  <includePath languageCompatibility="c" uri="studio:/project/inc/config/"/>
+  <includePath languageCompatibility="c" uri="studio:/project/inc/graphics/"/>
+  <module id="com.silabs.sdk.si8051.shared"/>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.assembler" optionId="com.silabs.ide.si8051.keil.assembler.category.symbols.def">
+   <toolListOption value="SILABS_STARTUP=1"/>
+  </toolOption>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_linker" value="true"/>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_assembler" value="true"/>
+  <toolOption optionId="com.silabs.ide.si8051.keil.linker.category.misc.extraflags" toolId="com.silabs.ide.si8051.keil.toolchain.linker" value="OVERLAY(?PR?STK_RX_INITRXBUFFER?STK_RX ! *, ?PR?UART1_ISR?UART_1 ! *, ?C_C51STARTUP ! *)"/>
+  </project>

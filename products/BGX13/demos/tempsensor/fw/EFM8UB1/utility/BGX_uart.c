@@ -1,10 +1,3 @@
-/*
- * BGX_uart.c
- *
- *  Created on: Jul 14, 2018
- *      Author: padorris
- */
-
 #include <STRING.h>
 #include <uart_1.h>
 #include <stdio.h>

@@ -16,4 +16,7 @@
                           SFRPAGE = savedPage;  /* restore saved SFR page */  \
                         } while(0)
 
+// SFR page used to access UART1 registers
+#define UART1_SFR_PAGE 0x20
+
 #endif

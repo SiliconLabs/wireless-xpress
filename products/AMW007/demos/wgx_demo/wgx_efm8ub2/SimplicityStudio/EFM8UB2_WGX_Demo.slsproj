@@ -35,7 +35,8 @@
 <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.assembler" optionId="com.silabs.ide.si8051.keil.assembler.category.symbols.def">
   <toolListOption value="SILABS_STARTUP=1"/>
 </toolOption>
-<toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.memory_model" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="com.silabs.ide.si8051.keil.toolchain.category.general.memory_model.large"/>
+<toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.memory_model" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="com.silabs.ide.si8051.keil.toolchain.category.general.memory_model.small"/>
 <toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_linker" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="true"/>
 <toolOption optionId="com.silabs.ide.si8051.keil.toolchain.category.general.extended_assembler" toolId="com.silabs.ide.si8051.keil.toolchain.exe.default" value="true"/>
+<toolOption toolId="com.silabs.ide.si8051.keil.toolchain.compiler" optionId="com.silabs.ide.si8051.keil.compiler.category.optimization.level" value="com.silabs.ide.si8051.keil.compiler.category.optimization.level.9"/>
 </project>

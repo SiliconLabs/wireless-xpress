@@ -1,9 +1,3 @@
-/**************************************************************************//**
- * (C) Copyright 2018 Silicon Labs Inc
- *
- * http://developer.silabs.com/legal/version/v11/Silicon_Labs_Software_License_Agreement.txt
- *****************************************************************************/
- 
 #ifndef __EFM8_CONFIG_H__
 #define __EFM8_CONFIG_H__
 
