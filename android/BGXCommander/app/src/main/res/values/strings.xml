@@ -44,7 +44,7 @@
     <string name="InstallUpdateText">Install Update…</string>
 
     <string name="VersionNumberText">Version Number</string>
-    <string name="tagText">tag</string>
+    <string name="descriptionText">description</string>
     <string name="placeholderText">placeholder</string>
 
     <string name="FirmwareIconDescription">Firmware Icon</string>
@@ -52,5 +52,15 @@
     <string name="VersionNameLabel">Version %1$s</string>
     <string name="FirmwareUpdateFailedLabel">Firmware Update Failed.</string>
     <string name="InstallingFirmwareFormatString">Installing Firmware %1$s</string>
+    <string name="security_update_description">A security update is available for this device.</string>
+    <string name="current_firmware_label_value">Current Firmware:</string>
+
+    <string name="update_indicator">Update Indicator</string>
+    <string name="current_firmware_version_placeholder">Unknown Version</string>
+    <string name="firmware_release_notes">Firmware Release Notes</string>
+    <string name="title_activity_firmware_release_notes">Firmware Release Notes</string>
+    <string name="help_item">Help</string>
+    <string name="help_url">https://www.silabs.com/bgx-docs</string>
+
 
 </resources>

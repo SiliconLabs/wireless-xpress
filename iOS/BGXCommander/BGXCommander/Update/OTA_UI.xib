@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,14 +20,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OTA_UI_Manager">
             <connections>
+                <outlet property="_ota_update_window" destination="Glk-Jn-4MK" id="vI1-sp-5NC"/>
                 <outlet property="cancelButton" destination="keJ-P7-1wR" id="7og-B0-CSu"/>
                 <outlet property="cancelButton2" destination="aam-Ra-LBc" id="8Fu-zd-QvB"/>
+                <outlet property="currentFirmwareVersionLabel" destination="qyt-dZ-YYU" id="K3b-2k-cna"/>
                 <outlet property="determined_progress" destination="66g-JY-5Vy" id="I1O-zx-Xsa"/>
+                <outlet property="firmwareDecoratorImageView" destination="r4Y-5B-DFd" id="nMX-PF-CcB"/>
                 <outlet property="firmwareQuerySpinner" destination="AYk-6u-Uuk" id="PJs-Om-Niu"/>
-                <outlet property="firmwareType" destination="lIU-Kz-oOM" id="5GR-bj-mDU"/>
                 <outlet property="firmwareVersions" destination="NvV-2r-6dV" id="Yeh-Vm-YQv"/>
                 <outlet property="installFirmwareButton" destination="meA-TO-Ubh" id="aIg-CJ-zLI"/>
-                <outlet property="ota_update_window" destination="Glk-Jn-4MK" id="rKx-VP-2BC"/>
                 <outlet property="spinner" destination="y8h-Jt-uUn" id="fzI-ae-jas"/>
                 <outlet property="updateLabel" destination="02V-sZ-aU7" id="jF9-Wy-0ds"/>
                 <outlet property="updateWindowLabel" destination="upy-6s-1li" id="2a6-Vy-CLD"/>
@@ -124,22 +125,28 @@
                     <rect key="frame" x="339" y="49" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lIU-Kz-oOM">
-                    <rect key="frame" x="8" y="88" width="359" height="30"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <segments>
-                        <segment title="Release"/>
-                        <segment title="All"/>
-                    </segments>
-                    <color key="tintColor" red="0.83137254900000002" green="0.4823529412" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <action selector="firmwareTypeAction:" destination="-1" eventType="valueChanged" id="F0S-yM-8oc"/>
-                    </connections>
-                </segmentedControl>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1.0.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qyt-dZ-YYU">
+                    <rect key="frame" x="187" y="82" width="172" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r4Y-5B-DFd">
+                    <rect key="frame" x="14" y="82" width="25" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Firmware:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oe4-Y6-IUk">
+                    <rect key="frame" x="40" y="82" width="137" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="fAI-x4-Db7"/>
-            <point key="canvasLocation" x="30.5" y="44.5"/>
+            <point key="canvasLocation" x="29.600000000000001" y="43.628185907046479"/>
         </window>
     </objects>
 </document>

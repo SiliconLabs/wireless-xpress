@@ -15,6 +15,8 @@
 
 #import "MMDrawerBarButtonItem.h"
 #import "AppDelegate.h"
+#import "DecoratedMMDrawerBarButtonItem.h"
+
 
 typedef enum {
     SEND_MODE
@@ -25,6 +27,8 @@ typedef enum {
     ,INVALID_MODE
 } TextMode;
 
+
+
 @interface DeviceDetailsViewController ()
 
 - (void)writeAttributedTextToConsole:(NSAttributedString *)attrs;
@@ -32,6 +36,12 @@ typedef enum {
 @property (nonatomic) TextMode textMode;
 
 @property (nonatomic, strong) NSArray * observerReferences;
+
+@property (nonatomic, strong) DecoratedMMDrawerBarButtonItem * mmDrawerBarButtonItem;
+
+@property (nonatomic, strong) bgx_dms * selected_device_bgx_dms;
+
+@property (nonatomic, strong) BGXDevice * deviceUnderObservation;
 
 @end
 
@@ -54,10 +64,10 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
     
     self.lineEndings = CRLF;
     
-    MMDrawerBarButtonItem * mmDrawerBarButtonItem = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(rightDrawerButtonPress:)];
+    self.mmDrawerBarButtonItem = [[DecoratedMMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(rightDrawerButtonPress:)];
     
-    [mmDrawerBarButtonItem setTintColor:[UIColor whiteColor]];
-    self.navigationItem.rightBarButtonItem = mmDrawerBarButtonItem;
+    [self.mmDrawerBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = self.mmDrawerBarButtonItem;
     
     [self.sendTextField becomeFirstResponder];
     self.textView.text = @"";
@@ -85,10 +95,16 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.deviceUnderObservation = [AppDelegate sharedAppDelegate].selectedDevice;
     
-    [[AppDelegate sharedAppDelegate].bgxManager addObserver:self forKeyPath:@"busMode" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+    [self.deviceUnderObservation addObserver:self forKeyPath:@"busMode" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
     
-    [[AppDelegate sharedAppDelegate].bgxManager addObserver:self forKeyPath:@"connectionState" options:NSKeyValueObservingOptionNew context:nil];
+    [self.deviceUnderObservation addObserver:self forKeyPath:@"deviceState" options:NSKeyValueObservingOptionNew context:nil];
+    
+    [self.deviceUnderObservation addObserver:self
+                                                     forKeyPath:@"bootloaderVersion"
+                                                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                                                        context:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceived:) name:DataReceivedNotificationName object:nil];
     
@@ -98,9 +114,12 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    self.selected_device_bgx_dms = nil;
     
-    [[AppDelegate sharedAppDelegate].bgxManager removeObserver:self forKeyPath:@"busMode"];
-    [[AppDelegate sharedAppDelegate].bgxManager removeObserver:self forKeyPath:@"connectionState"];
+    [self.deviceUnderObservation removeObserver:self forKeyPath:@"busMode"];
+    [self.deviceUnderObservation removeObserver:self forKeyPath:@"deviceState"];
+    [self.deviceUnderObservation removeObserver:self forKeyPath:@"bootloaderVersion"];
+
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DataReceivedNotificationName object:nil];
     
@@ -108,8 +127,9 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
         [[NSNotificationCenter defaultCenter] removeObserver:iRef];
     }
     
-    [[AppDelegate sharedAppDelegate].bgxManager disconnect];
-    
+    [[AppDelegate sharedAppDelegate].selectedDevice disconnect];
+    self.deviceUnderObservation = nil;
+
     [super viewWillDisappear:animated];
 }
 
@@ -126,7 +146,7 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
         
         NSAttributedString * attr = nil;
         
-        if ([[AppDelegate sharedAppDelegate].bgxManager canWrite]) {
+        if ([[AppDelegate sharedAppDelegate].selectedDevice canWrite]) {
             
             self.textMode = SEND_MODE;
             
@@ -155,7 +175,7 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
                     break;
             }
             
-            [[AppDelegate sharedAppDelegate].bgxManager writeString:string2Send];
+            [[AppDelegate sharedAppDelegate].selectedDevice writeString:string2Send];
             
             self.sendTextField.text = @"";
             
@@ -170,7 +190,7 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
             [self writeAttributedTextToConsole:attr];
         }
     } else if (REMOTE_COMMAND_MODE == self.busMode) {
-        [[AppDelegate sharedAppDelegate].bgxManager sendCommand:self.sendTextField.text args:@""];
+        [[AppDelegate sharedAppDelegate].selectedDevice sendCommand:self.sendTextField.text args:@""];
         
         self.sendTextField.text = @"";
     }
@@ -178,9 +198,9 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"connectionState"]) {
-        switch([AppDelegate sharedAppDelegate].bgxManager.connectionState) {
-            case DISCONNECTED:
+    if ([keyPath isEqualToString:@"deviceState"]) {
+        switch([AppDelegate sharedAppDelegate].selectedDevice.deviceState) {
+            case Disconnected:
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             default:
@@ -189,25 +209,28 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
         }
     } else if ([keyPath isEqualToString:@"busMode"]) {
         
-        if (self.busMode != [AppDelegate sharedAppDelegate].bgxManager.busMode) {
+        if (self.busMode != [AppDelegate sharedAppDelegate].selectedDevice.busMode) {
             
             self.textMode = BUS_MODE_CHANGE_MODE;
             
-            self.busMode = [AppDelegate sharedAppDelegate].bgxManager.busMode;
+            self.busMode = [AppDelegate sharedAppDelegate].selectedDevice.busMode;
             NSString * modeName = @"?";
             
-            switch([AppDelegate sharedAppDelegate].bgxManager.busMode) {
+            switch([AppDelegate sharedAppDelegate].selectedDevice.busMode) {
                 case STREAM_MODE:
                     modeName = @"STREAM_MODE";
                     self.busModeSelector.selectedSegmentIndex = 0;
+                    self.busModeSelector.enabled = YES;
                     break;
                 case LOCAL_COMMAND_MODE: /// This case ordinarily wouldn't happen while you are connected.
                     modeName = @"LOCAL_COMMAND_MODE";
                     self.busModeSelector.selectedSegmentIndex = 1;
+                    self.busModeSelector.enabled = NO;
                     break;
                 case REMOTE_COMMAND_MODE:
                     modeName = @"REMOTE_COMMAND_MODE";
                     self.busModeSelector.selectedSegmentIndex = 1;
+                    self.busModeSelector.enabled = YES;
                     break;
                 default:
                     modeName = @"SOME_OTHER_MODE";
@@ -221,6 +244,51 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
             [self writeAttributedTextToConsole: attributedBusMode];
             
         }
+    } else if ([keyPath isEqualToString:@"bootloaderVersion"]) {
+        NSInteger bootloaderVersion;
+        
+        NSScanner * myScanner = [[NSScanner alloc] initWithString:[AppDelegate sharedAppDelegate].selectedDevice.bootloaderVersion];
+        if ([myScanner scanInteger:&bootloaderVersion]) {
+            
+            if (bootloaderVersion < kBootloaderSecurityUpdateVersion) {
+                 [AppDelegate sharedAppDelegate].selectedDeviceDectorator = SecurityDecoration;
+                self.mmDrawerBarButtonItem.decorationState = SecurityDecoration;
+            } else {
+                self.selected_device_bgx_dms = [[bgx_dms alloc] initWithBGXUniqueDeviceID: [[AppDelegate sharedAppDelegate].selectedDevice device_unique_id]];
+                
+                
+                [self.selected_device_bgx_dms retrieveAvailableVersions:^(NSError * error, NSArray * availableVersions){
+                    
+                    if (!error) {
+                        dispatch_block_t myBlock = ^{
+                            Version * currentDeviceFWVersion = [[Version alloc] initWithString: [AppDelegate sharedAppDelegate].selectedDevice.firmwareRevision];
+                            for (NSDictionary * iVersion in availableVersions) {
+                                NSString * sversion = SafeType([iVersion objectForKey:@"version"] , [NSString class]);
+                                if (sversion) {
+                                    if (NSOrderedAscending == [currentDeviceFWVersion compare: [Version versionFromString:sversion]]) {
+
+                                        [AppDelegate sharedAppDelegate].selectedDeviceDectorator = UpdateDecoration;
+                                        self.mmDrawerBarButtonItem.decorationState = UpdateDecoration;
+                                    }
+                                }
+                            }
+                        };
+                        
+                        if ([NSThread isMainThread]) {
+                            (myBlock)();
+                        } else {
+                            dispatch_async(dispatch_get_main_queue(), myBlock);
+                        }
+
+                    }
+                    
+                }];
+                
+            }
+            
+            NSLog(@"Bootloader Version: %ld", (long) bootloaderVersion);
+
+        }
     }
 }
 
@@ -233,10 +301,10 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
     
     switch (self.busModeSelector.selectedSegmentIndex) {
         case kStreamMode:
-            [[AppDelegate sharedAppDelegate].bgxManager writeBusMode: STREAM_MODE];
+            [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode: STREAM_MODE];
             break;
         case kBusMode:
-            [[AppDelegate sharedAppDelegate].bgxManager writeBusMode: REMOTE_COMMAND_MODE];
+            [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode: REMOTE_COMMAND_MODE];
             break;
     }
 }

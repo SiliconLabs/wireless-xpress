@@ -13,9 +13,14 @@
 		443E9BCE207FE3AC00ED0A8A /* bgx_dms.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E9BCC207FE3AC00ED0A8A /* bgx_dms.m */; };
 		443E9BD12080F30000ED0A8A /* SafeType.h in Headers */ = {isa = PBXBuildFile; fileRef = 443E9BCF2080F30000ED0A8A /* SafeType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		443E9BD22080F30000ED0A8A /* SafeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E9BD02080F30000ED0A8A /* SafeType.m */; };
-		F4EFC7EC1E44076200D19263 /* BGXpress.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EFC7DE1E44076200D19263 /* BGXpress.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F4EFC7F71E44081100D19263 /* UUID.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EFC7F51E44081100D19263 /* UUID.h */; };
-		F4EFC7F81E44081100D19263 /* BGXpress.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EFC7F61E44081100D19263 /* BGXpress.m */; };
+		444B1F3C22036276001A56CD /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = 444B1F3A22036276001A56CD /* Version.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		444B1F3D22036276001A56CD /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B1F3B22036276001A56CD /* Version.m */; };
+		447284E2216FFC10002C7148 /* BGXpressScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 447284E0216FFC10002C7148 /* BGXpressScanner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		447284E3216FFC10002C7148 /* BGXpressScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 447284E1216FFC10002C7148 /* BGXpressScanner.m */; };
+		447284E6216FFDDC002C7148 /* BGXDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 447284E4216FFDDC002C7148 /* BGXDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		447284E7216FFDDC002C7148 /* BGXDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 447284E5216FFDDC002C7148 /* BGXDevice.m */; };
+		447284EB217108C1002C7148 /* BGXpress.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EFC7DE1E44076200D19263 /* BGXpress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4EFC7F71E44081100D19263 /* BGXUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EFC7F51E44081100D19263 /* BGXUUID.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,11 +30,16 @@
 		443E9BCC207FE3AC00ED0A8A /* bgx_dms.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bgx_dms.m; sourceTree = "<group>"; };
 		443E9BCF2080F30000ED0A8A /* SafeType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SafeType.h; sourceTree = "<group>"; };
 		443E9BD02080F30000ED0A8A /* SafeType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SafeType.m; sourceTree = "<group>"; };
+		444B1F3A22036276001A56CD /* Version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Version.h; path = ../../BGXpress/bgxpress/Version.h; sourceTree = "<group>"; };
+		444B1F3B22036276001A56CD /* Version.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = ../../BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
+		447284E0216FFC10002C7148 /* BGXpressScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGXpressScanner.h; sourceTree = "<group>"; };
+		447284E1216FFC10002C7148 /* BGXpressScanner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGXpressScanner.m; sourceTree = "<group>"; };
+		447284E4216FFDDC002C7148 /* BGXDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGXDevice.h; sourceTree = "<group>"; };
+		447284E5216FFDDC002C7148 /* BGXDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGXDevice.m; sourceTree = "<group>"; };
 		F4EFC7DB1E44076200D19263 /* BGXpress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BGXpress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EFC7DE1E44076200D19263 /* BGXpress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGXpress.h; sourceTree = "<group>"; };
 		F4EFC7DF1E44076200D19263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4EFC7F51E44081100D19263 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
-		F4EFC7F61E44081100D19263 /* BGXpress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGXpress.m; sourceTree = "<group>"; };
+		F4EFC7F51E44081100D19263 /* BGXUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGXUUID.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,14 +74,19 @@
 			children = (
 				443E9BCF2080F30000ED0A8A /* SafeType.h */,
 				443E9BD02080F30000ED0A8A /* SafeType.m */,
-				F4EFC7F51E44081100D19263 /* UUID.h */,
-				F4EFC7F61E44081100D19263 /* BGXpress.m */,
+				F4EFC7F51E44081100D19263 /* BGXUUID.h */,
 				F4EFC7DE1E44076200D19263 /* BGXpress.h */,
+				447284E0216FFC10002C7148 /* BGXpressScanner.h */,
+				447284E1216FFC10002C7148 /* BGXpressScanner.m */,
+				447284E4216FFDDC002C7148 /* BGXDevice.h */,
+				447284E5216FFDDC002C7148 /* BGXDevice.m */,
 				F4EFC7DF1E44076200D19263 /* Info.plist */,
 				441F33D72031D92000EA767C /* bgx_ota_update.h */,
 				441F33D82031D92000EA767C /* bgx_ota_update.m */,
 				443E9BCB207FE3AC00ED0A8A /* bgx_dms.h */,
 				443E9BCC207FE3AC00ED0A8A /* bgx_dms.m */,
+				444B1F3A22036276001A56CD /* Version.h */,
+				444B1F3B22036276001A56CD /* Version.m */,
 			);
 			path = BGXpress;
 			sourceTree = "<group>";
@@ -83,9 +98,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4EFC7EC1E44076200D19263 /* BGXpress.h in Headers */,
+				447284E6216FFDDC002C7148 /* BGXDevice.h in Headers */,
+				447284E2216FFC10002C7148 /* BGXpressScanner.h in Headers */,
 				441F33D92031D92000EA767C /* bgx_ota_update.h in Headers */,
-				F4EFC7F71E44081100D19263 /* UUID.h in Headers */,
+				F4EFC7F71E44081100D19263 /* BGXUUID.h in Headers */,
+				447284EB217108C1002C7148 /* BGXpress.h in Headers */,
+				444B1F3C22036276001A56CD /* Version.h in Headers */,
 				443E9BD12080F30000ED0A8A /* SafeType.h in Headers */,
 				443E9BCD207FE3AC00ED0A8A /* bgx_dms.h in Headers */,
 			);
@@ -128,7 +146,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "BGXpress" */;
+			buildConfigurationList = F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "bgxpress" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -161,7 +179,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				443E9BCE207FE3AC00ED0A8A /* bgx_dms.m in Sources */,
-				F4EFC7F81E44081100D19263 /* BGXpress.m in Sources */,
+				447284E7216FFDDC002C7148 /* BGXDevice.m in Sources */,
+				444B1F3D22036276001A56CD /* Version.m in Sources */,
+				447284E3216FFC10002C7148 /* BGXpressScanner.m in Sources */,
 				443E9BD22080F30000ED0A8A /* SafeType.m in Sources */,
 				441F33DA2031D92000EA767C /* bgx_ota_update.m in Sources */,
 			);
@@ -323,7 +343,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "BGXpress" */ = {
+		F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "bgxpress" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4EFC7ED1E44076200D19263 /* Debug */,

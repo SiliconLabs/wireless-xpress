@@ -15,4 +15,5 @@
 
 NSErrorDomain NSAppErrorDomain = @"App Specific Error";
 
+const NSInteger kBootloaderSecurityUpdateVersion = 1229;
 

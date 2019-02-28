@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -98,21 +99,38 @@ public class DeviceList extends AppCompatActivity {
                 switch(intent.getAction()) {
                     case BGXpressService.BGX_SCAN_DEVICE_DISCOVERED: {
                         HashMap<String, String> deviceRecord = (HashMap<String, String>) intent.getSerializableExtra("DeviceRecord");
-                        mScanResults.add(deviceRecord);
 
-                        Collections.sort(mScanResults, new Comparator<Map<String, String>>() {
-                            @Override
-                            public int compare(Map<String, String> leftRecord, Map<String, String> rightRecord) {
-                                String leftRssi = leftRecord.get("rssi");
-                                String rightRssi = rightRecord.get("rssi");
-                                return leftRssi.compareTo(rightRssi);
+                        // must now check if the scan resuls already contain this device because we are no longer clearing the scan results when scan starts
+                        // because in multi-connect scenario you wouldn't rediscover devices you are already connected to.
 
+                        String devAddr = deviceRecord.get("uuid");
+                        Boolean fContainsRecord = false;
+                        for (int i = 0; i < mScanResults.size(); ++i) {
+                            HashMap<String, String> iDeviceRecord = (HashMap<String, String>) mScanResults.get(i);
+                            String iDeviceAddr = iDeviceRecord.get("uuid");
+                            if (devAddr.equalsIgnoreCase(iDeviceAddr)) {
+                                fContainsRecord = true;
+                                break;
                             }
-                        });
 
-                        mDeviceListAdapter = new BGXDeviceListAdapter(getApplicationContext(), mScanResults);
-                        mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
+                        }
 
+                        if (!fContainsRecord) {
+                            mScanResults.add(deviceRecord);
+
+                            Collections.sort(mScanResults, new Comparator<Map<String, String>>() {
+                                @Override
+                                public int compare(Map<String, String> leftRecord, Map<String, String> rightRecord) {
+                                    String leftRssi = leftRecord.get("rssi");
+                                    String rightRssi = rightRecord.get("rssi");
+                                    return leftRssi.compareTo(rightRssi);
+
+                                }
+                            });
+
+                            mDeviceListAdapter = new BGXDeviceListAdapter(getApplicationContext(), mScanResults);
+                            mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
+                        }
                     }
                         break;
 
@@ -120,10 +138,12 @@ public class DeviceList extends AppCompatActivity {
                         BGX_CONNECTION_STATUS connectionStatusValue = (BGX_CONNECTION_STATUS)intent.getSerializableExtra("bgx-connection-status");
 
 
-                        if (CONNECTED == connectionStatusValue) {
+                        if ( BGX_CONNECTION_STATUS.CONNECTED == connectionStatusValue) {
                             BluetoothDevice btDevice = (BluetoothDevice) intent.getParcelableExtra("device");
                             Intent intent2 = new Intent(context, DeviceDetails.class);
                             intent2.putExtra("BLUETOOTH_DEVICE", btDevice);
+                            intent2.putExtra("DeviceName", btDevice.getName());
+                            intent2.putExtra("DeviceAddress", btDevice.getAddress());
                             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent2);
                         }
@@ -240,6 +260,15 @@ public class DeviceList extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 break;
+            case R.id.help_item: {
+
+                String sHelpURL = getString(R.string.help_url);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(sHelpURL));
+                browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(browserIntent);
+
+                return true;
+            }
         }
         return super.onOptionsItemSelected(mi);
     }
@@ -320,7 +349,7 @@ public class DeviceList extends AppCompatActivity {
     private void scanForDevices() {
         final Context myContext = this;
 
-        mScanResults.clear();
+//        mScanResults.clear();
 
         mDeviceListAdapter = new BGXDeviceListAdapter(getApplicationContext(), mScanResults);
         mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
@@ -334,6 +363,7 @@ public class DeviceList extends AppCompatActivity {
             }
         }, 0);
 
+        /*
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -342,6 +372,7 @@ public class DeviceList extends AppCompatActivity {
 
             }
         }, SCAN_PERIOD);
+        */
     }
 
 

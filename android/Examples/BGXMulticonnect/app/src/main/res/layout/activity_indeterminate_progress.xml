@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="170dp"
+    android:layout_height="156dp"
+    android:layout_gravity="center"
+    android:background="@drawable/progress_border"
+    android:orientation="vertical"
+    tools:context=".IndeterminateProgressActivity">
+
+    <ProgressBar
+        android:id="@+id/spinningProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/connectionStatusTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ConnectionInfo"
+        android:textColor="@color/black"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Cancel" />
+
+
+</LinearLayout>

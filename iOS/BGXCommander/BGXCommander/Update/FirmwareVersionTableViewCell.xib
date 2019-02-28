@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,39 +18,55 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="71.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="file size" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGr-Ch-PSm">
-                        <rect key="frame" x="268" y="46" width="91" height="15"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="file size" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGr-Ch-PSm">
+                        <rect key="frame" x="316" y="10" width="43" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="91t-fe-h51"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.57045853140000002" green="0.57047235969999999" blue="0.57046490910000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="firmware_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="H1A-ds-cFq">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="firmware_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="H1A-ds-cFq">
                         <rect key="frame" x="10" y="10" width="32" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="a7b-dx-uGu"/>
+                            <constraint firstAttribute="height" constant="32" id="drQ-OG-jFE"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Firmware Version" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ku-8k-cKN">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firmware Version" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ku-8k-cKN">
                         <rect key="frame" x="50" y="15" width="258" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYA-cV-ZVG">
-                        <rect key="frame" x="50" y="46" width="91" height="15"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="vYA-cV-ZVG">
+                        <rect key="frame" x="50" y="45" width="309" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.57045853140000002" green="0.57047235969999999" blue="0.57046490910000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="1ku-8k-cKN" firstAttribute="top" secondItem="jFB-Qh-Dfv" secondAttribute="topMargin" constant="4" id="411-ki-qtZ"/>
+                    <constraint firstItem="1ku-8k-cKN" firstAttribute="leading" secondItem="H1A-ds-cFq" secondAttribute="trailing" constant="8" id="Aco-px-6VX"/>
+                    <constraint firstItem="H1A-ds-cFq" firstAttribute="top" secondItem="jFB-Qh-Dfv" secondAttribute="top" constant="10" id="Dqa-k3-3mb"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="vYA-cV-ZVG" secondAttribute="bottom" constant="1" id="NK4-YH-qgg"/>
+                    <constraint firstItem="vYA-cV-ZVG" firstAttribute="top" secondItem="1ku-8k-cKN" secondAttribute="bottom" constant="9" id="RQ7-19-ZUw"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="1ku-8k-cKN" secondAttribute="trailing" constant="51" id="Rhg-kd-ci1"/>
+                    <constraint firstItem="vYA-cV-ZVG" firstAttribute="trailing" secondItem="jFB-Qh-Dfv" secondAttribute="trailingMargin" id="j4w-yD-Hj8"/>
+                    <constraint firstAttribute="trailing" secondItem="cGr-Ch-PSm" secondAttribute="trailing" constant="16" id="joX-2E-4VU"/>
+                    <constraint firstItem="vYA-cV-ZVG" firstAttribute="leading" secondItem="jFB-Qh-Dfv" secondAttribute="leadingMargin" constant="34" id="l9B-gk-D9c"/>
+                    <constraint firstItem="cGr-Ch-PSm" firstAttribute="top" secondItem="jFB-Qh-Dfv" secondAttribute="top" constant="10" id="odQ-qt-Ogd"/>
+                    <constraint firstItem="H1A-ds-cFq" firstAttribute="leading" secondItem="jFB-Qh-Dfv" secondAttribute="leading" constant="10" id="wGc-vp-HqL"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="firmwareFileSize" destination="cGr-Ch-PSm" id="2lA-ik-92C"/>
                 <outlet property="firmwareVersion" destination="1ku-8k-cKN" id="vXT-ap-AiC"/>
-                <outlet property="firmwareVersionTag" destination="vYA-cV-ZVG" id="7CR-ep-68u"/>
+                <outlet property="firmwareVersionDescription" destination="vYA-cV-ZVG" id="7CR-ep-68u"/>
             </connections>
-            <point key="canvasLocation" x="6.5" y="-100"/>
+            <point key="canvasLocation" x="5.5999999999999996" y="-100.74962518740631"/>
         </tableViewCell>
     </objects>
     <resources>

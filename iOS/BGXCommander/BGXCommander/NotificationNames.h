@@ -29,6 +29,7 @@ extern NSString * CancelTutorialNotificationName;
 /** Sent when a BGX device is connected, or if you are running
     in the simulator when the user selects one of the fake devices.
     Used to control segue into the device details view controller.
+    Object is a BGXDevice.
  */
 extern NSString * ConnectedToDeviceNotitficationName;
 
@@ -37,6 +38,11 @@ extern NSString * ConnectedToDeviceNotitficationName;
     and posts this notification with the data as the object for the notification.
  */
 extern NSString * DataReceivedNotificationName;
+
+/** Sent to indicate that the bus mode of the BGX Device has changed.
+ The object attached to the notification is the BGXDevice which changed.
+ */
+extern NSString * BusModChangedNotificationName;
 
 /** Posted by the AppDelegate to indicate that the list of BGXDevices has changed.
  */
@@ -77,12 +83,16 @@ extern NSString * UpdateCompleteNotificationName;
 
 /** Posted to indicate the connection state of the BGXpressManager has changed.
  */
-extern NSString * ConnectionStateChangedNotificationName;
+extern NSString * DeviceStateChangedNotificationName;
 
 extern NSString * CleanupUpdateUIObserverNotificationName;
 
 /** Posted to indicate that the user selected the about item in the drawer menu.
  */
 extern NSString * AboutItemNotificationName;
+
+/** Posted to indicate that the user pressed the Done button on the firmware release notes view controller.
+ */
+extern NSString * FirmwareReleaseNotesShouldCloseNotificationName;
 
 #endif /* NotificationNames_h */

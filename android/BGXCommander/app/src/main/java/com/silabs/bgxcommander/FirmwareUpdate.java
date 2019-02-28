@@ -17,8 +17,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ import android.widget.RadioButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,34 +44,26 @@ import static android.view.View.GONE;
 import static com.silabs.bgxcommander.BGXpressService.ACTION_OTA_WITH_IMAGE;
 import static com.silabs.bgxcommander.BGXpressService.DMS_VERSION_LOADED;
 import static com.silabs.bgxcommander.BGXpressService.OTA_STATUS_MESSAGE;
-import static com.silabs.bgxcommander.TagsToShow.FW_VERS_ALL;
-import static com.silabs.bgxcommander.TagsToShow.FW_VERS_RELEASE;
-
-enum TagsToShow {
-    FW_VERS_RELEASE,
-    FW_VERS_ALL
-}
-
+import static com.silabs.bgxcommander.DeviceDetails.kBootloaderSecurityVersion;
 
 
 public class FirmwareUpdate extends AppCompatActivity implements SelectionChangedListener {
 
-    TagsToShow mTagsToShow;
-
-    private RadioButton mReleaseRB;
-    private RadioButton mAllRB;
-
     private Button installUpdateButton;
+
+    private Button firmwareReleaseNotesButton;
 
     private BroadcastReceiver mFirmwareUpdateBroadcastReceiver;
 
     private RecyclerView mDMSVersionsRecyclerView;
-    private RecyclerView.Adapter mDMSVersionsAdapter;
+    //private RecyclerView.Adapter mDMSVersionsAdapter;
 
     private JSONArray mDMSVersions;
 
     private BGXpressService.BGXPartID mBGXPartID;
     private String mBGXDeviceID;
+    private String mBGXDeviceAddress;
+    private String mBGXDeviceName;
 
     private ConstraintLayout selectionContents;
     private ConstraintLayout updateContents;
@@ -79,9 +75,13 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
     private TextView upperProgressMessageTextView;
     private TextView lowerProgressMessageTextView;
+
+    private TextView currentVersionTextView;
+
     private ProgressBar progressBar;
 
     private Handler mHandler;
+    private ImageView decorationImageView;
 
     @Override
     public void selectionDidChange(int position, JSONObject selectedObject) {
@@ -104,8 +104,8 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
         mBGXPartID = (BGXpressService.BGXPartID) getIntent().getSerializableExtra("bgx-part-id");
         mBGXDeviceID = getIntent().getStringExtra("bgx-device-id");
-
-        mTagsToShow = FW_VERS_RELEASE;
+        mBGXDeviceAddress = getIntent().getStringExtra("DeviceAddress");
+        mBGXDeviceName = getIntent().getStringExtra("DeviceName");
 
         mDMSVersionsRecyclerView = (RecyclerView)findViewById(R.id.dmsVersionsRecyclerView);
         mDMSVersionsRecyclerView.setHasFixedSize(true);
@@ -120,55 +120,32 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
         intent.setClass(this, BGXpressService.class);
 
         intent.putExtra("bgx-part-id", mBGXPartID);
+        intent.putExtra("DeviceAddress", mBGXDeviceAddress);
 
         startService(intent);
 
         selectionContents = findViewById(R.id.firmware_update_1);
         updateContents = findViewById(R.id.firmware_update_2);
 
+
+        currentVersionTextView = findViewById(R.id.currentVersionTextView);
+
         installUpdateButton = (Button)findViewById(R.id.installUpdateBtn);
         installUpdateButton.setEnabled(false);
 
+        firmwareReleaseNotesButton = (Button)findViewById(R.id.firmwareReleaseNotes);
+
         CancelUpdateButton = (Button)findViewById(R.id.CancelUpdateButton);
-
-        mReleaseRB = (RadioButton)findViewById(R.id.releaseRB);
-        mAllRB = (RadioButton) findViewById(R.id.allRB);
-
+        decorationImageView = (ImageView)findViewById(R.id.decorationImageView);
 
         upperProgressMessageTextView = (TextView) findViewById(R.id.upperProgressMessage);
         lowerProgressMessageTextView = (TextView) findViewById(R.id.lowerProgressMessage);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        mReleaseRB.setEnabled(true);
-        mAllRB.setEnabled(true);
-        mReleaseRB.setChecked(true);
-
-        mReleaseRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mAllRB.setChecked(false);
-                    mTagsToShow = FW_VERS_RELEASE;
-                    setDMSVersions(mDMSVersions);
-                }
-            }
-        });
-
-        mAllRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mReleaseRB.setChecked(false);
-                    mTagsToShow = FW_VERS_ALL;
-
-                    setDMSVersions(mDMSVersions);
-                }
-            }
-        });
 
         android.support.v7.app.ActionBar ab = getSupportActionBar();
         if (null != ab) {
-            ab.setTitle("BGX Firmware Update");
+            ab.setTitle("Firmware Available for " + mBGXDeviceName);
         }
 
 
@@ -201,6 +178,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                         Intent updateIntent = new Intent(mContext, BGXpressService.class);
                         updateIntent.setAction(ACTION_OTA_WITH_IMAGE);
                         updateIntent.putExtra("image_path", versionFilePath);
+                        updateIntent.putExtra("DeviceAddress", mBGXDeviceAddress);
                         startService(updateIntent);
                     }
                         break;
@@ -242,6 +220,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
                     intent.putExtra("bgx-part-id", mBGXPartID);
                     intent.putExtra("dms-version", mSelectedObject.getString("version"));
+                    intent.putExtra("DeviceAddress", mBGXDeviceAddress);
 
                     intent.setClass(mContext, BGXpressService.class);
                     startService(intent);
@@ -257,13 +236,26 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
                 Intent intent = new Intent();
                 intent.setAction(BGXpressService.ACTION_OTA_CANCEL);
+                intent.putExtra("DeviceAddress", mBGXDeviceAddress);
                 intent.setClass(mContext, BGXpressService.class);
                 startService(intent);
 
-//                selectionContents.setVisibility(View.VISIBLE);
-//                updateContents.setVisibility(GONE);
             }
         });
+
+        firmwareReleaseNotesButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("bgx_dbg", "Show the firmware release notes now.");
+
+                Intent intent2 = new Intent(mContext, FirmwareReleaseNotesActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent2);
+
+            }
+        });
+
+        currentVersionTextView.setText( BGXpressService.getFirmwareRevision(mBGXDeviceAddress) );
     }
 
 
@@ -281,20 +273,33 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
         try {
             JSONArray tmpArray = null;
 
-            if (mTagsToShow == FW_VERS_RELEASE) {
+            tmpArray = new JSONArray(mDMSVersions.toString());
+            Log.d("bgx_dbg", "Just set the tmpArray to the total list: " + tmpArray.toString());
 
-                tmpArray = new JSONArray();
-                for (int i = 0; i < mDMSVersions.length(); ++i) {
-                    JSONObject rec = (JSONObject) mDMSVersions.get(i);
-                    String recTag = (String) rec.get("tag");
-                    if (recTag.equals("release")) {
-                        tmpArray.put(rec);
+            // check and assign decorator if needed.
+            Integer booloaderVersion = BGXpressService.getBGXBootloaderVersion(mBGXDeviceAddress);
+
+            if (booloaderVersion != -1 && booloaderVersion < kBootloaderSecurityVersion) {
+
+
+                Drawable security_decoration = ContextCompat.getDrawable(mContext, R.drawable.security_decoration);
+                decorationImageView.setBackground(security_decoration);
+            } else {
+
+                Version vFirmwareRevision = new Version(BGXpressService.getFirmwareRevision(mBGXDeviceAddress));
+
+                for (int i = 0; i < tmpArray.length(); ++i) {
+                    JSONObject rec = (JSONObject) tmpArray.get(i);
+                    String sversion = (String) rec.get("version");
+                    Version iversion = new Version(sversion);
+
+                    if (iversion.compareTo(vFirmwareRevision) > 0) {
+                        // newer version available.
+                        Drawable update_decoration = ContextCompat.getDrawable(mContext, R.drawable.update_decoration);
+                        decorationImageView.setBackground( update_decoration);
+                        break;
                     }
                 }
-            } else {
-                tmpArray = new JSONArray(mDMSVersions.toString());
-                Log.d("bgx_dbg", "Just set the tmpArray to the total list: " + tmpArray.toString());
-
             }
 
             mDMSVersionsRecyclerView.swapAdapter(new DMSVersionsAdapter(this, this, tmpArray), true);
@@ -362,6 +367,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 finish();
                 Intent intent = new Intent();
                 intent.setAction(BGXpressService.ACTION_BGX_DISCONNECT);
+                intent.putExtra("DeviceAddress", mBGXDeviceAddress);
                 intent.setClass(mContext, BGXpressService.class);
                 startService(intent);
             }

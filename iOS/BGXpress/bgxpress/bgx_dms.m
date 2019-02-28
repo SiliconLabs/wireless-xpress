@@ -21,7 +21,7 @@ NSString * kBGX13SPartID      = @"080447D0";
 NSString * kBGX13PPartID      = @"4C892A6A";
 NSString * kBGX13InvalidPartID= @"BAD1DEAD";
 
-
+typedef void (^VersionsListCompletionBlock)(NSError *, NSArray *);
 
 const char * kDMSServer = "bgx13.zentri.com";
 
@@ -55,6 +55,10 @@ NSString * NewBGXFirmwareListNotificationName = @"NewBGXFirmwareListNotification
 @property (nonatomic) BOOL dms_reachable;
 
 @property (nonatomic, strong) NSTimer * reachabilityListRefreshTimer;
+
+@property (nonatomic, strong) NSTimer * versionsListTimeout;
+@property (nonatomic, strong) VersionsListCompletionBlock versionsListCompletion;
+
 @end
 
 static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void * info)
@@ -79,6 +83,8 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
   self = [super init];
   if (self) {
 
+      self.versionsListCompletion = nil;
+      
     self.reachabilityRef = nil;
       
     self.bgx_unique_device_id = bgx_unique_device_id;
@@ -133,6 +139,13 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
   if (self.dms_reachable != v) {
     self.dms_reachable = v;
+      
+      if (self.versionsListCompletion) {
+          [self.versionsListTimeout invalidate];
+          self.versionsListTimeout = nil;
+          [self retrieveAvailableVersions:self.versionsListCompletion];
+      }
+      
     [[NSNotificationCenter defaultCenter] postNotificationName:DMSServerReachabilityChangedNotificationName object:[NSNumber numberWithBool: flags & kSCNetworkReachabilityFlagsReachable ? YES : NO] ];
   }
 }
@@ -176,7 +189,19 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
   if (!self.dms_reachable) {
     if (completionBlock) {
-      (completionBlock)([NSError errorWithDomain:NSNetServicesErrorDomain code:-1 userInfo:@{@"description" : @"DMS Server Unreachable."}], nil);
+        [self loadFirmwareList];
+        
+        if (self.firmwareList) {
+            (completionBlock)(nil, self.firmwareList);
+        } else {
+            
+            self.versionsListCompletion = completionBlock;
+            self.versionsListTimeout = [NSTimer scheduledTimerWithTimeInterval:30.0 repeats:NO block:^(NSTimer * timer){
+                self.versionsListTimeout = nil;
+                (completionBlock)([NSError errorWithDomain:NSNetServicesErrorDomain code:-1 userInfo:@{@"description" : @"DMS Server Unreachable."}], nil);
+                self.versionsListCompletion = nil;
+            }];
+        }
     }
     return;
   }

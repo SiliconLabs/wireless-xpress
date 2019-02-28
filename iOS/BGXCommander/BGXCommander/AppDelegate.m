@@ -36,8 +36,8 @@ const NSTimeInterval kScanInterval = 8.0f;
   self.bluetoothReady = NO;
   self.isScanning = NO;
   self.lastScan = [NSDate distantPast];
-  self.bgxManager = [[BGXpressManager alloc] init];
-  self.bgxManager.delegate = self;
+  self.bgxScanner = [[BGXpressScanner alloc] init];
+  self.bgxScanner.delegate = self;
 
 
   UIStoryboard * drawerStoryboard = [UIStoryboard storyboardWithName:@"Drawer" bundle:nil];
@@ -261,12 +261,12 @@ const NSTimeInterval kScanInterval = 8.0f;
 
     if (!self.isScanning) {
       [[NSNotificationCenter defaultCenter] postNotificationName:DeviceListChangedNotificationName object: @[]];
-      [self.bgxManager startScan];
+      [self.bgxScanner startScan];
       self.isScanning = YES;
       fResult = YES;
       self.lastScan = [NSDate date];
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kScanInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.bgxManager stopScan];
+        [self.bgxScanner stopScan];
         self.isScanning = NO;
       });
     }
@@ -276,11 +276,11 @@ const NSTimeInterval kScanInterval = 8.0f;
 
 #pragma mark BGXpressDelegate
 
-- (void)deviceDiscovered
+- (void)deviceDiscovered:(BGXDevice *)device
 {
-  NSMutableArray * devices = [self.bgxManager.devicesDiscovered mutableCopy];
-   [devices sortUsingComparator:^(NSDictionary * d1, NSDictionary * d2){
-    return [[d2 objectForKey:@"RSSI"] compare: [d1 objectForKey:@"RSSI"]];
+  NSMutableArray * devices = [self.bgxScanner.devicesDiscovered mutableCopy];
+   [devices sortUsingComparator:^(BGXDevice * d1, BGXDevice * d2){
+    return [d2.rssi compare: d1.rssi];
   }];
 
   [[NSNotificationCenter defaultCenter] postNotificationName:DeviceListChangedNotificationName object: devices];
@@ -328,50 +328,50 @@ const NSTimeInterval kScanInterval = 8.0f;
 //  NSLog(@"%@", stateName);
 }
 
-- (void)connectionStateChanged:(ConnectionState)newConnectionState
+- (void)stateChangedForDevice:(BGXDevice *)device
 {
-  NSString * cs = nil;
-  [[NSNotificationCenter defaultCenter] postNotificationName:ConnectionStateChangedNotificationName object: [NSNumber numberWithInt:newConnectionState]];
-
-  switch (newConnectionState) {
-    case DISCONNECTED:
-      cs = @"DISCONNECTED";
-      [[NSNotificationCenter defaultCenter] postNotificationName:DisableFirmwareUpdateNotificationName object:nil];
-      break;
-    case SCANNING:
-      cs = @"SCANNING";
-      break;
-    case CONNECTING:
-      cs = @"CONNECTING";
-      break;
-    case INTERROGATING:
-      cs = @"INTERROGATING";
-      break;
-    case CONNECTED:
-      cs = @"CONNECTED";
-      break;
-    case DISCONNECTING:
-      cs = @"DISCONNECTING";
-      break;
-    case CONNECTIONTIMEDOUT:
-      cs = @"CONNECTIONTIMEDOUT";
-      break;
-  }
-  NSLog(@"New ConnectionState %@", cs);
-  if (CONNECTED == newConnectionState) {
-      // you are now connected.
-    [[NSNotificationCenter defaultCenter] postNotificationName:EnableFirmwareUpdateNotificationName object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ConnectedToDeviceNotitficationName object:nil];
-  }
+    NSAssert(self.selectedDevice == device, @"Unexpected device notification.");
+    NSString * cs = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:DeviceStateChangedNotificationName object: [NSNumber numberWithInt:device.deviceState]];
+    
+    switch (device.deviceState) {
+        case Disconnected:
+            cs = @"DISCONNECTED";
+            [[NSNotificationCenter defaultCenter] postNotificationName:DisableFirmwareUpdateNotificationName object:nil];
+            self.selectedDevice.deviceDelegate = nil;
+            self.selectedDevice.serialDelegate = nil;
+            self.selectedDevice = nil;
+            self.selectedDeviceDectorator = NoDecoration;
+            break;
+        case Connecting:
+            cs = @"CONNECTING";
+            break;
+        case Interrogating:
+            cs = @"INTERROGATING";
+            break;
+        case Connected:
+            cs = @"CONNECTED";
+            break;
+        case Disconnecting:
+            cs = @"DISCONNECTING";
+            break;
+    }
+    NSLog(@"New DeviceState %@", cs);
+    if (Connected == device.deviceState) {
+        // you are now connected.
+        [[NSNotificationCenter defaultCenter] postNotificationName:EnableFirmwareUpdateNotificationName object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ConnectedToDeviceNotitficationName object:device];
+    }
 }
 
-- (void)dataRead:(NSData *) newData
+- (void)dataRead:(NSData *) newData forDevice:(nonnull BGXDevice *)device
 {
     // this is called when data is received.
-  [[NSNotificationCenter defaultCenter] postNotificationName:DataReceivedNotificationName object:newData];
+    NSLog(@"%@", [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:DataReceivedNotificationName object:newData];
 }
 
-- (void)busModeChanged:(BusMode)newBusMode {
+- (void)busModeChanged:(BusMode)newBusMode forDevice:(BGXDevice *)device {
   char * nameNewBusMode = "?";
   switch (newBusMode) {
     case UNKNOWN_MODE:
@@ -391,14 +391,16 @@ const NSTimeInterval kScanInterval = 8.0f;
       break;
   }
   NSLog(@"NewBusMode: %s", nameNewBusMode);
+    
+  [[NSNotificationCenter defaultCenter] postNotificationName:BusModChangedNotificationName object:device];
 }
 
 
 
 
 
-- (void)dataWritten {
-  NSLog(@"dataWritten");
+- (void)dataWrittenForDevice:(BGXDevice *)device {
+  NSLog(@"dataWritten for %@", [device description]);
 }
 
 #pragma mark - Firmware Update
@@ -433,22 +435,22 @@ const NSTimeInterval kScanInterval = 8.0f;
     ConnectionStateChange notifications and we only care about the one that tells
     us we are disconnected.
    */
-  NSAssert(CONNECTED == self.bgxManager.connectionState, @"Invalid state.");
+  NSAssert(Connected == self.selectedDevice.deviceState, @"Invalid state.");
 
-  NSString * deviceUniqueID = [self.bgxManager device_unique_id];
+  NSString * deviceUniqueID = [self.selectedDevice device_unique_id];
 
   [self.drawerController closeDrawerAnimated:YES completion:^(BOOL finished){
 
     self.temporary_observer_reference = [[NSNotificationCenter defaultCenter]
-                                         addObserverForName:ConnectionStateChangedNotificationName
+                                         addObserverForName:DeviceStateChangedNotificationName
                                          object:nil
                                          queue:nil
                                          usingBlock:^(NSNotification * n){
 
                                            NSNumber * num = [n object];
-                                           ConnectionState cs = (ConnectionState) [num intValue];
+                                           DeviceState cs = (DeviceState) [num intValue];
 
-                                           if (DISCONNECTED == cs) {
+                                           if (Disconnected == cs) {
 
                                              [[NSNotificationCenter defaultCenter] postNotificationName:CleanupUpdateUIObserverNotificationName object:nil];
 
@@ -461,7 +463,8 @@ const NSTimeInterval kScanInterval = 8.0f;
 
                                              [self.update_ui_manager showUpdateUI];
 
-                                             CBPeripheral * device2Update = [DevicesTableViewController devicesTableViewController].selectedPeripheral;
+                                               BGXDevice * device2Update = [AppDelegate sharedAppDelegate].selectedDevice;
+//                                             CBPeripheral * device2Update = [DevicesTableViewController devicesTableViewController].selectedPeripheral;
 
                                              @try {
                                              [self.update_ui_manager updateFirmwareForBGXDevice:device2Update withDeviceID:deviceUniqueID];
@@ -483,7 +486,7 @@ const NSTimeInterval kScanInterval = 8.0f;
                                          }];
 
 
-    [[AppDelegate sharedAppDelegate].bgxManager disconnect];
+    [[AppDelegate sharedAppDelegate].selectedDevice disconnect];
 
   }];
 }

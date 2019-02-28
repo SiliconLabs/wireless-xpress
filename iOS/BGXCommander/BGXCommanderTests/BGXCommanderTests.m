@@ -12,6 +12,7 @@
  */
 
 #import <XCTest/XCTest.h>
+#import "Version.h"
 
 @interface BGXCommanderTests : XCTestCase
 
@@ -29,9 +30,21 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)testVersion {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    Version * v1 = [Version versionFromString:@"1.0.927.2"];
+    Version * v2 = [Version versionFromString:@"1.1.1229.0"];
+    Version * v3 = [Version versionFromString:@"1.0.880.1"];
+    Version * v4 = [Version versionFromString:@"1.1.1229.0"];
+
+    XCTAssertTrue(NSOrderedSame == [v4 compare:v2]);
+    XCTAssertTrue(NSOrderedAscending == [v3 compare:v2]);
+    XCTAssertTrue(NSOrderedAscending == [v1 compare:v2]);
+    XCTAssertTrue(NSOrderedDescending == [v1 compare:v3]);
+    XCTAssertTrue(NSOrderedDescending == [v2 compare:v1]);
+
 }
 
 - (void)testPerformanceExample {

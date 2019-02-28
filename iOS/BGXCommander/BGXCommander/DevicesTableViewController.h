@@ -17,7 +17,7 @@
 
 @interface DevicesTableViewController : PullRefreshTableViewController
 
-@property (strong, nonatomic) CBPeripheral * selectedPeripheral;
+//@property (strong, nonatomic) CBPeripheral * selectedPeripheral;
 
 + (instancetype)devicesTableViewController;
 

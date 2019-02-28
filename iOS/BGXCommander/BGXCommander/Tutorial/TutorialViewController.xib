@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -109,7 +109,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="   BGXpressManager ">
+                        <fragment content="   BGXpressScanner ">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -211,7 +211,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content=" method will be called on your BGXpressDelegate. To access the devices, use the ">
+                        <fragment content=" method will be called on your BGXpressScanDelegate. To access the devices, use the ">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <font key="NSFont" metaFont="cellTitle"/>
@@ -238,7 +238,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content=" property of the BGXpressManager object.">
+                        <fragment content=" property of the BGXpressScanner object.">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <font key="NSFont" metaFont="cellTitle"/>
@@ -324,14 +324,14 @@ Cg
                     <integer key="value" value="40"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="25.5" y="52.5"/>
+            <point key="canvasLocation" x="24.800000000000001" y="51.724137931034484"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="w8I-84-xWw" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aFp-8S-hD7">
-                    <rect key="frame" x="79" y="234" width="251" height="159"/>
+                    <rect key="frame" x="79" y="234" width="280" height="159"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText">
@@ -427,7 +427,7 @@ Cg
                             </attributes>
                         </fragment>
                         <fragment>
-                            <string key="content"> property of the BGXpressManager object. This property is an array of NSDictionary objects containing information about each device.</string>
+                            <string key="content"> property of the BGXpressScanner object. This property is an array of NSDictionary objects containing information about each device.</string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <font key="NSFont" metaFont="cellTitle"/>
@@ -532,7 +532,7 @@ Cg
                     <integer key="value" value="80"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="504.5" y="52.5"/>
+            <point key="canvasLocation" x="503.19999999999999" y="51.724137931034484"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="fVg-6E-Toh" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -591,7 +591,7 @@ Cg
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="75E-nz-dGh">
-                    <rect key="frame" x="33" y="289" width="314" height="159"/>
+                    <rect key="frame" x="16" y="231" width="359" height="217"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText">
@@ -609,7 +609,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="BGXpressDelegate">
+                        <fragment content="BGXDeviceDelegate">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -637,7 +637,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="connectionStateChanged:">
+                        <fragment content="stateChangedForDevice. Then examine the deviceState property of the BGXDevice object:">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -712,7 +712,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content=")connectionStateChanged:(">
+                        <fragment content=")stateChangedForDevice:(">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -726,7 +726,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="ConnectionState">
+                        <fragment content="BGXDevice *">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.247" green="0.43099999999999999" blue="0.45600000000000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -740,7 +740,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content=")newConnectionState">
+                        <fragment content=")device">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -842,7 +842,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="CONNECTED">
+                        <fragment content="Connected">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.14899999999999999" green="0.27800000000000002" blue="0.29399999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -856,7 +856,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content=" == newConnectionState) {">
+                        <fragment content=" == device.deviceState) {">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1008,7 +1008,7 @@ Cg
                     <integer key="value" value="0"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="1473.5" y="52.5"/>
+            <point key="canvasLocation" x="1472.8" y="51.724137931034484"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="X1L-cT-36l" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1029,13 +1029,42 @@ Cg
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJJ-KF-tB6">
-                    <rect key="frame" x="33" y="184" width="326" height="192"/>
+                    <rect key="frame" x="33" y="184" width="335" height="192"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText">
+                        <fragment content="  BGX operates in three bus modes: Stream, ">
+                            <attributes>
+                                <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <font key="NSFont" metaFont="cellTitle"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" defaultTabInterval="13.6" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                    <tabStops>
+                                        <textTab alignment="left" location="13.600000381469727">
+                                            <options/>
+                                        </textTab>
+                                    </tabStops>
+                                </paragraphStyle>
+                            </attributes>
+                        </fragment>
                         <fragment>
-                            <string key="content">  BGX operates in three bus modes: Command, Stream,
-   and Remove Command. To set the mode:</string>
+                            <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                            <attributes>
+                                <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="12" name="HelveticaNeue"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" defaultTabInterval="13.6" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                    <tabStops>
+                                        <textTab alignment="left" location="13.600000381469727">
+                                            <options/>
+                                        </textTab>
+                                    </tabStops>
+                                </paragraphStyle>
+                            </attributes>
+                        </fragment>
+                        <fragment content="  Local Command, and Remote Command. To set the mode:">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1210,7 +1239,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="bgxpressManager">
+                        <fragment content="bgxDevice">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.247" green="0.43099999999999999" blue="0.45600000000000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1741,7 +1770,7 @@ Cg
                             <string key="content">   In stream mode, you can write data using one of
    the following:
 
-   BGXpressManager methods</string>
+   BGXDevice methods</string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1961,7 +1990,7 @@ Cg
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzI-sx-OrR">
-                    <rect key="frame" x="33" y="367" width="326" height="109"/>
+                    <rect key="frame" x="33" y="340" width="295" height="136"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText">
@@ -1981,7 +2010,7 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content="dataRead:">
+                        <fragment content="dataRead:forDevice:">
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1996,9 +2025,9 @@ Cg
                             </attributes>
                         </fragment>
                         <fragment>
-                            <string key="content"> method.
+                            <string key="content"> method in your BGXSerialDelegate.
 
-    BGXpressDelegate methods</string>
+    BGXSerialDelegate methods</string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -2071,7 +2100,8 @@ Cg
                             </attributes>
                         </fragment>
                         <fragment>
-                            <string key="content"> *) newData;
+                            <string key="content"> *)newData
+         forDevice:(BGXDevice *)device;
 </string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -2135,7 +2165,7 @@ Cg
                     <integer key="value" value="70"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="2898.5" y="52.5"/>
+            <point key="canvasLocation" x="2898.4000000000001" y="51.724137931034484"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="1YB-Eg-KEN" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -2156,14 +2186,14 @@ Cg
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIc-uv-MKV">
-                    <rect key="frame" x="33" y="367" width="326" height="103"/>
+                    <rect key="frame" x="33" y="367" width="307" height="103"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText">
                         <fragment>
                             <string key="content">    To use the command API:
 
-    BGXpressManager method</string>
+    BGXDevice method</string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -2235,7 +2265,9 @@ Cg
                                 </paragraphStyle>
                             </attributes>
                         </fragment>
-                        <fragment content=" *)command args:(">
+                        <fragment>
+                            <string key="content"> *)command
+                 args:(</string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -2328,7 +2360,7 @@ Cg
                     <integer key="value" value="90"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="3370.5" y="52.5"/>
+            <point key="canvasLocation" x="3370.4000000000001" y="51.724137931034484"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="y6P-6I-lSk" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -2356,7 +2388,7 @@ Cg
                         <fragment>
                             <string key="content">    To disconnect 
 
-    BGXpressManager method</string>
+    BGXDevice method</string>
                             <attributes>
                                 <color key="NSBackgroundColor" red="0.90195999999999998" green="0.90195999999999998" blue="0.90195999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>

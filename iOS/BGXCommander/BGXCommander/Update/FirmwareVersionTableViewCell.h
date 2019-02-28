@@ -16,11 +16,10 @@
 @interface FirmwareVersionTableViewCell : UITableViewCell
 
 
-+ (CGFloat)cellHeight;
 + (FirmwareVersionTableViewCell *)newFirmwareVersionTableCell;
 
 @property (nonatomic, weak) IBOutlet UILabel * firmwareVersion;
-@property (nonatomic, weak) IBOutlet UILabel * firmwareVersionTag;
+@property (nonatomic, weak) IBOutlet UILabel * firmwareVersionDescription;
 @property (nonatomic, weak) IBOutlet UILabel * firmwareFileSize;
 
 

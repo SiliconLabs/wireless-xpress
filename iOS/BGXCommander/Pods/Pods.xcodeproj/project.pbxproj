@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -72,13 +72,13 @@
 		442AADF7E17E5BBCDC4BD50044002C4B /* Pods-BGXCommanderTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommanderTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		4896A379BB006D8A995061F7EDE4CDDD /* Pods-BGXCommanderTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BGXCommanderTests-resources.sh"; sourceTree = "<group>"; };
 		4C0A19F9706D7066D1CD11BCF170AD28 /* Pods-BGXCommanderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4EC1062CAE61F3E049CC1E18FEC46B5E /* libPods-BGXCommanderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGXCommanderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EC1062CAE61F3E049CC1E18FEC46B5E /* libPods-BGXCommanderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommanderTests.a"; path = "libPods-BGXCommanderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D1507F551F2EE3B76B6BC76736FC6C /* Pods-BGXCommander-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BGXCommander-resources.sh"; sourceTree = "<group>"; };
 		524BF556D741435A3C47A7829A3EC78C /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+MMDrawerController.m"; path = "MMDrawerController/UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
 		53033F60C2F4063E5504E8691D5FE0F6 /* PullToRefresh.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullToRefresh.xcconfig; sourceTree = "<group>"; };
 		5BB582D55A025047DFC12EC2D741A907 /* MMDrawerController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController-prefix.pch"; sourceTree = "<group>"; };
 		61007F8D255E982FEB142BF67477E487 /* Pods-BGXCommander-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommander-acknowledgements.markdown"; sourceTree = "<group>"; };
-		7535A81F8F7963D3F9A7F3078FB84317 /* libPods-BGXCommanderUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGXCommanderUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7535A81F8F7963D3F9A7F3078FB84317 /* libPods-BGXCommanderUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommanderUITests.a"; path = "libPods-BGXCommanderUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76521362FDAA40D3B97A15D32031D377 /* Pods-BGXCommanderUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommanderUITests-dummy.m"; sourceTree = "<group>"; };
 		82C4C592CEE007A8D07CB2599B40AA74 /* Pods-BGXCommanderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderTests.release.xcconfig"; sourceTree = "<group>"; };
 		87B8A073B4D86294650DCC22C8688EF8 /* Pods-BGXCommanderTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommanderTests-dummy.m"; sourceTree = "<group>"; };
@@ -86,12 +86,12 @@
 		8D23C69E956CFFA8D95F2693722DC943 /* Pods-BGXCommander.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommander.debug.xcconfig"; sourceTree = "<group>"; };
 		8E95FCD62BA43B3939EE6F0228F91571 /* MMDrawerVisualState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerVisualState.m; path = MMDrawerController/MMDrawerVisualState.m; sourceTree = "<group>"; };
 		8F7B92D995FF11B8662926C9E5D35CD8 /* Pods-BGXCommander-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommander-acknowledgements.plist"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		98D23BCC835CEF58DD8FE30632422F2D /* Pods-BGXCommanderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderUITests.release.xcconfig"; sourceTree = "<group>"; };
-		A49286F53E667E0D6ECCD4A0F3344E0E /* libMMDrawerController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMMDrawerController.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49286F53E667E0D6ECCD4A0F3344E0E /* libMMDrawerController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libMMDrawerController.a; path = libMMDrawerController.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5FD2308A6E0F0AA89A615D9EB62A61D /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
-		A6E37EF021870240712F46053A8C13A0 /* libPods-BGXCommander.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGXCommander.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A8951423C75333AE1F67F8E256B4CD0E /* libPullToRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPullToRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6E37EF021870240712F46053A8C13A0 /* libPods-BGXCommander.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommander.a"; path = "libPods-BGXCommander.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8951423C75333AE1F67F8E256B4CD0E /* libPullToRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libPullToRefresh.a; path = libPullToRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5EF012B82632C497F43645071C330C7 /* Pods-BGXCommander.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommander.release.xcconfig"; sourceTree = "<group>"; };
 		B670318ECC5B684CACD7337F068D6145 /* PullToRefresh-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PullToRefresh-prefix.pch"; sourceTree = "<group>"; };
 		C100618A5739AE18AAD36AC57254D47D /* arrow.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
@@ -245,6 +245,7 @@
 				4D4AA35DDA087B88E7A25BDE23939C02 /* Subclass */,
 				3DCB7172D3679F514631F8F23BA91A13 /* Support Files */,
 			);
+			name = MMDrawerController;
 			path = MMDrawerController;
 			sourceTree = "<group>";
 		};
@@ -267,6 +268,7 @@
 				78479921B96BDCB5724C25C2ADFDB975 /* Resources */,
 				3F624E4F9D03A0A6CD65B2F7B446C8FE /* Support Files */,
 			);
+			name = PullToRefresh;
 			path = PullToRefresh;
 			sourceTree = "<group>";
 		};
@@ -460,7 +462,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 0930;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -653,7 +655,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/PullToRefresh/PullToRefresh-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -699,7 +701,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/MMDrawerController/MMDrawerController-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -743,7 +745,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/MMDrawerController/MMDrawerController-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -768,7 +770,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/PullToRefresh/PullToRefresh-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";

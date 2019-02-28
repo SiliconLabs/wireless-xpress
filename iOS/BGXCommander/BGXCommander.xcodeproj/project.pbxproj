@@ -30,6 +30,11 @@
 		441F33D6202E539300EA767C /* OTA_UI.xib in Resources */ = {isa = PBXBuildFile; fileRef = 441F33D5202E539300EA767C /* OTA_UI.xib */; };
 		4424E972200E69CD006968D3 /* overlay_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 4424E971200E69CD006968D3 /* overlay_close.png */; };
 		4448A88A202D0BAE0071694F /* BGXpress.framework in Embed bgxpress framework */ = {isa = PBXBuildFile; fileRef = 4448A885202D0B9E0071694F /* BGXpress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		444B1F3922021353001A56CD /* DecoratedMMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B1F3822021353001A56CD /* DecoratedMMDrawerBarButtonItem.m */; };
+		444B1F4022036F20001A56CD /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B1F3E22036F20001A56CD /* Version.m */; };
+		444B1F73220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 444B1F72220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib */; };
+		444B1F7B220C91CB001A56CD /* FirmwareReleaseNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B1F79220C91CB001A56CD /* FirmwareReleaseNotesViewController.m */; };
+		444B1F7C220C91CB001A56CD /* FirmwareReleaseNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 444B1F7A220C91CB001A56CD /* FirmwareReleaseNotesViewController.xib */; };
 		446D31921FFD630A001E48D3 /* Caveat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 446D318E1FFD4902001E48D3 /* Caveat-Bold.ttf */; };
 		446D31931FFD630A001E48D3 /* Caveat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 446D318D1FFD4901001E48D3 /* Caveat-Regular.ttf */; };
 		446D31971FFD680D001E48D3 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 446D31961FFD680D001E48D3 /* close.png */; };
@@ -86,13 +91,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = F4EFC7DB1E44076200D19263;
 			remoteInfo = bgxpress;
-		};
-		4448A886202D0B9E0071694F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F4EFC7E41E44076200D19263;
-			remoteInfo = bgxpressTests;
 		};
 		4448A888202D0BA80071694F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -161,6 +159,14 @@
 		441F33D5202E539300EA767C /* OTA_UI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OTA_UI.xib; sourceTree = "<group>"; };
 		4424E971200E69CD006968D3 /* overlay_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_close.png; sourceTree = "<group>"; };
 		4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bgxpress.xcodeproj; path = ../bgxpress/bgxpress.xcodeproj; sourceTree = "<group>"; };
+		444B1F3722021353001A56CD /* DecoratedMMDrawerBarButtonItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DecoratedMMDrawerBarButtonItem.h; sourceTree = "<group>"; };
+		444B1F3822021353001A56CD /* DecoratedMMDrawerBarButtonItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecoratedMMDrawerBarButtonItem.m; sourceTree = "<group>"; };
+		444B1F3E22036F20001A56CD /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = ../../BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
+		444B1F3F22036F20001A56CD /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Version.h; path = ../../BGXpress/bgxpress/Version.h; sourceTree = "<group>"; };
+		444B1F72220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirmwareReleaseNotesTableViewCell.xib; sourceTree = "<group>"; };
+		444B1F78220C91CB001A56CD /* FirmwareReleaseNotesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirmwareReleaseNotesViewController.h; sourceTree = "<group>"; };
+		444B1F79220C91CB001A56CD /* FirmwareReleaseNotesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirmwareReleaseNotesViewController.m; sourceTree = "<group>"; };
+		444B1F7A220C91CB001A56CD /* FirmwareReleaseNotesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirmwareReleaseNotesViewController.xib; sourceTree = "<group>"; };
 		446D318D1FFD4901001E48D3 /* Caveat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Caveat-Regular.ttf"; sourceTree = "<group>"; };
 		446D318E1FFD4902001E48D3 /* Caveat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Caveat-Bold.ttf"; sourceTree = "<group>"; };
 		446D31961FFD680D001E48D3 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = BGXCommander/close.png; sourceTree = SOURCE_ROOT; };
@@ -268,9 +274,13 @@
 				441F33D2202E537C00EA767C /* OTA_UI_Manager.h */,
 				441F33D3202E537C00EA767C /* OTA_UI_Manager.m */,
 				441F33D5202E539300EA767C /* OTA_UI.xib */,
+				444B1F72220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib */,
 				4472181220C8714C004FC35D /* FirmwareVersionTableViewCell.xib */,
 				4472181420C87228004FC35D /* FirmwareVersionTableViewCell.h */,
 				4472181520C87228004FC35D /* FirmwareVersionTableViewCell.m */,
+				444B1F78220C91CB001A56CD /* FirmwareReleaseNotesViewController.h */,
+				444B1F79220C91CB001A56CD /* FirmwareReleaseNotesViewController.m */,
+				444B1F7A220C91CB001A56CD /* FirmwareReleaseNotesViewController.xib */,
 			);
 			path = Update;
 			sourceTree = "<group>";
@@ -279,7 +289,6 @@
 			isa = PBXGroup;
 			children = (
 				4448A885202D0B9E0071694F /* BGXpress.framework */,
-				4448A887202D0B9E0071694F /* BGXpressTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -338,6 +347,8 @@
 				44E436AB1FFC38BD00665178 /* NotificationNames.m */,
 				4405F7BE2007BC25006FA3B9 /* AutoScrollTextView.h */,
 				4405F7BF2007BC25006FA3B9 /* AutoScrollTextView.m */,
+				444B1F3722021353001A56CD /* DecoratedMMDrawerBarButtonItem.h */,
+				444B1F3822021353001A56CD /* DecoratedMMDrawerBarButtonItem.m */,
 				44FAAC752008043000072591 /* Tutorial */,
 			);
 			path = BGXCommander;
@@ -346,6 +357,8 @@
 		44B3DB4A1FE8660500A081DF /* BGXCommanderTests */ = {
 			isa = PBXGroup;
 			children = (
+				444B1F3F22036F20001A56CD /* Version.h */,
+				444B1F3E22036F20001A56CD /* Version.m */,
 				44B3DB4B1FE8660500A081DF /* BGXCommanderTests.m */,
 				44B3DB4D1FE8660500A081DF /* Info.plist */,
 			);
@@ -577,13 +590,6 @@
 			remoteRef = 4448A884202D0B9E0071694F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4448A887202D0B9E0071694F /* BGXpressTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = BGXpressTests.xctest;
-			remoteRef = 4448A886202D0B9E0071694F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -609,6 +615,7 @@
 				44B3DB671FE96DED00A081DF /* Drawer.storyboard in Resources */,
 				440BA446200032FC00C3946B /* bgx_tut11.rtf in Resources */,
 				440BA4301FFFF8A800C3946B /* bgx_tut3.rtf in Resources */,
+				444B1F7C220C91CB001A56CD /* FirmwareReleaseNotesViewController.xib in Resources */,
 				44B3DB7B1FEAD97D00A081DF /* OpenSans-LightItalic.ttf in Resources */,
 				440BA447200032FC00C3946B /* bgx_tut12.rtf in Resources */,
 				44E436A21FEC089000665178 /* Gear.png in Resources */,
@@ -637,6 +644,7 @@
 				4424E972200E69CD006968D3 /* overlay_close.png in Resources */,
 				440BA437200020B000C3946B /* bgx_tut5.rtf in Resources */,
 				441F33D6202E539300EA767C /* OTA_UI.xib in Resources */,
+				444B1F73220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib in Resources */,
 				440BA43D2000300E00C3946B /* bgx_tut7.rtf in Resources */,
 				44FAAC772008072000072591 /* arrow1.png in Resources */,
 				44B3DB7A1FEAD97D00A081DF /* OpenSans-ExtraBold.ttf in Resources */,
@@ -759,10 +767,12 @@
 				441F33D4202E537C00EA767C /* OTA_UI_Manager.m in Sources */,
 				4419AB821FEC06580044AC72 /* DeviceDetailsViewController.m in Sources */,
 				4419AB7D1FEB1E2C0044AC72 /* DeviceTableViewCell.m in Sources */,
+				444B1F7B220C91CB001A56CD /* FirmwareReleaseNotesViewController.m in Sources */,
 				44E436B91FFD2FC400665178 /* SpotlightView.m in Sources */,
 				44B3DB341FE8660500A081DF /* AppDelegate.m in Sources */,
 				440BA4331FFFFDAB00C3946B /* NSAttributedString+AttributedStringFromRTF.m in Sources */,
 				4405F7C02007BC25006FA3B9 /* AutoScrollTextView.m in Sources */,
+				444B1F3922021353001A56CD /* DecoratedMMDrawerBarButtonItem.m in Sources */,
 				44E436AC1FFC38BD00665178 /* NotificationNames.m in Sources */,
 				44FAAC722008042900072591 /* TutorialViewController.m in Sources */,
 				4472181620C87228004FC35D /* FirmwareVersionTableViewCell.m in Sources */,
@@ -775,6 +785,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				444B1F4022036F20001A56CD /* Version.m in Sources */,
 				44B3DB4C1FE8660500A081DF /* BGXCommanderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

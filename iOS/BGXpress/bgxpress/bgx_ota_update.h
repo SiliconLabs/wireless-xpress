@@ -91,9 +91,9 @@ typedef NS_ENUM(int, ota_operation_t) {
  * Initialize a BGX OTA instance for the specified BGX peripheral.
  *
  * @param peripheral The BGX Peripheral to update.
- * @param bgx_device_id description of the param
+ * @param bgx_device_id the unique id of thd device you are updating.
  *
- * @returns An instance of BGX_OTA_Updater.
+ * @returns An initialized instance of BGX_OTA_Updater.
  */
 - (id)initWithPeripheral:(CBPeripheral *)peripheral bgx_device_uuid:(NSString *)bgx_device_id;
 

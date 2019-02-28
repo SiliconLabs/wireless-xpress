@@ -22,8 +22,7 @@
   NSArray * loadedObjects = [[NSBundle mainBundle] loadNibNamed:@"FirmwareVersionTableViewCell" owner:nil options:nil];
 
   for (id iobj in loadedObjects) {
-    NSLog(@"%@", [iobj description]);
-
+    
     if ([iobj isKindOfClass:[FirmwareVersionTableViewCell class]]) {
       fvtv = (FirmwareVersionTableViewCell *)iobj;
       break;
@@ -44,9 +43,5 @@
     // Configure the view for the selected state
 }
 
-+ (CGFloat)cellHeight
-{
-  return 72.0f;
-}
 
 @end

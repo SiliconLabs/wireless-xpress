@@ -15,26 +15,25 @@
 #import "OTA_UI_Manager.h"
 #import "AppDelegate.h"
 #import "FirmwareVersionTableViewCell.h"
-
-typedef NS_ENUM(NSUInteger, FirmwareType) {
-  ReleaseFirmwareType,
-  AllFirmwareType
-};
+#import "FirmwareReleaseNotesViewController.h"
 
 @interface OTA_UI_Manager()
 
 @property (nonatomic, strong) BGX_OTA_Updater * bgx_ota_updater;
 @property (nonatomic, strong) NSArray * dms_firmware_versions;
-@property (nonatomic, strong) NSArray * release_dms_firmware_versions;
 
 @property (nonatomic, strong) bgx_dms * bgx_dms_manager;
 
 @property (nonatomic, strong) NSString * bgx_part_id;
+
+@property (nonatomic, strong) Version * currentFirmwareVersion;
+@property (atomic) NSInteger bootloaderVersion;
+
 @end
 
 enum {
-  DMS_Section =0,
-
+  Release_Notes_Section=0,
+  DMS_Section =1,
 };
 
 @implementation OTA_UI_Manager
@@ -46,13 +45,24 @@ enum {
   if (self) {
     waitingForReachable = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:DMSServerReachabilityChangedNotificationName object:nil];
+      
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeFirmwareReleaseNotes:) name:FirmwareReleaseNotesShouldCloseNotificationName object:nil];
   }
   return self;
 }
 
 - (void)dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DMSServerReachabilityChangedNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FirmwareReleaseNotesShouldCloseNotificationName object:nil];
+}
+
+- (void)awakeFromNib
+{
+    firmwareVersions.rowHeight = UITableViewAutomaticDimension;
+    firmwareVersions.estimatedRowHeight = 72.0f;
+    
+    [super awakeFromNib];
 }
 
 - (IBAction)cancelAction:(id)sender
@@ -73,12 +83,6 @@ enum {
   [_ota_update_window resignKeyWindow];
 }
 
-- (IBAction)firmwareTypeAction:(id)sender
-{
-  [firmwareVersions reloadData];
-
-  installFirmwareButton.enabled = firmwareVersions.indexPathForSelectedRow ? YES : NO;
-}
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
@@ -93,18 +97,25 @@ enum {
           return;
         }
 
-        NSMutableArray * ma = [NSMutableArray arrayWithCapacity:versions.count];
-        for (NSDictionary * irec in versions ) {
-          NSString * stag = SafeType([irec objectForKey:@"tag"], [NSString class]);
-          if ([stag isEqualToString:@"release"]) {
+    dispatch_async(dispatch_get_main_queue(), ^{
 
-            [ma addObject:irec];
-          }
-        }
-        self.release_dms_firmware_versions = [ma copy];
         self.dms_firmware_versions = versions;
 
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.bootloaderVersion < kBootloaderSecurityUpdateVersion) {
+            // show the security decorator.
+            self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Security_Decoration"];
+        } else  {
+            for (NSDictionary * iVerRec in  versions) {
+                NSString * sversion = SafeType([iVerRec objectForKey:@"version"], [NSString class]);
+                Version * iVersion = [Version versionFromString:sversion];
+                if (NSOrderedAscending == [self.currentFirmwareVersion compare:iVersion]) {
+                  self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Update_Decoration"];
+                  break;
+                }
+            }
+        }
+          
+        
             [self->firmwareVersions reloadData];
 
             [self->firmwareQuerySpinner stopAnimating];
@@ -115,11 +126,27 @@ enum {
   }
 }
 
-- (void)updateFirmwareForBGXDevice:(CBPeripheral *)peripheral2Update withDeviceID:(NSString *)bgx_unique_device_id
+- (void)updateFirmwareForBGXDevice:(BGXDevice *)device2Update withDeviceID:(NSString *)bgx_unique_device_id
 {
   waitingForReachable = YES;
+
+    currentFirmwareVersionLabel.text = device2Update.firmwareRevision;
+    
+    self.currentFirmwareVersion = [Version versionFromString:device2Update.firmwareRevision];
+    
+    NSInteger myBootloaderVersion;
+    
+    if ([[NSScanner scannerWithString:device2Update.bootloaderVersion] scanInteger:&myBootloaderVersion]) {
+        self.bootloaderVersion = myBootloaderVersion;
+    }
+    
+    self.firmwareDecoratorImageView.image = nil;
+    
+    
+    
+    
   self.bgx_part_id = [bgx_dms bgxPartInfoForDeviceID:bgx_unique_device_id];
-  self.bgx_ota_updater = [[BGX_OTA_Updater alloc] initWithPeripheral:peripheral2Update bgx_device_uuid:bgx_unique_device_id];
+  self.bgx_ota_updater = [[BGX_OTA_Updater alloc] initWithPeripheral: device2Update.peripheral bgx_device_uuid:bgx_unique_device_id];
   [self setupUpdaterObservation];
 
   self.bgx_dms_manager = [[bgx_dms alloc] initWithBGXUniqueDeviceID:bgx_unique_device_id];
@@ -226,77 +253,89 @@ enum {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-  return 1;
+  return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case DMS_Section:
+            return 18.0f;
+        case Release_Notes_Section:
+            return 0;
+            break;
+    }
+    return 0;
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  switch (section) {
-    case DMS_Section:
-      return @"Available firmware";
-      break;
-    default:
-      return @"Other";
-      break;
-  }
-  return @"?";
+    switch (section) {
+        case DMS_Section:
+            return @"Available firmware";
+            break;
+        case Release_Notes_Section:
+            return @"";
+            break;
+        default:
+            return @"Other";
+            break;
+    }
+    return @"?";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  switch(section) {
-    case DMS_Section:
-      switch(firmwareType.selectedSegmentIndex) {
-        case ReleaseFirmwareType:
-          return self.release_dms_firmware_versions ? self.release_dms_firmware_versions.count : 0;
-          break;
-        case AllFirmwareType:
-          return self.dms_firmware_versions ? self.dms_firmware_versions.count : 0;
-          break;
-      }
-
-      break;
-
-    default:
-      return 0;
-      break;
-  }
-  return 0;
+    switch(section) {
+        case DMS_Section:
+            return self.dms_firmware_versions ? self.dms_firmware_versions.count : 0;
+            break;
+            
+        case Release_Notes_Section:
+            return 1;
+            break;
+        default:
+            return 0;
+            break;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  FirmwareVersionTableViewCell * cell = SafeType([tableView dequeueReusableCellWithIdentifier:@"firmwareVersionCell"], [FirmwareVersionTableViewCell class]);
-
-  if (!cell) {
-    cell = [FirmwareVersionTableViewCell newFirmwareVersionTableCell];
-  }
-
-  if (DMS_Section == indexPath.section) {
-
-    NSDictionary * iDict;
-
-    switch(firmwareType.selectedSegmentIndex) {
-      case ReleaseFirmwareType:
-        iDict = SafeType([self.release_dms_firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
-        break;
-      case AllFirmwareType:
+    UITableViewCell * cell = nil;
+    
+    if (DMS_Section == indexPath.section) {
+        FirmwareVersionTableViewCell * fwcell = SafeType([tableView dequeueReusableCellWithIdentifier:@"firmwareVersionCell"], [FirmwareVersionTableViewCell class]);
+        
+        if (!fwcell) {
+            fwcell = [FirmwareVersionTableViewCell newFirmwareVersionTableCell];
+        }
+        
+        
+        
+        NSDictionary * iDict;
+        
         iDict = SafeType([self.dms_firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
-        break;
+        
+        fwcell.firmwareVersion.text = SafeType([iDict objectForKey:@"version"], [NSString class]);
+        fwcell.firmwareVersionDescription.text = SafeType([iDict objectForKey:@"description"], [NSString class]);
+        
+        NSNumber * numSize = SafeType([iDict objectForKey:@"size"], [NSNumber class]);
+        
+        fwcell.firmwareFileSize.text = [NSString stringWithFormat:@"%d bytes", (int) numSize.integerValue];
+        cell = fwcell;
+        
+    } else if (Release_Notes_Section == indexPath.section) {
+        
+        cell = SafeType([tableView dequeueReusableCellWithIdentifier:@"firmwareReleaseNotesCell"], [UITableViewCell class]);
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"firmwareReleaseNotesCell"];
+        }
+        
+        cell.textLabel.text = NSLocalizedString(@"Show Firmware Release Notes", @"Label");
+        
     }
-
-    cell.firmwareVersion.text = SafeType([iDict objectForKey:@"version"], [NSString class]);
-    cell.firmwareVersionTag.text = SafeType([iDict objectForKey:@"tag"], [NSString class]);
-
-    NSNumber * numSize = SafeType([iDict objectForKey:@"size"], [NSNumber class]);
-
-    cell.firmwareFileSize.text = [NSString stringWithFormat:@"%d bytes", (int) numSize.integerValue];
-
-  } else {
-    // invalid section.
-    cell.firmwareVersion.text = @"Invalid version - error";
-    cell.firmwareVersionTag.text = @"Invalid section/row";
-  }
 
 
   return cell;
@@ -314,7 +353,7 @@ enum {
   cancelButton.hidden = YES;
 
   [determined_progress setHidden: YES];
-  firmwareType.hidden = YES;
+  
   
   [spinner setHidden:NO];
   updateWindowLabel.text = @"Firmware Update";
@@ -328,14 +367,7 @@ enum {
     case DMS_Section:
     {
 
-      switch (firmwareType.selectedSegmentIndex) {
-        case ReleaseFirmwareType:
-          iDict = SafeType([self.release_dms_firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
-          break;
-        case AllFirmwareType:
-          iDict = SafeType([self.dms_firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
-          break;
-      }
+      iDict = SafeType([self.dms_firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
 
       NSString * sversion = SafeType([iDict objectForKey:@"version"], [NSString class]);
       local_file = [[NSString stringWithFormat:@"~/Documents/%@/%@.gbl", self.bgx_part_id, sversion] stringByExpandingTildeInPath];
@@ -346,12 +378,7 @@ enum {
   }
 
   if (iDict) {
-    NSString * tag = SafeType([iDict objectForKey:@"tag"], [NSString class]);
-    if ([tag isEqualToString:@"release"]) {
-      version = @"release";
-    } else {
       version = SafeType([iDict objectForKey:@"version"], [NSString class]);
-    }
   }
 
   if (local_file && ![[NSFileManager defaultManager] fileExistsAtPath:local_file]) {
@@ -392,12 +419,27 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  installFirmwareButton.enabled = tableView.indexPathForSelectedRow ? YES : NO;
+  installFirmwareButton.enabled = (DMS_Section == tableView.indexPathForSelectedRow.section) ? YES : NO;
+    
+    if (Release_Notes_Section == tableView.indexPathForSelectedRow.section) {
+        // open the release notes
+        
+        firmwareReleaseNotesWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+        
+        firmwareReleaseNotesWindow.rootViewController = [[FirmwareReleaseNotesViewController alloc] initWithNibName:@"FirmwareReleaseNotesViewController" bundle:nil];
+
+        [firmwareReleaseNotesWindow makeKeyAndVisible];
+    }
+    
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)closeFirmwareReleaseNotes:(NSNotification *)n
 {
-  return [FirmwareVersionTableViewCell cellHeight];
+    [firmwareReleaseNotesWindow setHidden:YES];
+    [firmwareReleaseNotesWindow resignKeyWindow];
+    
+    firmwareReleaseNotesWindow = nil;
 }
 
 @end

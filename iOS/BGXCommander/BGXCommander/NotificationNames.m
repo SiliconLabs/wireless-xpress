@@ -21,6 +21,8 @@ NSString * ConnectedToDeviceNotitficationName = @"ConnectedToDeviceNotitfication
 
 NSString * DataReceivedNotificationName = @"DataReceivedNotificationName";
 
+NSString * BusModChangedNotificationName = @"BusModChangedNotificationName";
+
 NSString * DeviceListChangedNotificationName = @"DeviceListChangedNotificationName";
 
 NSString * TutorialConnectToDeviceNotificationName = @"TutorialConnectToDeviceNotificationName";
@@ -41,8 +43,10 @@ NSString * UpdateFirmwareNotificationName = @"UpdateFirmwareNotificationName";
 
 NSString * UpdateCompleteNotificationName = @"UpdateCompleteNotificationName";
 
-NSString * ConnectionStateChangedNotificationName = @"ConnectionStateChangedNotificationName";
+NSString * DeviceStateChangedNotificationName = @"ConnectionStateChangedNotificationName";
 
 NSString * CleanupUpdateUIObserverNotificationName = @"CleanupUpdateUIObserverNotificationName";
 
 NSString * AboutItemNotificationName = @"AboutItemNotificationName";
+
+NSString * FirmwareReleaseNotesShouldCloseNotificationName = @"FirmwareReleaseNotesShouldClose";

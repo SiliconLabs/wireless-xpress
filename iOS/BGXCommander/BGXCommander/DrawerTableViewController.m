@@ -12,6 +12,7 @@
  */
 
 #import "DrawerTableViewController.h"
+#import "AppDelegate.h"
 
 @interface DrawerTableViewController ()
 
@@ -56,6 +57,16 @@
   [self.tableView addSubview:logoImgView];
 
   [self.tableView bringSubviewToFront:logoImgView];
+    
+    [[AppDelegate sharedAppDelegate] addObserver:self forKeyPath:@"selectedDeviceDectorator" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"selectedDeviceDectorator"]) {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,16 +90,37 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"drawer cell" forIndexPath:indexPath];
     
     // Configure the cell...
-
-  cell.textLabel.text = [self.drawerItems objectAtIndex:indexPath.row];
-
-  cell.contentView.backgroundColor = [UIColor colorWithRed:0.831f green:0.483f blue:0.005f alpha:1.0f];
-  cell.textLabel.textColor = [UIColor whiteColor];
-  cell.textLabel.textAlignment = NSTextAlignmentRight;
-  cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.0f];
-
-  cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-
+    
+    cell.textLabel.text = [self.drawerItems objectAtIndex:indexPath.row];
+    
+    if (self.firmwareUpdateEnabled && 0 == indexPath.row) {
+        
+        // assign the decorator for the update item.
+        
+        switch ([AppDelegate sharedAppDelegate].selectedDeviceDectorator) {
+            case NoDecoration:
+                cell.imageView.image = nil;
+                break;
+            case UpdateDecoration:
+                cell.imageView.image = [UIImage imageNamed:@"Update_Decoration"];
+                break;
+            case SecurityDecoration:
+                cell.imageView.image = [UIImage imageNamed:@"Security_Decoration"];
+                break;
+        }
+        
+        
+    } else {
+        cell.imageView.image = nil;
+    }
+    
+    cell.contentView.backgroundColor = [UIColor colorWithRed:0.831f green:0.483f blue:0.005f alpha:1.0f];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.textAlignment = NSTextAlignmentRight;
+    cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.0f];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    
     return cell;
 }
 
@@ -134,7 +166,16 @@
       }
     }
       break;
-    case 2: // About
+    case 2:
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.silabs.com/bgx-docs"] options:@{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO  } completionHandler: ^(BOOL success){
+              if (!success) {
+                  NSLog(@"Failed to open the link.");
+              }
+          } ];
+          
+          
+          break;
+    case 3: // About
       [[NSNotificationCenter defaultCenter] postNotificationName:AboutItemNotificationName object:nil];
       break;
   }
@@ -162,9 +203,9 @@
 -(NSArray *)drawerItems
 {
   if (self.firmwareUpdateEnabled) {
-    return @[@"Update Firmware…", @"Tutorial",/* @"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit",*/ @"About…"];
+    return @[@"Update Firmware…", @"Tutorial", @"Help", /* @"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit",*/ @"About…"];
   } else {
-    return @[@"Tutorial", /*@"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit", */@"About…"];
+      return @[@"Tutorial", @"Help", /*@"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit", */@"About…"];
   }
 }
 

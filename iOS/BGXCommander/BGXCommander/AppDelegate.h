@@ -17,9 +17,9 @@
 #import "MMDrawerController.h"
 #import "SpotlightView.h"
 #import "TutorialViewController.h"
+#import "DecoratedMMDrawerBarButtonItem.h"
 
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, BGXpressDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, BGXpressScanDelegate, BGXDeviceDelegate, BGXSerialDelegate>
 
 + (AppDelegate *)sharedAppDelegate;
 
@@ -37,8 +37,10 @@
 
 - (BOOL)scan;
 
-@property (strong, nonatomic) BGXpressManager * bgxManager;
-@property (strong, nonatomic) CBCentralManager * centralManager;
+@property (strong, nonatomic) BGXpressScanner * bgxScanner;
+@property (strong, nonatomic) BGXDevice * selectedDevice;
+@property (nonatomic) DecorationState selectedDeviceDectorator;
+
 @property (nonatomic) BOOL bluetoothReady;
 @property (nonatomic) BOOL isScanning;
 @property (strong, nonatomic) NSDate * lastScan;

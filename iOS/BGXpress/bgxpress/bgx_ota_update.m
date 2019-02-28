@@ -12,7 +12,7 @@
  */
 
 #import "bgx_ota_update.h"
-#import "UUID.h"
+#import "BGXUUID.h"
 #import "bgxpress.h"
 
 const NSUInteger kChunkSize = 244;
@@ -371,14 +371,8 @@ const NSUInteger kChunkSize = 244;
 
 - (void)ota_step_scan
 {
-//  self.bleCommander = [[BGXpressManager alloc] init];
-//  self.scan_assistant = [[BGX_OTA_Scan_Assistant alloc] init];
-//  self.scan_assistant.owner = self;
-//  self.bleCommander.delegate = self.scan_assistant;
-
   self.cb_central_manager = [[CBCentralManager alloc] init];
   self.cb_central_manager.delegate = self;
-
 }
 
 - (void)ota_step_connect
@@ -455,10 +449,13 @@ const NSUInteger kChunkSize = 244;
     // write a chunk of data.
     self.amount2write = (self.payload.length - self.data_offset) < kChunkSize ? (self.payload.length - self.data_offset) : kChunkSize;
 
+      
     [_peripheral writeValue:[self.payload subdataWithRange:NSMakeRange(self.data_offset, self.amount2write)] forCharacteristic:[self OTA_Data_Characteristic] type:CBCharacteristicWriteWithResponse];
+
 
     self.data_offset += self.amount2write;
     self.upload_progress = ((float)self.data_offset / (float)self.payload.length);
+    printf("Written %lu bytes %f%%\n", (unsigned long) self.data_offset, 100.0f * self.upload_progress);
 
   } else {
     self.ota_step = ota_step_upload_finish;

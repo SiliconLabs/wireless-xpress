@@ -31,6 +31,8 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,9 +47,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.os.Handler;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Queue;
@@ -60,7 +67,10 @@ import static com.silabs.bgxcommander.TextSource.REMOTE;
 
 public class DeviceDetails extends AppCompatActivity {
 
-    public BluetoothDevice mBluetoothDevice;
+   // public BluetoothDevice mBluetoothDevice;
+    public String mDeviceAddress;
+    public String mDeviceName;
+
     public Handler mHandler;
 
     public int mDeviceConnectionState;
@@ -83,15 +93,20 @@ public class DeviceDetails extends AppCompatActivity {
     private final int kAutoScrollMessage = 0x5C011;
     private final int kAutoScrollDelay = 800; // the time in ms between adding text and autoscroll.
 
+    private MenuItem mIconItem;
     private MenuItem mUpdateItem;
 
     private BGXpressService.BGXPartID mBGXPartID;
     private String mBGXDeviceID;
 
+    final static Integer kBootloaderSecurityVersion = 1229;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+
+
 
         mBusMode = BusMode.UNKNOWN_MODE;
 
@@ -101,15 +116,56 @@ public class DeviceDetails extends AppCompatActivity {
         mCommandRB = (RadioButton) findViewById(R.id.commandRB);
         mSendButton = (Button) findViewById(R.id.sendButton);
 
+
         final IntentFilter bgxpressServiceFilter = new IntentFilter(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_MODE_STATE_CHANGE);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_DATA_RECEIVED);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_DEVICE_INFO);
+        bgxpressServiceFilter.addAction(BGXpressService.DMS_VERSIONS_AVAILABLE);
 
         mConnectionBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                String intentDeviceAddress = intent.getStringExtra("DeviceAddress");
+                if (intentDeviceAddress != null && intentDeviceAddress.length() > 1 && !intentDeviceAddress.equalsIgnoreCase(mDeviceAddress)) {
+                    return;
+                }
+
                 switch(intent.getAction()) {
+
+                    case BGXpressService.DMS_VERSIONS_AVAILABLE: {
+
+                        Integer bootloaderVersion = BGXpressService.getBGXBootloaderVersion(mDeviceAddress);
+                        if ( bootloaderVersion >= kBootloaderSecurityVersion) {
+
+                            Log.d("bgx_dbg", "Received DMS Versions.");
+
+                            String versionJSON = intent.getStringExtra("versions-available-json");
+                            try {
+                                JSONArray myDMSVersions = new JSONArray(versionJSON);
+
+                                Log.d("bgx_dbg", "Device Address: " + mDeviceAddress);
+                                Version vFirmwareRevision = new Version(BGXpressService.getFirmwareRevision(mDeviceAddress));
+
+                                for (int i = 0; i < myDMSVersions.length(); ++i) {
+                                    JSONObject rec = (JSONObject) myDMSVersions.get(i);
+                                    String sversion = (String) rec.get("version");
+                                    Version iversion = new Version(sversion);
+
+                                    if (iversion.compareTo(vFirmwareRevision) > 0) {
+                                        // newer version available.
+                                        mIconItem.setIcon(ContextCompat.getDrawable(mContext, R.drawable.update_decoration));
+                                    }
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                    break;
+
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
                         Log.d("bgx_dbg", "BGX Connection State Change");
 
@@ -150,8 +206,25 @@ public class DeviceDetails extends AppCompatActivity {
                     }
                     break;
                     case BGXpressService.BGX_DEVICE_INFO: {
+
+                        Integer bootloaderVersion = BGXpressService.getBGXBootloaderVersion(mDeviceAddress);
+
                         mBGXDeviceID = intent.getStringExtra("bgx-device-uuid");
                         mBGXPartID = (BGXpressService.BGXPartID) intent.getSerializableExtra("bgx-part-id" );
+
+
+                        if ( bootloaderVersion >= kBootloaderSecurityVersion) {
+                            // request DMS VERSIONS at this point because now we know the part id.
+                            Intent intent2 = new Intent(BGXpressService.ACTION_DMS_GET_VERSIONS);
+                            intent2.setClass(mContext, BGXpressService.class);
+
+                            intent2.putExtra("bgx-part-id", mBGXPartID);
+                            intent2.putExtra("DeviceAddress", mDeviceAddress);
+
+                            startService(intent2);
+                        } else if ( bootloaderVersion > 0) {
+                            mIconItem.setIcon(ContextCompat.getDrawable(mContext, R.drawable.security_decoration));
+                        }
                     }
                     break;
                 }
@@ -161,11 +234,14 @@ public class DeviceDetails extends AppCompatActivity {
         registerReceiver(mConnectionBroadcastReceiver, bgxpressServiceFilter);
 
 
+
+
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
 
 
+                Log.d("bgx_dbg", "Handle message.");
 
                 return false;
             }
@@ -221,6 +297,7 @@ public class DeviceDetails extends AppCompatActivity {
                 Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_DATA);
                 writeIntent.putExtra("value", msgText + "\r\n");
                 writeIntent.setClass(mContext, BGXpressService.class);
+                writeIntent.putExtra("DeviceAddress", mDeviceAddress);
                 startService(writeIntent);
 
                 processText(msgText, LOCAL);
@@ -241,18 +318,12 @@ public class DeviceDetails extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        mBluetoothDevice = (BluetoothDevice) getIntent().getExtras().getParcelable("BLUETOOTH_DEVICE");
-        String sdeviceName = mBluetoothDevice.getName();
-        if (null == sdeviceName) {
-            sdeviceName = "No device name";
-        }
-
+        mDeviceName = getIntent().getStringExtra("DeviceName");
+        mDeviceAddress = getIntent().getStringExtra("DeviceAddress");
 
         android.support.v7.app.ActionBar ab = getSupportActionBar();
         if (null != ab) {
-            ab.setTitle(sdeviceName);
+            ab.setTitle(mDeviceName);
         }
 
         mHandler.post(new Runnable() {
@@ -260,12 +331,13 @@ public class DeviceDetails extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(BGXpressService.ACTION_READ_BUS_MODE);
                 intent.setClass(mContext, BGXpressService.class);
+                intent.putExtra("DeviceAddress", mDeviceAddress);
                 startService(intent);
             }
         });
 
 
-        BGXpressService.getBGXDeviceInfo(this);
+        BGXpressService.getBGXDeviceInfo(this, mDeviceAddress);
     }
 
     @Override
@@ -280,7 +352,9 @@ public class DeviceDetails extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.devicedetails, menu);
 
+        mIconItem = menu.findItem(R.id.icon_menuitem);
         mUpdateItem = menu.findItem(R.id.update_menuitem);
+        mIconItem.setIcon(null);
 
         return true;
     }
@@ -300,6 +374,8 @@ public class DeviceDetails extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("bgx-device-uuid", mBGXDeviceID);
                     intent.putExtra("bgx-part-id", mBGXPartID);
+                    intent.putExtra("DeviceAddress", mDeviceAddress);
+                    intent.putExtra("DeviceName", mDeviceName);
 
                     startActivity(intent);
                 }
@@ -315,6 +391,8 @@ public class DeviceDetails extends AppCompatActivity {
         Log.d("bgx_dbg", "Back button pressed.");
         disconnect();
 
+        finish();
+
         super.onBackPressed();
     }
 
@@ -322,6 +400,7 @@ public class DeviceDetails extends AppCompatActivity {
     {
         Intent intent = new Intent(BGXpressService.ACTION_BGX_DISCONNECT);
         intent.setClass(mContext, BGXpressService.class);
+        intent.putExtra("DeviceAddress", mDeviceAddress);
         startService(intent);
     }
 
@@ -366,6 +445,7 @@ public class DeviceDetails extends AppCompatActivity {
         Intent intent = new Intent(BGXpressService.ACTION_WRITE_BUS_MODE);
         intent.setClass(this, BGXpressService.class);
         intent.putExtra("busmode", busMode);
+        intent.putExtra("DeviceAddress", mDeviceAddress);
         startService(intent);
     }
 
@@ -415,6 +495,7 @@ public class DeviceDetails extends AppCompatActivity {
         Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_BIN_DATA);
         writeIntent.putExtra("value", myByteArray);
         writeIntent.setClass(mContext, BGXpressService.class);
+        writeIntent.putExtra("DeviceAddress", mDeviceAddress);
         startService(writeIntent);
     }
 

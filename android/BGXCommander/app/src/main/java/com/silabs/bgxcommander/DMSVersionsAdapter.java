@@ -73,13 +73,11 @@ public class DMSVersionsAdapter extends RecyclerView.Adapter<DMSVersionsAdapter.
             JSONObject deviceRecord = mDataset.getJSONObject(position);
 
             String versionNumber = deviceRecord.getString("version");
-            String versionTag = deviceRecord.getString("tag");
-            int versionSize = deviceRecord.getInt("size");
+            String versionTag = deviceRecord.getString("description");
 
             holder.getVersionNumberTextView().setText(versionNumber);
-            holder.getVersionTagTextView().setText(versionTag);
+            holder.getVersionDescriptionTextView().setText(versionTag);
 
-            holder.getVersionBytesTextView().setText( String.format("%d bytes", versionSize) );
 
 
         } catch (JSONException e) {
@@ -101,15 +99,15 @@ public class DMSVersionsAdapter extends RecyclerView.Adapter<DMSVersionsAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView versionNumberTextView;
-        TextView versionTagTextView;
-        TextView versionBytesTextView;
+        TextView versionDescriptionTextView;
+
 
         ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             versionNumberTextView = itemView.findViewById(R.id.versionNumberTextView);
-            versionTagTextView = itemView.findViewById(R.id.versionTagTextView);
-            versionBytesTextView = itemView.findViewById(R.id.versionBytesTextView);
+            versionDescriptionTextView = itemView.findViewById(R.id.versionDescriptionTextView);
+
         }
         @Override
         public void onClick(View v) {
@@ -135,13 +133,11 @@ public class DMSVersionsAdapter extends RecyclerView.Adapter<DMSVersionsAdapter.
             return versionNumberTextView;
         }
 
-        public TextView getVersionTagTextView() {
-            return versionTagTextView;
+        public TextView getVersionDescriptionTextView() {
+            return versionDescriptionTextView;
         }
 
-        public TextView getVersionBytesTextView() {
-            return versionBytesTextView;
-        }
+
     }
 
 }

@@ -15,8 +15,10 @@ package com.silabs.bgxcommander;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -62,10 +64,29 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         final String deviceAddress = deviceRecord.get("uuid");
         String rssiValueStr = deviceRecord.get("rssi");
 
+
+
         holder.getTextView().setText(deviceName);
         holder.getUuidTextView().setText(deviceAddress);
         holder.getRssiValueTextView().setText(rssiValueStr);
 
+        /*
+        BGX_CONNECTION_STATUS deviceConnectionStatus = BGXpressService.getBGXDeviceConnectionStatus(deviceAddress);
+        switch (deviceConnectionStatus) {
+            case CONNECTING:
+            case INTERROGATING:
+            case DISCONNECTING:
+
+
+                break;
+            case DISCONNECTED:
+
+                break;
+            case CONNECTED:
+
+                break;
+        }
+        */
     }
 
     @Override
@@ -77,19 +98,64 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         TextView myTextView;
         TextView uuidTextView;
         TextView rssiValueTextView;
+        Boolean fConnected;
+
+        BluetoothDevice btDevice = null;
+
+        BroadcastReceiver myBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String intentDeviceAddress = intent.getStringExtra("DeviceAddress");
+
+                int position = getAdapterPosition();
+                if (position < 0) {
+                    Log.d("bgx_dbg", "Position: "+position);
+                    return;
+                }
+
+                HashMap<String, String> deviceRecord = mDataset.get(position);
+                String deviceAddress = deviceRecord.get("uuid");
+
+                if (intentDeviceAddress.equalsIgnoreCase(deviceAddress)) {
+                    switch (intent.getAction()) {
+                        case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
+                            Log.d("bgx_dbg", "*** OnReceive a BGX_CONNECTION_STATUS_CHANGE Intent ***");
+                            BGX_CONNECTION_STATUS connectionStatusValue = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
+
+
+                            if (BGX_CONNECTION_STATUS.CONNECTED == connectionStatusValue) {
+                                btDevice = (BluetoothDevice) intent.getParcelableExtra("device");
+                                fConnected = true;
+                            } else {
+                                btDevice = null;
+                                fConnected = false;
+                            }
+                        }
+                    }
+                }
+            }
+        };
 
 
         ViewHolder(View itemView) {
             super(itemView);
+            fConnected = false;
             itemView.setOnClickListener(this);
             myTextView = itemView.findViewById(R.id.DeviceNameTextView);
             uuidTextView = itemView.findViewById(R.id.DeviceUUIDTextView);
             rssiValueTextView = itemView.findViewById(R.id.rssiValueTextView);
 
+            IntentFilter myFilter = new IntentFilter(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
+
+            context.registerReceiver(myBroadcastReceiver, myFilter);
+
         }
+
 
         @Override
         public void onClick(View v) {
+
 
             int position = getAdapterPosition();
 
@@ -113,12 +179,15 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
 
             String deviceAddress = deviceRecord.get("uuid");
 
-            BGXpressService.clearCancelFlag();
+
+            BGXpressService.startActionStopScan(context);
+
 
             BGXpressService.startActionBGXConnect(context, deviceAddress);
 
             Intent intent2 = new Intent(context, IndeterminateProgressActivity.class);
             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent2.putExtra("DeviceAddress", deviceAddress);
 
             context.startActivity(intent2);
 
@@ -145,6 +214,7 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         public TextView getRssiValueTextView() {
             return rssiValueTextView;
         }
+
 
 
     }

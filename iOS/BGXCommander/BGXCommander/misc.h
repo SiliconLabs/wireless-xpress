@@ -16,4 +16,6 @@
 
 extern NSErrorDomain NSAppErrorDomain;
 
+extern const NSInteger kBootloaderSecurityUpdateVersion;
+
 #endif /* misc_h */

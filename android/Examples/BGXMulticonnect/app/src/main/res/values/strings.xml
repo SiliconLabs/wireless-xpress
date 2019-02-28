@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">BGXMulticonnect</string>
+    <string name="title_activity_device_details">DeviceDetails</string>
+    <string name="stream_label">STREAM</string>
+    <string name="command_label">COMMAND</string>
+    <string name="send_label">SEND</string>
+    <string name="uuid_label">UUID</string>
+    <string name="rssi_label">RSSI</string>
+    <string name="about_menuitem_label">About</string>
+    <string name="scan_menuitem_label">Scan</string>
+    <string name="update_menuitem_label">Update…</string>
+    <string name="device_name_tmpvalue_label">Device Name</string>
+    <string name="rssi_tmpvalue_label">-85</string>
+    <string name="device_uuid_tempvalue_label">device uuid</string>
+    <string name="fw_update_release_label">Release</string>
+    <string name="fw_update_all_label">All</string>
+    <string name="OTA_Status_Downloading">Downloading Firmware Image</string>
+    <string name="OTA_Status_Installing">Installing…</string>
+    <string name="OTA_Status_Finishing">Finishing…</string>
+    <string name="OTA_Status_Finished">Firmware Update Complete.</string>
+
+    <string name="OTA_Status_UserCanceled">Firmware Update Canceled.</string>
+
+    <string name="BluetoothDisabledText">Bluetooth is currently disabled on this device.\n\nEnable Bluetooth in the device settings to continue.</string>
+    <string name="LocationPermissionDeniedText">Permission to use the device location is required in order to use Bluetooth Low Energy.</string>
+    <string name="BGX_CONNECTION_STATUS_LABEL_INTERROGATING">Reading device info…</string>
+    <string name="BGX_CONNECTION_STATUS_LABEL_CONNECTING">Connecting…</string>
+    <string name="BGX_CONNECTION_STATUS_LABEL_CONNECTED">Connected</string>
+
+    <string name="BOND_FAIL_LABEL">Bond Fail.</string>
+    <string name="DEVICE_CONNECTION_ERROR_LABEL">Device Connection Error</string>
+
+    <string name="OK_Button_Text">OK</string>
+    <string name="AboutLabel">About BGX Multiconnect</string>
+
+    <string name="ConnectionInfo">Connecting…</string>
+    <string name="Cancel">Cancel</string>
+
+    <string name="ClearButtonExplanation">Clear Stream View Text</string>
+    <string name="BGXStreamHint">BGX Stream</string>
+    <string name="SendMessageBoxHint">Message to send</string>
+    <string name="InstallButtonText">Install Update</string>
+
+    <string name="InstallUpdateText">Install Update…</string>
+
+    <string name="VersionNumberText">Version Number</string>
+    <string name="tagText">tag</string>
+    <string name="placeholderText">placeholder</string>
+
+    <string name="FirmwareIconDescription">Firmware Icon</string>
+
+    <string name="VersionNameLabel">Version %1$s</string>
+    <string name="FirmwareUpdateFailedLabel">Firmware Update Failed.</string>
+    <string name="InstallingFirmwareFormatString">Installing Firmware %1$s</string>
+
+</resources>

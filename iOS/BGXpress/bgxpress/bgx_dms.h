@@ -48,27 +48,29 @@
 /**
  * Initialize DMS for a specific BGX device ID.
  *
- * @param bgx_unique_device_id need a description here.
- * @returns what does it return
+ * @param bgx_unique_device_id - the unique device ID of the device being updated
+ * @returns the intialized instance of bgx_dms
  */
 - (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id;
 
 /**
  * Pull a list of available firmware
  *
- * @param completionBlock description of the variable
+ * @param completionBlock to be called when the operation is complete.
+ *        Parameters to this block include an error (nil on success, non-nil on error)
+ *        and an NSArray of the available versions of firmware.
  */
 - (void)retrieveAvailableVersions:(void (^)(NSError *, NSArray *))completionBlock;
 
 /**
- * Retrieve the specified firmware image by version number.
+ * Retrieve the specified firmware image from DMS by version number.
  *
  * If unable to load it, a non-nil error parameter will result and
  * firmware_path will be nil. One parameter or the other will be nil
  * depending on whether the image was loaded.
  *
  * @param version is the firmware version to load
- * @param completionBlock needs explanation
+ * @param completionBlock Block to be called when the operation is complete.
  */
 - (void)loadFirmwareVersion:(NSString *)version completion:(void (^)(NSError *, NSString * firmware_path))completionBlock;
 
@@ -86,6 +88,7 @@
  * the following keys:
  *
  * - version - NSString containing the version
+ * - description - NSString containing the description of the firmware version.
  * - tag - NSString containing the firmware flavor.
  * - size - NSNumber containing the size of the firmware in bytes.
  */

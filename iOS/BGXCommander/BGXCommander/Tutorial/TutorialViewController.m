@@ -117,7 +117,7 @@ const double kTutorialOpacity = 0.7;
     case 7:
       self.step7NextButton.enabled = NO;
       stepView2Show = self.step7View;
-      [[AppDelegate sharedAppDelegate].bgxManager writeBusMode:STREAM_MODE];
+      [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode:STREAM_MODE];
       break;
     case 8:
       self.step8NextButton.enabled = NO;
@@ -187,13 +187,12 @@ const double kTutorialOpacity = 0.7;
     self.connectToDeviceButton.enabled = NO;
   } else {
     self.connectToDeviceButton.enabled = YES;
-    NSDictionary * deviceRecord = [[DevicesTableViewController devicesTableViewController].devices firstObject];
+    BGXDevice * deviceRecord = SafeType([[DevicesTableViewController devicesTableViewController].devices firstObject], [BGXDevice class]);
 #if TARGET_IPHONE_SIMULATOR
-    [self.connectToDeviceButton setTitle:[NSString stringWithFormat:@"Connect to %@", [deviceRecord objectForKey:@"name"]] forState:UIControlStateNormal];
+    [self.connectToDeviceButton setTitle:[NSString stringWithFormat:@"Connect to %@", deviceRecord.name] forState:UIControlStateNormal];
 
 #else
-    CBPeripheral * peripheral = [deviceRecord objectForKey:@"peripheral"];
-    [self.connectToDeviceButton setTitle:[NSString stringWithFormat:@"Connect to %@", peripheral.name] forState:UIControlStateNormal];
+    [self.connectToDeviceButton setTitle:[NSString stringWithFormat:@"Connect to %@", deviceRecord.name] forState:UIControlStateNormal];
 #endif
   }
 }
@@ -214,30 +213,30 @@ const double kTutorialOpacity = 0.7;
 // executes a timed script to show the action on step 8.
 - (void)step8Script
 {
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [[AppDelegate sharedAppDelegate].bgxManager writeBusMode:REMOTE_COMMAND_MODE];
-
-
-    [DeviceDetailsViewController deviceDetailsViewController].sendTextField.text = @"get al";
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
-      [[SpotlightView spotlightView] setSpotlightPosition:CGPointMake(60,360) radius:50.0f opacity:kTutorialOpacity animated:YES];
-
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-          [[NSNotificationCenter defaultCenter] postNotificationName:TutorialStep6SendDataNotificationName object:nil];
-        [[SpotlightView spotlightView] setSpotlightPosition:CGPointMake(200,180) radius:200.0f opacity:kTutorialOpacity animated:YES];
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
-            self.step8NextButton.enabled = YES;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode:REMOTE_COMMAND_MODE];
+        
+        
+        [DeviceDetailsViewController deviceDetailsViewController].sendTextField.text = @"get al";
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [[SpotlightView spotlightView] setSpotlightPosition:CGPointMake(60,360) radius:50.0f opacity:kTutorialOpacity animated:YES];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:TutorialStep6SendDataNotificationName object:nil];
+                [[SpotlightView spotlightView] setSpotlightPosition:CGPointMake(200,180) radius:200.0f opacity:kTutorialOpacity animated:YES];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    self.step8NextButton.enabled = YES;
+                });
+                
+            });
+            
         });
-
-      });
-
+        
     });
-
-  });
 
 }
 

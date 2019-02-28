@@ -35,11 +35,14 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
     Button mCancelButton;
     TextView mStatusLabel;
     Handler mHandler;
+    String mDeviceAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indeterminate_progress);
+
+        mDeviceAddress = getIntent().getStringExtra("DeviceAddress");
 
         final IndeterminateProgressActivity myActivity = this;
 
@@ -53,7 +56,7 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("bgx_dbg", "cancel button clicked.");
 
-                BGXpressService.startActionBGXCancelConnect(myActivity);
+                BGXpressService.startActionBGXCancelConnect(myActivity, mDeviceAddress);
 
 
                 myActivity.finish();
@@ -68,6 +71,12 @@ public class IndeterminateProgressActivity extends AppCompatActivity {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
+                String myDeviceAddress = intent.getStringExtra("DeviceAddress");
+
+                if (myDeviceAddress != null) {
+                    mDeviceAddress = myDeviceAddress;
+                }
 
                 switch(intent.getAction()) {
                     case BGX_CONNECTION_ERROR:

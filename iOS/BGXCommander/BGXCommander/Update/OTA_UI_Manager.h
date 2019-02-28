@@ -18,41 +18,44 @@
 
 
 @interface OTA_UI_Manager : NSObject <UITableViewDataSource, UITableViewDelegate> {
+    
+    IBOutlet UIWindow * _ota_update_window;
+    IBOutlet UILabel * updateWindowLabel;
+    
+    IBOutlet UIActivityIndicatorView * spinner;
+    IBOutlet UIProgressView * determined_progress;
+    
+    IBOutlet UILabel * updateLabel;
+    
+    IBOutlet UITableView * firmwareVersions;
+    
+    IBOutlet UILabel * currentFirmwareVersionLabel;
+    UIImageView * _firmwareDecoratorImageView;
+    Version * _currentFirmwareVersion;
+    
+    BOOL waitingForReachable;
+    
+    IBOutlet UIButton * installFirmwareButton; // so we can enable/disable as selection changes
+    IBOutlet UIButton * cancelButton; // so we can hide it when the download starts.
+    IBOutlet UIButton * cancelButton2; // the cancel button visible during update
+    
+    IBOutlet UIActivityIndicatorView * firmwareQuerySpinner; // show a spinner while pulling the firmware list from server.
 
-  IBOutlet UIWindow * _ota_update_window;
-  IBOutlet UILabel * updateWindowLabel;
-
-  IBOutlet UIActivityIndicatorView * spinner;
-  IBOutlet UIProgressView * determined_progress;
-
-  IBOutlet UILabel * updateLabel;
-
-  IBOutlet UITableView * firmwareVersions;
-
-  IBOutlet UISegmentedControl * firmwareType;
-
-  BOOL waitingForReachable;
-
-  IBOutlet UIButton * installFirmwareButton; // so we can enable/disable as selection changes
-  IBOutlet UIButton * cancelButton; // so we can hide it when the download starts.
-  IBOutlet UIButton * cancelButton2; // the cancel button visible during update
-  
-  IBOutlet UIActivityIndicatorView * firmwareQuerySpinner; // show a spinner while pulling the firmware list from server.
-  
+    UIWindow * firmwareReleaseNotesWindow;
+    
 }
 
 - (IBAction)installFirmwareAction:(id)sender;
-
 
 - (void)showUpdateUI;
 - (void)closeUpdateUI;
 
 - (IBAction)cancelAction:(id)sender;
 
-- (IBAction)firmwareTypeAction:(id)sender;
-
-- (void)updateFirmwareForBGXDevice:(CBPeripheral *)peripheral2Update withDeviceID:(NSString *)bgx_unique_device_id;
+- (void)updateFirmwareForBGXDevice:(BGXDevice *)peripheral2Update withDeviceID:(NSString *)bgx_unique_device_id;
 
 @property (nonatomic, strong) UIWindow * ota_update_window;
+
+@property (nonatomic, strong) IBOutlet UIImageView * firmwareDecoratorImageView;
 
 @end
