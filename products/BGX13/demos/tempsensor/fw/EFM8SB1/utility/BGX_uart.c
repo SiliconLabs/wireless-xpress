@@ -1,17 +1,11 @@
-/*
- * BGX_uart.c
- *
- *  Created on: Jul 14, 2018
- *      Author: padorris
- */
-
 #include <STRING.h>
-#include <uart_1.h>
+#include <uart_0.h>
 #include <stdio.h>
 #include <STRING.h>
 #include "efm8_config.h"
-#include "SI_EFM8UB1_Defs.h"
+#include "SI_EFM8SB1_Defs.h"
 #include "BGX_uart.h"
+#include "delay.h"
 #define DECL_PAGE uint8_t savedPage
 // enter autopage section
 #define SET_PAGE(p)     do                                                    \
@@ -25,7 +19,7 @@
                           SFRPAGE = savedPage;  /* restore saved SFR page */  \
                         } while(0)
 // SFR page used to access UART1 registers
-#define UART1_SFR_PAGE 0x20
+#define UART0_SFR_PAGE 0x20
 bit listenerEnabled = false;
 bit listenerLinEndFound = false;
 uint16_t listenerLineLen;
@@ -44,11 +38,11 @@ bit receivedResponse = false;
  * @warning
  * This function is called from an ISR and should be as short as possible.
  ******************************************************************************/
-void UART1_transmitCompleteCb()
+void UART0_transmitCompleteCb()
 {
-	UART1FCN0 &= ~UART1FCN0_TFRQE__ENABLED;
+	//UART1FCN0 &= ~UART1FCN0_TFRQE__ENABLED;
 }
-void UART1_receiveCompleteCb()
+void UART0_receiveCompleteCb()
 {
   receivedResponse = true;
   if(listenerEnabled)
@@ -59,25 +53,24 @@ void UART1_receiveCompleteCb()
     {
       listenerLinEndFound = true;
     }
-    UART1_readBuffer(listenerBuffer,1);
+    UART0_readBuffer(listenerBuffer,1);
   }
 }
 
 uint8_t BGX_Write(const char *buff)
 {
   DECL_PAGE;
-  SET_PAGE(UART1_SFR_PAGE);
+  SET_PAGE(UART0_SFR_PAGE);
   strcpy(BGX_transmitBuffer, buff);
-  UART1_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  RESTORE_PAGE;
   if(MODE_PIN == COMMAND_MODE)
   {
-    RESTORE_PAGE;
     return BGX_getResponse();
   }
   else
   {
-	RESTORE_PAGE;
-    // if we're in streaming mode, don't expect a response
+    // If we're in streaming mode, don't expect a response
     // and assume success
     return '0';
   }
@@ -95,7 +88,7 @@ uint8_t BGX_getResponse(void)
   do
   {
     // Receive 1 character
-    UART1_readBuffer(listenerBuffer,1);
+    UART0_readBuffer(listenerBuffer,1);
     while(!receivedResponse);
     // Flag is set in UART peripheral driver callback ISR
     receivedResponse = false;
@@ -108,9 +101,14 @@ uint8_t BGX_getResponse(void)
     // Make decisions after BGX completes transmission of line
     if(this_character=='\n')
     {
+      if(BGX_receiveBuffer[start_of_line] == '\n')
+      {
+        // Ignore if it's just a blank new line
+        break;
+      }
     	if(BGX_receiveBuffer[start_of_line] == 'R')
     	{
-          // Response headers always start with 'R' so this was the header
+        // Response headers always start with 'R' so this was the header
     	  // The second character on this line is the response value
           response_received = true;
           return_value = BGX_receiveBuffer[start_of_line+1];
@@ -141,7 +139,7 @@ uint8_t BGX_didReceiveLine(const char *buff)
   do
   {
     // Receive 1 character
-    UART1_readBuffer(listenerBuffer,1);
+    UART0_readBuffer(listenerBuffer,1);
     while(!receivedResponse);
     // Flag is set in UART peripheral driver callback ISR
     receivedResponse = false;
@@ -170,11 +168,74 @@ uint8_t BGX_didReceiveLine(const char *buff)
   return return_value;
 }
 
+void BGX_reset(int baudrate)
+{
+  DECL_PAGE;
+  uint8_t index, last_character, this_character, start_of_line = 0;
+  bit new_line_started = false;
+  bit response_received = false;
+  last_character = 255;
+  this_character = 255;
+  index = 0;
+  SET_PAGE(UART0_SFR_PAGE);
+
+  if(baudrate == 9600)
+  {
+    // Set SB1 baud rate to 9600
+    TH1 = (0x7E << TH1_TH1__SHIFT);
+  }
+  else if(baudrate == 115200)
+  {
+    // Set SB1 baud rate to 115200
+    TH1 = (0xF5 << TH1_TH1__SHIFT);
+  }
+
+  // Sends a breakout sequence to exit stream mode
+  delayAndWaitFor(600);
+  strcpy(BGX_transmitBuffer, "$$$");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(1000);
+
+  // Flushes out any erroneous characters
+  strcpy(BGX_transmitBuffer, "\r");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(50);
+
+  // Sends a reboot command to the BGX
+  strcpy(BGX_transmitBuffer, "reboot\r");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+}
+
+void BGX_setBaudRate()
+{
+  delayAndWaitFor(100);
+
+  // Set SB1 baud rate to 115200
+  TH1 = (0xF5 << TH1_TH1__SHIFT);
+
+  // Flushes out any erroneous characters
+  strcpy(BGX_transmitBuffer, "\r");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(50);
+
+  // Set BGX baud rate to 9600
+  strcpy(BGX_transmitBuffer, "set ua b 9600\r");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(100);
+  strcpy(BGX_transmitBuffer, "uartu\r");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(100);
+
+  // Set SB1 baud rate to 9600
+  TH1 = (0x7E << TH1_TH1__SHIFT);
+  delayAndWaitFor(100);
+}
+
 void listenerOn(void)
 {
   listenerEnabled = true;
   listenerReset();
-  UART1_readBuffer(listenerBuffer,1);
+  UART0_readBuffer(listenerBuffer,1);
 }
 void listenerOff(void)
 {

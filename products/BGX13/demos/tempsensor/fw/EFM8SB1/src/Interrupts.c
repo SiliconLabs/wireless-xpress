@@ -7,7 +7,8 @@
 //=========================================================
 
 // USER INCLUDES
-#include <SI_EFM8UB1_Register_Enums.h>
+#include <SI_EFM8SB1_Register_Enums.h>
+#include "power.h"
 extern uint16_t delayDuration;
 
 //-----------------------------------------------------------------------------
@@ -21,12 +22,36 @@ extern uint16_t delayDuration;
 //-----------------------------------------------------------------------------
 SI_INTERRUPT (TIMER3_ISR, TIMER3_IRQn)
 {
-	TMR3CN0 &= ~0x80;
-	if(delayDuration)
-	{
-      delayDuration--;
-	}
+  TMR3CN0 &= ~0x80;
+  if(delayDuration)
+  {
+    delayDuration--;
+  }
 }
 
+//-----------------------------------------------------------------------------
+// PMATCH_ISR
+//-----------------------------------------------------------------------------
+//
+// PMATCH ISR Content goes here. Remember to clear flag bits:
 
+//
+//-----------------------------------------------------------------------------
+SI_INTERRUPT (PMATCH_ISR, PMATCH_IRQn)
+{
+  Port_Match_Wakeup = 1;
+}
+
+//-----------------------------------------------------------------------------
+// RTC0ALARM_ISR
+//-----------------------------------------------------------------------------
+//
+// RTC0ALARM ISR Content goes here. Remember to clear flag bits:
+// RTC0CN0::ALRM (RTC Alarm Event Flag and Auto Reset Enable)
+//
+//-----------------------------------------------------------------------------
+SI_INTERRUPT (RTC0ALARM_ISR, RTC0ALARM_IRQn)
+{
+  RTC_Alarm = 1;
+}
 

@@ -1,51 +1,56 @@
+//-----------------------------------------------------------------------------
+// Includes
+//-----------------------------------------------------------------------------
 #include "bsp.h"
 #include "efm8_config.h"
-#include "SI_EFM8UB1_Defs.h"
+#include "SI_EFM8SB1_Defs.h"
 #include <stdio.h>
+#include <string.h>
 #include "InitDevice.h"
 #include "tempMeasurement.h"
 #include "delay.h"
 #include "BGX_uart.h"
-#include "uart_1.h"
+#include "uart_0.h"
+#include "power.h"
+#include "SmaRTClock.h"
 
+typedef enum {pb1_pressed, bgx_connected, bgx_disconnected_or_data_received_or_rtc}event;
 void init_example(void);
-
+void sleep_with_wake(event wake_event);
 
 /**************************************************************************//**
- * Program Description:
- *
  * ----------------------------------------------------------------------------
- * How To Test: EFM8UB1 STK + BGX Board
+ * How To Test: EFM8SB1 STK + BGX Board
  * ----------------------------------------------------------------------------
-
- * NOTE: If a change is made to EFM8UB1_BGX.hwconf, an Interrupts.c will be
+ * NOTE: If a change is made to EFM8SB1_BGX.hwconf, an Interrupts.c will be
  *       generated. Interrupts.c must be deleted to avoid compilation
  *       errors.
- * 
- * Target:         EFM8SB2
+ * NOTE: To achieve lowest power, LED0 must be removed from the EFM8SB1 STK.
+ *       It is connected to BTN1 on the BGX Board which drives the LED on.
+ *
+ * Target:         EFM8SB1
  * Tool chain:     Generic
  *
  * Release 0.1 (MD;AT)
  *    - Initial Revision
- *    - 7 JUN 2018
+ *    - 15 NOV 2018
  *
  *-----------------------------------------------------------------------------
  * Resources:
  *-----------------------------------------------------------------------------
- * SYSCLK - 24.5 MHz HFOSC / 4
+ * SYSCLK - 10 MHz Low Power Oscillator
  * Timer3 - 1 kHz (1 ms tick)
- * P0.2 - Push Button 0
- * P0.3 - Push Button 1
+ * P1.2 - Push Button 0
+ * P1.3 - Push Button 1
  * P0.4 - UART0 TX
  * P0.5 - UART0 RX
- * P1.6 - BGX Mode GPIO (0 - COMMAND_MODE / 1 - STREAM_MODE)
+ * P0.1 - BGX Mode Pin (1 - COMMAND_MODE / 0 - STREAM_MODE)
  * ----------------------------------------------------------------------------
- *
  *****************************************************************************/
 
 /**************************************************************************//**
- * SiLabs_Startup Routine.
- *
+ * SiLabs_Startup() Routine
+ * ----------------------------------------------------------------------------
  * This function is called immediately after reset, before the initialization
  * code is run in SILABS_STARTUP.A51 (which runs before main() ). This is a
  * useful place to disable the watchdog timer, which is enable by default
@@ -53,85 +58,148 @@ void init_example(void);
  *****************************************************************************/
 void SiLabs_Startup(void)
 {
-  // Disable the watchdog here
+
 }
- 
+
 /**************************************************************************//**
- *
+ * Connects to a BGX and sends temperature sensor data via uart in a low
+ * power mode.
  *****************************************************************************/
-void main(void)
+int main(void)
 {
   int16_t new_cal_value;
 
+  // Initializes the EFM8SB1 STK
   init_example();
-
+  // Resets the BGX board with 2 baud rates accounted for
+  BGX_reset(9600);
+  BGX_reset(115200);
+  // Sets baud rate to 9600 for low power
+  BGX_setBaudRate();
+  // Puts the BGX BLE command interface to machine mode for easy parsing
   BGX_Write("set sy c m machine\r");
+  // Turns advertising off
   BGX_Write("adv off\r");
+  // Clears GPIO4, as it is connected to PB1
+  BGX_Write("gfu 4 none\r");
+  // Sets MODE_PIN (1 - COMMAND_MODE / 0 - STREAM_MODE)
   BGX_Write("gfu 6 none\r");
   BGX_Write("gfu 6 str_active_n\r");
+  // Decreases BLE advertising high duration 30s -> 5s
+  BGX_Write("set bl v h d 5\r");
+  // Increase BLE connection interval 15ms -> 500ms
+  BGX_Write("set bl c i 625\r");
 
-  BGX_Write("set sy i s 00000404\r");
-  BGX_Write("gfu 0 none\r");
-  BGX_Write("gfu 0 con_status_led\r");
-
-  while(1)
+  while (1)
   {
-     BGX_Write("adv off\r");
-     while(BSP_PB1 != BSP_PB_PRESSED);
+    // BGX and EFM8SB1 sleep until PB1 is pressed
+    BGX_Write("sleep\r");
+    delayAndWaitFor(20);
+    sleep_with_wake(pb1_pressed);
+    while (BSP_PB1 != BSP_PB_PRESSED);
 
-     BGX_Write("adv high\r");
-     while(MODE_PIN == COMMAND_MODE);
+    // EFM8SB1 sleeps until BGX is connected to via BGX Commander
+    BGX_Write("wake\r");
+    delayAndWaitFor(20);
+    sleep_with_wake(bgx_connected);
+    while (MODE_PIN == COMMAND_MODE);
 
-     listenerOn();
+    listenerOn();
 
-     do
-     {
-        BGX_Write(getTempString(BGX_transmitBuffer));
-        delayFor(1000);
+    P0MASK = 0x22;    // Wake up on MODE_PIN high or UART_RX low
+    P0MAT = 0xFD;
 
-        while(!delayIsFinished())
+    while (1)
+    {
+      RTC_Alarm = 0;
+      Port_Match_Wakeup = 0;
+      PMU0CF |= 0x20; // Clear flags
+      PMU0CF = 0x86;  // Enter Sleep mode with RTC and Port Match Wake Up
+
+      if(RTC_Alarm)
+      {
+        ADC0CN0 |= ADC0CN0_ADEN__ENABLED;  // Enable ADC
+        delayAndWaitFor(20);
+        BGX_Write (getTempString(BGX_transmitBuffer));
+        delayAndWaitFor(50);
+        RTC_Alarm = 0;
+        ADC0CN0 &= ~ADC0CN0_ADEN__ENABLED; // Disable ADC
+      }
+
+      if(Port_Match_Wakeup)
+      {
+        if(MODE_PIN == COMMAND_MODE)
         {
-           if(listenerFoundLineEnd())
-           {
+          Port_Match_Wakeup = 0;
+          break;
+        }
+        else
+        {
+          delayFor(500);
+          while(!delayIsFinished())
+          {
+            if(listenerFoundLineEnd())
+            {
               sscanf(BGX_receiveBuffer, "%d", &new_cal_value);
               calibrateWith(new_cal_value);
               listenerReset();
-           }
+            }
+          }
         }
-
-     } while(MODE_PIN == STREAM_MODE);
-
+        Port_Match_Wakeup = 0;
+      }
+    }
   }
 }
 
+/**************************************************************************//**
+ * Initializes EFM8SB1.
+ *****************************************************************************/
 void init_example(void)
 {
   // Initialize the device
   enter_DefaultMode_from_RESET();
+  // Initialize the UART
+  UART0_init(UART0_RX_ENABLE, UART0_WIDTH_8, UART0_MULTIPROC_DISABLE);
+  // Display not driven by EFM8
+  BSP_DISP_EN = BSP_DISP_BC_DRIVEN;
   // Board controller disconnected from EFM8 UART pins
   BSP_BC_EN = BSP_BC_DISCONNECTED;
-  // Resets the BGX board and initializes it's baud rates and GPIOs
-  BSP_DISP_EN = BSP_DISP_BC_DRIVEN;   // Display not driven by EFM8
+}
 
-  UART1_init(6125000, 115200, UART1_DATALEN_8, UART1_STOPLEN_SHORT,
-               UART1_FEATURE_DISABLE, UART1_PARITY_ODD, UART1_RX_ENABLE, UART1_MULTIPROC_DISABLE);
-  UART1_initTxFifo(UART1_TXTHRSH_ZERO, UART1_TXFIFOINT_DISABLE);
-  UART1_initRxFifo(UART1_RXTHRSH_ZERO, UART1_RXTIMEOUT_16, UART1_RXFIFOINT_ENABLE);
+/**************************************************************************//**
+ * Places EFM8SB1 to sleep with a given wake condition.
+ *****************************************************************************/
+void sleep_with_wake(event wake_event)
+{
+  uint8_t CLKSEL_save;
+  CLKSEL_save = CLKSEL;
+  CLKSEL = 0x04;            // Set sysclk to low power oscillator divided by 1
+  while(!(CLKSEL & 0x80));
 
-  IE_EA = 1;
-
-  BGX_RESET_PIN = BGX_RESET_PIN&0;
-  delayAndWaitFor(50);
-
-  BGX_RESET_PIN = BGX_RESET_PIN|1;
-
-  if(BGX_didReceiveLine("COMMAND_MODE"))
+  if(wake_event == bgx_disconnected_or_data_received_or_rtc)
   {
-    // Indicates BGX has exited reset and can receive commands
+    P0MASK = 0x22;    // Wake up on MODE_PIN high or UART_RX low
+    P0MAT = 0xFD;
+    PMU0CF |= 0x20;         // Clear flags
+    PMU0CF = 0x86;          // Enter Sleep mode with RTC and Port Match Wake Up
   }
-  else
+  else if(wake_event == bgx_connected)
   {
-    // Error condition.  Should not happen in this example.  Simply fall through.
+    PMU0CF |= 0x20;         // Clear flags
+    P0MASK = 0x02;          // Wake up on MODE_PIN low only
+    P1MASK = 0x00;
+    P0MAT = 0xFF;
+    PMU0CF = 0x82;          // Enter Sleep mode with Port Match Wake Up
   }
-
+  else if(wake_event == pb1_pressed)
+  {
+    PMU0CF |= 0x20;         // Clear flags
+    delayAndWaitFor(20);
+    P1MASK = 0x08;          // Wake up on PB1 only
+    P0MASK = 0x00;
+    PMU0CF = 0x82;          // Enter Sleep mode with Port Match Wake Up
+  }
+  NOP(); NOP(); NOP(); NOP();
+  CLKSEL = CLKSEL_save;     // Restore the System Clock
 }

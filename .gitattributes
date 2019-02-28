@@ -9,6 +9,8 @@
 *.m         text
 *.h         text
 *.pch       text
+*.a51       text
+*.A51       text
 *.SRC       text
 *.src       text
 *.ld        text
@@ -20,6 +22,15 @@ Makefile    text
 # Project files for various tools
 # Some are binary, some text, and some require CRLF
 
+.project    text eol=crlf
+.cproject   text eol=crlf
+*.slsproj   text eol=crlf
+*.hwconf    text eol=crlf
+*.uvopt     text eol=crlf
+*.uvproj    text eol=crlf
+*.wsp       text eol=crlf
+*.abp       text eol=crlf
+*.cwg       binary
 *.pbxproj   text eol=lf
 *.plist     text eol=lf
 *.xib       text eol=lf
@@ -50,3 +61,6 @@ Doxyfile.*  text
 *.class     binary
 *.jar       binary
 
+# treat hex files as binary so they just get replaced instead
+# of attempted merge
+*.hex       binary

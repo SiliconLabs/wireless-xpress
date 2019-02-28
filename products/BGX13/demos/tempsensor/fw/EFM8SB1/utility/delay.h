@@ -1,10 +1,3 @@
-/*
- * delay.h
- *
- *  Created on: Jul 14, 2018
- *      Author: padorris
- */
-
 #ifndef SRC_DELAY_H_
 #define SRC_DELAY_H_
 

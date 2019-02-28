@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ASCII"?>
+<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/ss/hwconfig/document/device.ecore" name="EFM8SB10F8G-A-QFN24" partId="mcu.8051.efm8.sb1.efm8sb10f8g-a-qfn24" version="4.0.1" contextId="%DEFAULT%">
+  <mode name="DefaultMode">
+    <property object="ADC_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="ADC_0" propertyId="adc.configuration.resultshiftandjustify" value="Left justified"/>
+    <property object="ADC_0" propertyId="adc.configuration.sarclockdivider" value="10"/>
+    <property object="ADC_0" propertyId="adc.configuration.sarclockdividerreal" value="9"/>
+    <property object="ADC_0" propertyId="adc.control.timer3overflowfrequency" value="992.000 Hz"/>
+    <property object="ADC_0" propertyId="adc.multiplexerselection.positiveinputselection" value="ADC0.27 (Temperature Sensor Output)"/>
+    <property object="ADC_0" propertyId="adc.powercontrol.enablelowpowermode" value="Enabled"/>
+    <property object="ADC_0" propertyId="adc.view.view" value="Advanced"/>
+    <property object="ADC_0" propertyId="adc.windowcompare.greaterthanhighbyte" value="0"/>
+    <property object="ADC_0" propertyId="adc.windowcompare.greaterthanlowbyte" value="0"/>
+    <property object="CLOCK_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="CLOCK_0" propertyId="clock.clockselect.clocksourcedivider" value="SYSCLK / 2"/>
+    <property object="CLOCK_0" propertyId="clock.clockselect.selectclocksource" value="Low-Power Oscillator"/>
+    <property object="CROSSBAR0" propertyId="xbar0.uart0.data" value="Enabled"/>
+    <property object="DefaultMode" propertyId="mode.diagramLocation" value="113, 88"/>
+    <property object="INTERRUPT_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable1.enablertcalarminterrupt" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable1.enabletimer3interrupt" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable2.enableportmatchinterrupts" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableallinterrupts" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableuart0interrupt" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interruptenables.codegenerationoptions.generateinterruptfunctions" value="Disabled"/>
+    <property object="P0.1" propertyId="ports.settings.label" value="MODE_PIN"/>
+    <property object="P0.4" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
+    <property object="P0.4" propertyId="ports.settings.outputmode" value="Push-pull"/>
+    <property object="P1.1" propertyId="ports.settings.label" value="STK LED0 / BGX BTN1"/>
+    <property object="P1.3" propertyId="ports.settings.label" value="Push Button 1"/>
+    <property object="P1.6" propertyId="ports.settings.inputmode" value="Analog"/>
+    <property object="P1.6" propertyId="ports.settings.iomode" value="Analog I/O"/>
+    <property object="P1.6" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="P1.7" propertyId="ports.settings.inputmode" value="Analog"/>
+    <property object="P1.7" propertyId="ports.settings.iomode" value="Analog I/O"/>
+    <property object="P1.7" propertyId="ports.settings.skip" value="Skipped"/>
+    <property object="PBCFG_0" propertyId="pbcfg.settings.enablecrossbar" value="Enabled"/>
+    <property object="PCACH_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCACH_1" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCACH_2" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCACH_2" propertyId="pcach.pcachannel.matchfunction" value="Enabled"/>
+    <property object="PCA_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockfrequency" value="833.333 kHz"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockfrequencyintegervalue" value="833333.333333"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockperiod" value="1.200 us"/>
+    <property object="PCA_0" propertyId="pca.pcastartrun.pcacountertimerrunstatus" value="Stopped"/>
+    <property object="PCA_0" propertyId="pca.watchdogcontrol.enablewatchdogtimer" value="Disabled"/>
+    <property object="RSTSRC_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="RTC_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="RTC_0" propertyId="rtc.hidden.rtcalarmprogrammedvalue1" value="128"/>
+    <property object="RTC_0" propertyId="rtc.hidden.rtcloadcapacitanceprogrammedvalue" value="3"/>
+    <property object="RTC_0" propertyId="rtc.rtcalarm.actualalarmperiod" value="1000.00 milliseconds"/>
+    <property object="RTC_0" propertyId="rtc.rtcalarm.alarmprogrammedvalue" value="32768"/>
+    <property object="RTC_0" propertyId="rtc.rtcalarm.enablealarmautoreset" value="Enabled"/>
+    <property object="RTC_0" propertyId="rtc.rtcalarm.enablertcalarm" value="Enabled"/>
+    <property object="RTC_0" propertyId="rtc.rtcalarm.rtcoscillatorfrequency" value="32768"/>
+    <property object="RTC_0" propertyId="rtc.rtcalarm.targetalarmperiod" value="1000"/>
+    <property object="RTC_0" propertyId="rtc.rtcconfiguration.enableautomaticloadcapacitancestepping" value="Enabled"/>
+    <property object="RTC_0" propertyId="rtc.rtcconfiguration.enablemissingrtcdetector" value="Enabled"/>
+    <property object="RTC_0" propertyId="rtc.rtcconfiguration.enablertcoscillatorautomaticgaincontrol" value="Enabled"/>
+    <property object="RTC_0" propertyId="rtc.rtcconfiguration.loadcapacitanceprogrammedvalue" value="5.5 pF"/>
+    <property object="RTC_0" propertyId="rtc.rtcconfiguration.rtcoscillatormode" value="Crystal mode"/>
+    <property object="RTC_0" propertyId="rtc.rtcconfiguration.rtcoscillatorselection" value="External Crystal"/>
+    <property object="RTC_0" propertyId="rtc.rtccontrol.enablertcoscillator" value="Enabled"/>
+    <property object="RTC_0" propertyId="rtc.rtccontrol.rtctimerruncontrol" value="Start"/>
+    <property object="TIMER01_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1highbyte.timer1highbyte" value="245"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1lowbyte.timer1lowbyte" value="203"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="230400"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerinitvalue" value="203"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="245"/>
+    <property object="TIMER16_2" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="0"/>
+    <property object="TIMER16_3" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_3" propertyId="timer16.control.clocksource" value="SmaRTClock"/>
+    <property object="TIMER16_3" propertyId="timer16.control.runcontrol" value="Start"/>
+    <property object="TIMER16_3" propertyId="timer16.control.selectexternalclock" value="Clock is RTC, capture on EXTOSC / 8"/>
+    <property object="TIMER16_3" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
+    <property object="TIMER16_3" propertyId="timer16.highbyte.highbyte" value="248"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="1000"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.timerinitvalue" value="63494"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="65503"/>
+    <property object="TIMER16_3" propertyId="timer16.lowbyte.lowbyte" value="6"/>
+    <property object="TIMER16_3" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="255"/>
+    <property object="TIMER16_3" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="223"/>
+    <property object="TIMER_SETUP_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER_SETUP_0" propertyId="timer_setup.clockcontrol0.timer01prescale" value="SYSCLK / 4"/>
+    <property object="TIMER_SETUP_0" propertyId="timer_setup.timer01control.timer1runcontrol" value="Start"/>
+    <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.mode" value="Mode 2, 8-bit Counter/Timer with Auto-Reload"/>
+    <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.timerrunningstate" value="Timer is Running"/>
+    <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.timerswitch1:runcontrol" value="Start"/>
+    <property object="UART_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="UART_0" propertyId="uart.serialportcontrol.enablereceive" value="Enabled"/>
+    <property object="VDDMON_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="VDDMON_0" propertyId="vddmon.vddsupplymonitorcontrol.enablevddearlywarninginterrupt" value="Disabled"/>
+    <property object="VDDMON_0" propertyId="vddmon.vddsupplymonitorcontrol.enablevddsupplymonitor" value="Disabled"/>
+    <property object="VREF_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="VREF_0" propertyId="vref.voltagereferencecontrol.temperaturesensor" value="Enabled"/>
+  </mode>
+  <modeTransition>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.source" value="RESET"/>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
+  </modeTransition>
+</device:XMLDevice>

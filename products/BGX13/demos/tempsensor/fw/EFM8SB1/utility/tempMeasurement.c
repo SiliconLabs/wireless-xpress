@@ -1,5 +1,5 @@
 #include "efm8_config.h"
-#include "SI_EFM8UB1_Defs.h"
+#include "SI_EFM8SB1_Defs.h"
 #include "stdio.h"
 
 #define SCALE                    1000L // Scale for temp calculations
@@ -9,7 +9,7 @@
 #define SLOPE     		          1930 // Slope of the temp transfer function
 #define OFFSET		           276471L // Offset for the temp transfer function
 
-#define COMP_ADDRESS            0x2000 // Location of compensation
+#define COMP_ADDRESS            0x1E00 // Location of compensation
 
 // Flash stored compensation
 SI_LOCATED_VARIABLE_NO_INIT(COMPENSATION, uint32_t, const SI_SEG_CODE, COMP_ADDRESS);

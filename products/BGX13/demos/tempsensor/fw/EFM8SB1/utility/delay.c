@@ -1,12 +1,5 @@
-/*
- * delay.c
- *
- *  Created on: Jul 14, 2018
- *      Author: padorris
- */
-
 #include "efm8_config.h"
-#include "SI_EFM8UB1_Defs.h"
+#include "SI_EFM8SB1_Defs.h"
 
 uint16_t delayDuration = 0;
 
