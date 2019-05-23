@@ -97,9 +97,18 @@ enum {
           return;
         }
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+          // sort versions.
+          
+          self.dms_firmware_versions = [versions sortedArrayUsingComparator:^(id obj1, id obj2){
+              NSDictionary * d1 = SafeType(obj1, [NSDictionary class]);
+              NSDictionary * d2 = SafeType(obj2, [NSDictionary class]);
+              Version * v1 = [Version versionFromString: [d1 objectForKey:@"version"]];
+              Version * v2 = [Version versionFromString: [d2 objectForKey:@"version"]];
 
-        self.dms_firmware_versions = versions;
+              return [v2 compare:v1];
+          }];
+          
+    dispatch_async(dispatch_get_main_queue(), ^{
 
         if (self.bootloaderVersion < kBootloaderSecurityUpdateVersion) {
             // show the security decorator.
@@ -196,17 +205,19 @@ enum {
           break;
         case ota_step_upload_no_response:
         case ota_step_upload_with_response:
-          self->updateLabel.text = @"Updating firmware…";
+          self->updateLabel.text = @"Transferring firmware…";
           [self->determined_progress setHidden: NO];
           [self->spinner setHidden:YES];
           break;
         case ota_step_upload_finish:
-          self->updateLabel.text = @"Finishing…";
+          self->updateLabel.text = @"Updating firmware - Do not disconnect!";
           [self->determined_progress setHidden: YES];
           [self->spinner setHidden:NO];
+          [self->spinner startAnimating];
           break;
         case ota_step_end:
           self->updateLabel.text = @"Finished.";
+          [self->spinner stopAnimating];
           [self->spinner setHidden:YES];
 
           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -335,6 +346,8 @@ enum {
         
         cell.textLabel.text = NSLocalizedString(@"Show Firmware Release Notes", @"Label");
         
+    } else {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"blank"];
     }
 
 

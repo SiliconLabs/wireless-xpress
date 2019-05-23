@@ -15,8 +15,8 @@
     <string name="fw_update_release_label">Release</string>
     <string name="fw_update_all_label">All</string>
     <string name="OTA_Status_Downloading">Downloading Firmware Image</string>
-    <string name="OTA_Status_Installing">Installing…</string>
-    <string name="OTA_Status_Finishing">Finishing…</string>
+    <string name="OTA_Status_Installing">Transferring firmware…</string>
+    <string name="OTA_Status_Finishing">Updating firmware - Do not disconnect!</string>
     <string name="OTA_Status_Finished">Firmware Update Complete.</string>
 
     <string name="OTA_Status_UserCanceled">Firmware Update Canceled.</string>

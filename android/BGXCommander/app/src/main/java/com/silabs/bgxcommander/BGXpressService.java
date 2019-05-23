@@ -62,8 +62,11 @@ import java.io.InputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT;
+import static android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE;
+
 import static android.bluetooth.BluetoothProfile.GATT;
-import static android.bluetooth.BluetoothProfile.STATE_CONNECTED;
+
 
 /**
  * @addtogroup bgx_service BGXpressService
@@ -82,7 +85,8 @@ import static android.bluetooth.BluetoothProfile.STATE_CONNECTED;
  */
 
 /**
- * This enum is the Connection Status of the BGXpressService instance.
+ * The BGX_CONNECTION_STATUS datatype describes the connection
+ * status of a BGX Device.
  */
 enum BGX_CONNECTION_STATUS {
      DISCONNECTED       ///< The BGXpressService is not connected to a BGX.
@@ -142,7 +146,7 @@ public class BGXpressService extends IntentService {
 
     /**
      * This is sent to cause the BGXpressService to disconnect from a connected BGX.
-     * TODO: Add a static method for this to send the intent.
+     *
      */
     public static final String ACTION_BGX_DISCONNECT = "com.silabs.bgx.action.Disconnect";
 
@@ -215,7 +219,6 @@ public class BGXpressService extends IntentService {
      * bgx-part-id - BGXPartID - one of the following values: BGX13S or BGX13P
      * dms-version - String - the DMS version number you want to retrieve.
      *
-     * TO DO: Handle fail cases (e.g. specify a version number that doesn't exist as right now the calling app gets no reply.)
      */
     public static final String ACTION_DMS_REQUEST_VERSION   = "com.silabs.bgx.action.RequestDMSVersion";
 
@@ -253,6 +256,7 @@ public class BGXpressService extends IntentService {
     /**
      * Extras:
      * data - String - contains the data that was received from the BGX.
+     * DeviceAddress - string - the address of the BGX that received data.
      */
     public static final String BGX_DATA_RECEIVED            = "com.silabs.bgx.intent.data-received";
 
@@ -263,10 +267,21 @@ public class BGXpressService extends IntentService {
      */
     public static final String BGX_SCAN_MODE_CHANGE         = "com.silabs.bgx.intent.scan-mode-change";
 
+    /**
+     * BGX_MTU_CHANGE
+     * @param deviceAddress device address
+     * @param status operation status
+     * @param mtu the new mtu size
+     */
+    public static final String BGX_MTU_CHANGE               = "com.silabs.bgx.intent.mtu-change";
 
     /**
      * This is sent as a broadcast intent when a BGX device is discovered during scanning.
-     *
+     * @param DeviceRecord a HashMap containing information about the device that was discovered.
+     *                     The HashMap contains the following keys:
+     *                     name - Device name
+     *                     uuid - Device address
+     *                     rssi - the device's current rssi.
      */
     public static final String BGX_SCAN_DEVICE_DISCOVERED   = "com.silabs.bgx.intent.scan-device-discovered";
 
@@ -328,6 +343,12 @@ public class BGXpressService extends IntentService {
      */
     public static final String DMS_VERSIONS_AVAILABLE       = "com.silabs.bgx.dms.versions-available";
 
+    /**
+     *
+     * Extras:
+     * mtu - Integer - the MTU to request. Default value is 250.
+     */
+    private static final String ACTION_REQUEST_MTU = "com.silabs.bgx.request_mtu";
 
     /** DMS URL for BGX13S firmware versions. */
     private static final String DMS_VERSIONS_URL_S       = "https://bgx13.zentri.com/products/bgx13s/versions";
@@ -355,6 +376,7 @@ public class BGXpressService extends IntentService {
     private static final String ACTION_ENABLE_TX_CHANGE_NOTIFICATION = "com.silabs.bgx.tx.notification.setup";
     private static final String ACTION_SET_2M_PHY = "com.silabs.bgx.set2mphy";
     private static final String ACTION_READ_FIRMWARE_REVISION = "com.silabs.bgx.read_firmware_revision";
+
 
 
     private String getDmsAPIKey() {
@@ -459,6 +481,7 @@ public class BGXpressService extends IntentService {
             this.mConnectionTimer = null;
             this.mBootloaderVersion = -1;
             this.mFirmwareRevisionString = "";
+            this.deviceWriteChunkSize = kDataWriteChunkDefaultSize;
         }
 
         private BluetoothGatt mBluetoothGatt;
@@ -491,7 +514,7 @@ public class BGXpressService extends IntentService {
         private BluetoothGattCharacteristic mOTADataCharacteristic;
         private BluetoothGattCharacteristic mOTADeviceIDCharacterisitc;
 
-
+        private int deviceWriteChunkSize;
 
         private volatile Boolean fUserConnectionCanceled;
 
@@ -701,6 +724,13 @@ public class BGXpressService extends IntentService {
                             }
                             break;
 
+                            case ACTION_REQUEST_MTU: {
+                                int mtu;
+                                mtu = intent.getIntExtra("mtu", 250);
+                                mBluetoothGatt.requestMtu(mtu);
+                            }
+                            break;
+
                         }
                     }
                 }
@@ -751,6 +781,23 @@ public class BGXpressService extends IntentService {
                 } else {
                     Log.e("bgx_dbg", "onPhyUpdate: ERROR");
                 }
+                clearGattBusyFlagAndExecuteNext();
+            }
+
+            @Override
+            public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+
+                if (0 == status) {
+                    deviceWriteChunkSize = mtu - 3;
+                }
+
+                Intent intent = new Intent();
+                intent.setAction(BGX_MTU_CHANGE);
+                intent.putExtra("mtu", mtu);
+                intent.putExtra("status", status);
+                intent.putExtra("deviceAddress", gatt.getDevice().getAddress());
+                sendBroadcast(intent);
+
                 clearGattBusyFlagAndExecuteNext();
             }
 
@@ -836,16 +883,6 @@ public class BGXpressService extends IntentService {
                 Log.d("bgx_dbg", "onServicesDiscovered.");
                 // look for BGX Streaming Service (BGXSS).
 
-                /*
-                List<BluetoothGattService> theServices = gatt.getServices();
-
-                for (int i = 0; i < theServices.size(); ++i) {
-                    BluetoothGattService aService = theServices.get(i);
-                    Log.d("bgx_dbg", aService.getUuid().toString());
-                }
-                */
-
-
                 dps.mDeviceInfoService = gatt.getService( UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb") );
                 if (null != dps.mDeviceInfoService) {
                     Log.d("bgx_dbg", "DeviceInfo Service found.");
@@ -914,6 +951,9 @@ public class BGXpressService extends IntentService {
                 }
 
 
+                Intent mtuIntent = new Intent(ACTION_REQUEST_MTU);
+                mtuIntent.putExtra("mtu", 250);
+                queueGattIntent(mtuIntent);
 
                 mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.CONNECTED;
                 Intent broadcastIntent = new Intent();
@@ -1016,7 +1056,7 @@ public class BGXpressService extends IntentService {
             @Override
             public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
 
-                DeviceProperties dps = mDeviceProperties.get(gatt.getDevice().getAddress());
+                final DeviceProperties dps = mDeviceProperties.get(gatt.getDevice().getAddress());
 
                 if (dps.mOTAControlCharacteristic == characteristic) {
                     Log.d("bgx_dbg", "onCharacteristicWrite OTAControlCharacteristic");
@@ -1039,16 +1079,26 @@ public class BGXpressService extends IntentService {
                         }
 
                     } else if (OTA_State.WriteThreeToControlCharacteristic == dps.mOTAState) {
-                        Intent intent = new Intent();
-                        intent.setAction(OTA_STATUS_MESSAGE);
-                        intent.putExtra("ota_status", OTA_Status.Finished);
-                        intent.putExtra("DeviceAddress", gatt.getDevice().getAddress());
-                        sendBroadcast(intent);
+
+                        mHandler.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent();
+                                intent.setAction(OTA_STATUS_MESSAGE);
+                                intent.putExtra("ota_status", OTA_Status.Finished);
+
+                                intent.putExtra("DeviceAddress", dps.mBluetoothGatt.getDevice().getAddress());
+                                sendBroadcast(intent);
 
 
-                        dps.fOTAInProgress = false;
-                        dps.mOTAState = OTA_State.OTA_Idle;
-                        dps.clearGattBusyFlagAndExecuteNext();
+                                dps.fOTAInProgress = false;
+                                dps.mOTAState = OTA_State.OTA_Idle;
+                                dps.clearGattBusyFlagAndExecuteNext();
+                            }
+                        }, 15000);
+
+
                     }
                 } else if (dps.mOTADataCharacteristic == characteristic) {
                     Log.d("bgx_dbg", "onCharacteristicWrite OTADataCharacteristic");
@@ -1155,10 +1205,9 @@ public class BGXpressService extends IntentService {
         }
 
 
-        private static final int kDataWriteChunkSize = 20;
+        private static final int kDataWriteChunkDefaultSize = 20;
 
         /**
-         * writeChunkOfData
          *
          * This is called to write a bit of data to the Rx characteristic.
          * and will be called again from OnCharacteristicWrite until all
@@ -1172,16 +1221,16 @@ public class BGXpressService extends IntentService {
             int ibegin, iend;
 
             ibegin = this.mWriteOffset;
-            iend = this.mData2Write.length - 1;
+            iend = this.mData2Write.length;
 
-            if (iend - ibegin > kDataWriteChunkSize) {
-                iend = ibegin + kDataWriteChunkSize;
+            if (iend - ibegin > this.deviceWriteChunkSize) {
+                iend = ibegin + this.deviceWriteChunkSize;
             }
 
 
             this.mRxCharacteristic.setValue( Arrays.copyOfRange(this.mData2Write, ibegin, iend));
 
-            if (this.mData2Write.length-1 > iend) {
+            if (this.mData2Write.length > iend) {
                 this.mWriteOffset = iend ;
             } else {
                 this.mWriteOffset = 0;
@@ -1259,7 +1308,6 @@ public class BGXpressService extends IntentService {
         }
 
         /**
-         * finishOTA
          *
          *  write the final three to the OTA control characteristic.
          */
@@ -1298,8 +1346,6 @@ public class BGXpressService extends IntentService {
         }
 
         /**
-         * handleActionOTAWithImage
-         *
          * Perform the OTA.
          *
          * @param ota_image_path the path to the image to use for the OTA.
@@ -1359,20 +1405,6 @@ public class BGXpressService extends IntentService {
         }
 
 
-        /**
-         * clearCancelFlag
-         *
-         * Call this before initiating a connection in order to clear the connection cancel flag.
-         *
-         * To Do: maybe we can clear this a better way (such as when the user calls connect?)
-         */
-        public void clearCancelFlag() {
-            if (this.fUserConnectionCanceled) {
-                Log.d("bgx_dbg", "Clearing the cancel flag.");
-            }
-            this.fUserConnectionCanceled = false;
-        }
-
     };
 
 
@@ -1417,6 +1449,7 @@ public class BGXpressService extends IntentService {
      * Starts this service to perform action Start Scan. If
      * the service is already performing a task this action will be queued.
      *
+     * @param context  Interface to global information about an Android application environment.
      * @see IntentService
      */
     public static void startActionStartScan(Context context) {
@@ -1430,6 +1463,7 @@ public class BGXpressService extends IntentService {
      * Starts this service to perform action Stop Scan. If
      * the service is already performing a task this action will be queued.
      *
+     * @param context Interface to global information about an Android application environment.
      * @see IntentService
      */
     public static void startActionStopScan(Context context) {
@@ -1442,10 +1476,11 @@ public class BGXpressService extends IntentService {
     /**
      * startActionBGXConnect
      *
-     * Attempt to connect to the specified device.
+     * Attempt to connect to the specified device. The process of the connection
+     * can be tracked by receiving a series of BGX_CONNECTION_STATUS_CHANGE intents.
      *
-     * @param context
-     * @param deviceAddress the Bluetooth address of the device to which you wish to connect.
+     * @param context  Interface to global information about an Android application environment.
+     * @param deviceAddress the Bluetooth address of the device to which to connect.
      */
     public static void startActionBGXConnect(Context context, String deviceAddress) {
 
@@ -1460,7 +1495,9 @@ public class BGXpressService extends IntentService {
      *
      * Attempt to cancel an in-progress connection operation.
      *
-     * @param context
+     * @param context  Interface to global information about an Android application environment.
+     * @param deviceAddress The Bluetooth address of the device to which
+     *                      to cancel the connection in progress.
      */
     public static void startActionBGXCancelConnect(Context context, String deviceAddress) {
         Intent intent = new Intent(context, BGXpressService.class);
@@ -1473,9 +1510,10 @@ public class BGXpressService extends IntentService {
      * startActionBGXDisconnect
      *
      * Disconnect a BGX Device.
+     * @param context Interface to global information about an Android application environment.
      * @param deviceAddress the Bluetooth address of the device to which you wish to connect.
      *
-     * @param context
+     *
      */
     public static void startActionBGXDisconnect(Context context, String deviceAddress) {
         Intent intent = new Intent(context, BGXpressService.class);
@@ -1492,13 +1530,55 @@ public class BGXpressService extends IntentService {
      * Starts an operation to get the device info which
      * is the part id and the device uuid.
      *
-     * @param context
+     * @param context Interface to global information about an Android application environment.
+     * @param deviceAddress The device to which the operation pertains.
      */
     public static void getBGXDeviceInfo(Context context, String deviceAddress) {
         Intent intent = new Intent(context, BGXpressService.class);
         intent.putExtra("DeviceAddress", deviceAddress);
         intent.setAction(ACTION_BGX_GET_INFO);
         context.startService(intent);
+    }
+
+    public static boolean setBGXAcknowledgedWrites(String deviceAddress, boolean acknowledgedWrites)
+    {
+        boolean result = false;
+        DeviceProperties dps = mDeviceProperties.get(deviceAddress);
+        if (dps != null) {
+            int writeType;
+            if (acknowledgedWrites) {
+                writeType = WRITE_TYPE_DEFAULT;
+            } else {
+                writeType = WRITE_TYPE_NO_RESPONSE;
+            }
+            dps.mRxCharacteristic.setWriteType(writeType);
+        }
+        return result;
+    }
+
+    public static boolean setBGXAcknowledgedReads(String deviceAddress, boolean acknowledgedReads)
+    {
+        boolean result = false;
+        DeviceProperties dps = mDeviceProperties.get(deviceAddress);
+        if (dps != null) {
+            BluetoothGattDescriptor desc = dps.mTxCharacteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+
+            if (acknowledgedReads) {
+                desc.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            } else {
+                desc.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+            }
+            boolean fresult = dps.mBluetoothGatt.writeDescriptor(desc);
+
+            if (!fresult) {
+                Log.e("bgx_dbg", "An error occurred writing to the characteristic descriptor for Tx.");
+
+            } else {
+                result = true;
+            }
+            dps.mBluetoothGatt.setCharacteristicNotification(dps.mTxCharacteristic, true);
+        }
+        return true;
     }
 
     public static BGX_CONNECTION_STATUS getBGXDeviceConnectionStatus(String deviceAddress) {
@@ -1542,6 +1622,7 @@ public class BGXpressService extends IntentService {
      * getFirmwareRevision
      *
      * @param deviceAddress Address of the device to retrieve the firmware revision
+     * @return String containing the firmware version if available, otherwise NULL.
      */
 
     public static String getFirmwareRevision(String deviceAddress) {
@@ -1638,13 +1719,16 @@ public class BGXpressService extends IntentService {
      */
     private void handleActionStartScan() {
         Log.d("bgx_dbg", "BGXpressService::StartScan");
-        
-        mScanProperties.mScanResults = new ArrayList<BluetoothDevice>();
-        mScanProperties.mLEScanner.startScan(mScanProperties.filters, mScanProperties.settings, mScanProperties.mScanCallback);
-        Intent intent = new Intent();
-        intent.setAction(BGX_SCAN_MODE_CHANGE);
-        intent.putExtra("isscanning", true);
-        sendBroadcast(intent);
+
+        if (null != mScanProperties && null != mScanProperties.mLEScanner) {
+
+            mScanProperties.mScanResults = new ArrayList<BluetoothDevice>();
+            mScanProperties.mLEScanner.startScan(mScanProperties.filters, mScanProperties.settings, mScanProperties.mScanCallback);
+            Intent intent = new Intent();
+            intent.setAction(BGX_SCAN_MODE_CHANGE);
+            intent.putExtra("isscanning", true);
+            sendBroadcast(intent);
+        }
     }
 
     /**
@@ -1666,7 +1750,7 @@ public class BGXpressService extends IntentService {
      *  As it connects, we will broadcast various state changes
      *  the caller will receive these and respond to them.
      *
-     * @param deviceAddress
+     * @param deviceAddress Address of the device to which to connect.
      */
     private void handleActionBGXConnect(String deviceAddress) {
         BluetoothDevice btDevice = null;

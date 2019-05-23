@@ -9,8 +9,8 @@ android {
         applicationId "com.silabs.bgxcommander"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 7
-        versionName "2.0.0"
+        versionCode 9
+        versionName "2.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [DMS_API_KEY: System.getenv('DMS_API_KEY')]
     }

@@ -26,6 +26,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 @implementation BGXDevice
 {
     __strong CBPeripheral * peripheral;
+    __strong NSString * device_name;
     __strong NSNumber * _rssi;
     __strong BGXpressScanner * _scanner;
     __strong NSTimer * _connectionTimer;
@@ -45,6 +46,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     __strong NSMutableData *dataBuffer;
 
     __weak NSTimer * rssiTimer;
+    BOOL _acknowledgedWrites;
 }
 
 
@@ -58,6 +60,8 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 {
     self = [super init];
     if (self) {
+        device_name = [advData objectForKey:@"kCBAdvDataLocalName"];
+        
         _scanner = scanner;
         peripheral = peripheralParam;
         peripheral.delegate = self;
@@ -66,6 +70,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
         _busMode = UNKNOWN_MODE;
         _connectionTimer = nil;
         rssiTimer = nil;
+        _acknowledgedWrites = YES;
         
     }
     return self;
@@ -110,7 +115,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (NSString *)name
 {
-    return peripheral.name;
+    return device_name;
 }
 
 - (NSString *)description
@@ -181,16 +186,20 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 #pragma mark - BGX Serial Methods
 
-- (BOOL) canWrite
+- (BOOL)canWrite
 {
-    if (( Connected == self.deviceState ) && (!dataToWrite)) {
-        return YES;
+    if (Connected == self.deviceState) {
+        if (!self.writeWithResponse) {
+            return self.peripheral.canSendWriteWithoutResponse;
+        } else if (!dataToWrite) {
+            return YES;
+        }
     }
 
     return NO;
 }
 
-- (BOOL) readBusMode
+- (BOOL)readBusMode
 {
     if (self.deviceState  != Connected)
     {
@@ -203,7 +212,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (BOOL)writeBusMode:(BusMode)newBusMode
 {
-    if (self.deviceState  != Connected)
+    if (self.deviceState != Connected)
     {
         return NO;
     }
@@ -221,7 +230,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (BOOL) writeData:(NSData *) data
 {
-    if ((self.deviceState  != Connected) || dataToWrite)
+    if ((self.deviceState != Connected) || dataToWrite)
     {
         return NO;
     }
@@ -234,12 +243,14 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (void) writeChunkOfData
 {
+    NSUInteger amount2Write = [self.peripheral maximumWriteValueLengthForType:self.writeWithResponse ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse];
+    
     range.length = dataToWrite.length - range.location;
-    if (range.length > 20)
+    if (range.length > amount2Write)
     {
-        range.length = 20;
+        range.length = amount2Write;
     }
-    [peripheral writeValue:[dataToWrite subdataWithRange:range] forCharacteristic:perRXchar type:CBCharacteristicWriteWithResponse];
+    [peripheral writeValue:[dataToWrite subdataWithRange:range] forCharacteristic:perRXchar type: self.writeWithResponse ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse];
     range.location += range.length;
 }
 
@@ -343,7 +354,6 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
         NSArray * comps = [rawVersionString componentsSeparatedByString:@"-"];
         // there should be three. Bootloader version should be the middle one.
         if (3 == comps.count) {
-            self.bootloaderVersion = comps[1];
             
             NSString * comp0Ver = comps[0];
             NSString * versionPrefix = @"BGX13";
@@ -358,6 +368,8 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
                 NSLog(@"Warning: Unexpected firmware revision string format: %@", rawVersionString);
                 self.firmwareRevision = rawVersionString;
             }
+            
+            self.bootloaderVersion = comps[1];
         }
         
         
@@ -412,6 +424,19 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     }
 }
 
+- (void)peripheralIsReadyToSendWriteWithoutResponse:(CBPeripheral *)peripheral
+{
+
+    if (dataToWrite) {
+        if (dataToWrite.length == range.location) {
+            dataToWrite = nil;
+            [[self serialDelegate] dataWrittenForDevice:self];
+        } else {
+            [self writeChunkOfData];
+        }
+    }
+}
+
 - (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(nullable NSError *)error
 {
     if (nil == error) {
@@ -431,7 +456,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     
 }
 
-- (NSString *)device_unique_id
+- (nullable NSString *)device_unique_id
 {
     NSString * result = nil;
     if (deviceUniqueIdenChar) {

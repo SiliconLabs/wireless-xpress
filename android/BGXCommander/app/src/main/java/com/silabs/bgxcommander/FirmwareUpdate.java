@@ -40,6 +40,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import static android.view.View.GONE;
 import static com.silabs.bgxcommander.BGXpressService.ACTION_OTA_WITH_IMAGE;
 import static com.silabs.bgxcommander.BGXpressService.DMS_VERSION_LOADED;
@@ -268,7 +273,38 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
     public void setDMSVersions(JSONArray dmsVersions) {
 
 
-        mDMSVersions = dmsVersions;
+        try {
+            List<JSONObject> jsons = new ArrayList<JSONObject>();
+            for (int i = 0; i < dmsVersions.length(); i++) {
+                jsons.add(dmsVersions.getJSONObject(i));
+            }
+
+
+            Collections.sort(jsons, new Comparator<JSONObject>() {
+                @Override
+                public int compare(JSONObject o1, JSONObject o2) {
+                    try {
+                        Log.d("bgx", "Got to here.");
+                        String slversion = (String) o1.get("version");
+                        String srversion = (String) o2.get("version");
+                        Version lversion = new Version(slversion);
+                        Version rversion = new Version(srversion);
+
+                        return rversion.compareTo(lversion);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
+                }
+            });
+
+            mDMSVersions = new JSONArray();
+            for (int i = 0; i < jsons.size(); ++i) {
+                mDMSVersions.put(jsons.get(i));
+            }
+        } catch (JSONException e) {
+            mDMSVersions = dmsVersions;
+        }
 
         try {
             JSONArray tmpArray = null;
@@ -286,19 +322,23 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 decorationImageView.setBackground(security_decoration);
             } else {
 
-                Version vFirmwareRevision = new Version(BGXpressService.getFirmwareRevision(mBGXDeviceAddress));
+                try {
+                    Version vFirmwareRevision = new Version(BGXpressService.getFirmwareRevision(mBGXDeviceAddress));
 
-                for (int i = 0; i < tmpArray.length(); ++i) {
-                    JSONObject rec = (JSONObject) tmpArray.get(i);
-                    String sversion = (String) rec.get("version");
-                    Version iversion = new Version(sversion);
+                    for (int i = 0; i < tmpArray.length(); ++i) {
+                        JSONObject rec = (JSONObject) tmpArray.get(i);
+                        String sversion = (String) rec.get("version");
+                        Version iversion = new Version(sversion);
 
-                    if (iversion.compareTo(vFirmwareRevision) > 0) {
-                        // newer version available.
-                        Drawable update_decoration = ContextCompat.getDrawable(mContext, R.drawable.update_decoration);
-                        decorationImageView.setBackground( update_decoration);
-                        break;
+                        if (iversion.compareTo(vFirmwareRevision) > 0) {
+                            // newer version available.
+                            Drawable update_decoration = ContextCompat.getDrawable(mContext, R.drawable.update_decoration);
+                            decorationImageView.setBackground(update_decoration);
+                            break;
+                        }
                     }
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
                 }
             }
 

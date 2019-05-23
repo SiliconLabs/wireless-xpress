@@ -155,10 +155,13 @@ public class DeviceDetails extends AppCompatActivity {
                                     if (iversion.compareTo(vFirmwareRevision) > 0) {
                                         // newer version available.
                                         mIconItem.setIcon(ContextCompat.getDrawable(mContext, R.drawable.update_decoration));
+                                        break;
                                     }
                                 }
 
                             } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (RuntimeException e) {
                                 e.printStackTrace();
                             }
                         }

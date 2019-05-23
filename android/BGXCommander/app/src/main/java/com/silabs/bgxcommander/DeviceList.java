@@ -145,6 +145,10 @@ public class DeviceList extends AppCompatActivity {
                             intent2.putExtra("DeviceName", btDevice.getName());
                             intent2.putExtra("DeviceAddress", btDevice.getAddress());
                             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            BGXpressService.setBGXAcknowledgedReads(btDevice.getAddress(), true);
+                            BGXpressService.setBGXAcknowledgedWrites(btDevice.getAddress(), true);
+
                             context.startActivity(intent2);
                         }
                     }
@@ -328,6 +332,10 @@ public class DeviceList extends AppCompatActivity {
             } else {
                 scanForDevices();
 
+            }
+        } else {
+            if (null != mScanItem) {
+                mScanItem.setEnabled(false);
             }
         }
     }

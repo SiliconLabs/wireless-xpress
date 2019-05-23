@@ -254,35 +254,46 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
                  [AppDelegate sharedAppDelegate].selectedDeviceDectorator = SecurityDecoration;
                 self.mmDrawerBarButtonItem.decorationState = SecurityDecoration;
             } else {
-                self.selected_device_bgx_dms = [[bgx_dms alloc] initWithBGXUniqueDeviceID: [[AppDelegate sharedAppDelegate].selectedDevice device_unique_id]];
+                NSString * deviceID = [[AppDelegate sharedAppDelegate].selectedDevice device_unique_id];
+                if (deviceID) {
+                    self.selected_device_bgx_dms = [[bgx_dms alloc] initWithBGXUniqueDeviceID: deviceID];
                 
                 
-                [self.selected_device_bgx_dms retrieveAvailableVersions:^(NSError * error, NSArray * availableVersions){
+                    [self.selected_device_bgx_dms retrieveAvailableVersions:^(NSError * error, NSArray * availableVersions){
                     
-                    if (!error) {
-                        dispatch_block_t myBlock = ^{
-                            Version * currentDeviceFWVersion = [[Version alloc] initWithString: [AppDelegate sharedAppDelegate].selectedDevice.firmwareRevision];
-                            for (NSDictionary * iVersion in availableVersions) {
-                                NSString * sversion = SafeType([iVersion objectForKey:@"version"] , [NSString class]);
-                                if (sversion) {
-                                    if (NSOrderedAscending == [currentDeviceFWVersion compare: [Version versionFromString:sversion]]) {
-
-                                        [AppDelegate sharedAppDelegate].selectedDeviceDectorator = UpdateDecoration;
-                                        self.mmDrawerBarButtonItem.decorationState = UpdateDecoration;
+                        if (!error) {
+                            dispatch_block_t myBlock = ^{
+                                @try {
+                                    Version * currentDeviceFWVersion = [[Version alloc] initWithString: [AppDelegate sharedAppDelegate].selectedDevice.firmwareRevision];
+                                    for (NSDictionary * iVersion in availableVersions) {
+                                        NSString * sversion = SafeType([iVersion objectForKey:@"version"] , [NSString class]);
+                                        if (sversion) {
+                                            if (NSOrderedAscending == [currentDeviceFWVersion compare: [Version versionFromString:sversion]]) {
+                                                
+                                                [AppDelegate sharedAppDelegate].selectedDeviceDectorator = UpdateDecoration;
+                                                self.mmDrawerBarButtonItem.decorationState = UpdateDecoration;
+                                            }
+                                        }
                                     }
+                                } @catch (NSException *exception) {
+                                    NSLog(@"Exception caught: %@", [exception description]);
+                                    
+                                } @finally {
+                                    
                                 }
+                                
+                            };
+                            
+                            if ([NSThread isMainThread]) {
+                                (myBlock)();
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), myBlock);
                             }
-                        };
-                        
-                        if ([NSThread isMainThread]) {
-                            (myBlock)();
-                        } else {
-                            dispatch_async(dispatch_get_main_queue(), myBlock);
-                        }
 
-                    }
-                    
-                }];
+                        }
+                        
+                    }];
+                }
                 
             }
             

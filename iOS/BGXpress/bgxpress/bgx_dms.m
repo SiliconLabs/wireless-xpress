@@ -130,6 +130,7 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 {
     SCNetworkReachabilityUnscheduleFromRunLoop(self.reachabilityRef, self.runloop4Reachability, kCFRunLoopDefaultMode );
     CFRelease(self.reachabilityRef);
+    self.reachabilityRef = nil;
     self.runloop4Reachability = nil;
 }
 

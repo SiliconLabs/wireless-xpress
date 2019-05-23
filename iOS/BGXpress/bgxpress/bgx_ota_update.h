@@ -48,7 +48,6 @@ typedef NS_ENUM(int, ota_step_t) {
   ,ota_step_upload_with_response ///< Performing an OTA update with write verification.
   ,ota_step_upload_finish ///< Finished uploading gbl image. Performing finishing operations.
   ,ota_step_end ///< This value indicates that the update operation is at an end.
-
   ,ota_step_error /// < An error has occurred during the OTA.
 
   ,ota_max_step ///< all step values greater or equal to this value are defined as invalid.

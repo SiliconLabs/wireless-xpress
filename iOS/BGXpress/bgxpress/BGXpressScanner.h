@@ -15,6 +15,17 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
+/**
+ * @addtogroup BGXpressScanner BGXpressScanner
+ *
+ * BGXpressScanner is used to detect changes to the Bluetooth hardware
+ * and scan for devices. It also contains a list of devices.
+ *
+ * It has a delegate property using the BGXpressScanDelegate protocol.
+ *
+ * @{
+ */
+
 @class BGXDevice;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -95,3 +106,4 @@ typedef NS_ENUM(NSUInteger, ScanState) {
 @end
 
 NS_ASSUME_NONNULL_END
+/** @} */

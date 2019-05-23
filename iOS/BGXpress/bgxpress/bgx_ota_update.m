@@ -205,13 +205,19 @@ const NSUInteger kChunkSize = 244;
         printf("Disconnected.\n");
       }
 
-      self.ota_step = ota_step_end;
-      self.operationInProgress = ota_firmware_update_complete;
+        
+        // wait 15 seconds in order for the BGX to load the new firmware.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.ota_step = ota_step_end;
+            self.operationInProgress = ota_firmware_update_complete;
+            
+            
+            dispatch_async(self.update_dispatch_queue, ^{
+                [self takeStep];
+            });
 
-
-      dispatch_async(self.update_dispatch_queue, ^{
-        [self takeStep];
-      });
+        });
+        
     }
 
   } else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:SLAB_OTA_DATA_CHARACTERISTIC]]) {

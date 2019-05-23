@@ -70,23 +70,7 @@ public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdap
         holder.getUuidTextView().setText(deviceAddress);
         holder.getRssiValueTextView().setText(rssiValueStr);
 
-        /*
-        BGX_CONNECTION_STATUS deviceConnectionStatus = BGXpressService.getBGXDeviceConnectionStatus(deviceAddress);
-        switch (deviceConnectionStatus) {
-            case CONNECTING:
-            case INTERROGATING:
-            case DISCONNECTING:
 
-
-                break;
-            case DISCONNECTED:
-
-                break;
-            case CONNECTED:
-
-                break;
-        }
-        */
     }
 
     @Override

@@ -13,6 +13,15 @@
 
 #import <Foundation/Foundation.h>
 
+
+/**
+ * @addtogroup Version Version
+ *
+ * Version is a class used to work with (parse, enforce, and comapre) the
+ * version scheme used for BGX Firmware.
+ * @{
+ */
+
 NS_ASSUME_NONNULL_BEGIN
 /*
  Version scheme:
@@ -60,3 +69,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+/** @} */

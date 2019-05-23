@@ -15,8 +15,21 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
+/**
+ * @addtogroup BGXDevice BGXDevice
+ * The BGXDevice class is used to represent the BGX device. It contains a group
+ * of properties as well as methods used to perform appropriate actions on a
+ * BGXDevice.
+ *
+ * Supports two delegates, deviceDelegate and serialDelegate, as well as KVO.
+ * @{
+ */
+
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * DeviceState values
+ */
 typedef NS_ENUM(NSUInteger, DeviceState) {
      Interrogating  ///< The BGXDevice has connected and bluetooth services and characteristics are being discovered.
     ,Disconnected   ///< The BGXDevice is not connected (to this iOS device).
@@ -196,7 +209,7 @@ typedef enum
  *
  * @return NSString with the unique id of the device. Nil on error.
  */
-- (NSString *)device_unique_id;
+- (nullable NSString *)device_unique_id;
 
 
 /**
@@ -220,7 +233,15 @@ typedef enum
 @property (nonatomic, strong) NSString *firmwareRevision;
 @property (nonatomic, strong) NSString *bootloaderVersion;
 
+/**
+ * YES = Writes occur using CBCharacteristicWriteWithResponse
+ * NO = Writes occur using CBCharacteristicWriteWithoutResponse
+ * @default = YES
+ */
+@property (nonatomic) BOOL writeWithResponse;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+/** @} */
