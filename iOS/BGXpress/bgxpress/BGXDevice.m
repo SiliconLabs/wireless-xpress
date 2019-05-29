@@ -47,6 +47,9 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
     __weak NSTimer * rssiTimer;
     BOOL _acknowledgedWrites;
+    
+    
+    NSUInteger _dataWriteSize;
 }
 
 
@@ -71,6 +74,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
         _connectionTimer = nil;
         rssiTimer = nil;
         _acknowledgedWrites = YES;
+        _dataWriteSize = 0;
         
     }
     return self;
@@ -167,6 +171,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     modeChar  = nil;
     firRevStrChar = nil;
     deviceUniqueIdenChar = nil;
+    _dataWriteSize = 0;
 }
 
 
@@ -234,6 +239,18 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     {
         return NO;
     }
+    
+    if ( 0 == _dataWriteSize) {
+        NSUInteger writeWithout = [self.peripheral maximumWriteValueLengthForType: CBCharacteristicWriteWithoutResponse];
+        NSUInteger writeWith = [self.peripheral maximumWriteValueLengthForType: CBCharacteristicWriteWithResponse];
+        
+        if (writeWithout < writeWith) {
+            _dataWriteSize = writeWithout;
+        } else {
+            _dataWriteSize = writeWith;
+        }
+    }
+    
     dataToWrite = [NSData dataWithData:data];
     range.location = 0;
     [self writeChunkOfData];
@@ -243,12 +260,11 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (void) writeChunkOfData
 {
-    NSUInteger amount2Write = [self.peripheral maximumWriteValueLengthForType:self.writeWithResponse ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse];
-    
+    NSAssert(0 != _dataWriteSize, @"Invalid write size");
     range.length = dataToWrite.length - range.location;
-    if (range.length > amount2Write)
+    if (range.length > _dataWriteSize)
     {
-        range.length = amount2Write;
+        range.length = _dataWriteSize;
     }
     [peripheral writeValue:[dataToWrite subdataWithRange:range] forCharacteristic:perRXchar type: self.writeWithResponse ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse];
     range.location += range.length;

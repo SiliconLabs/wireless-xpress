@@ -3,7 +3,6 @@ README
 
 ![alt text](http://pages.silabs.com/rs/634-SLU-379/images/BGX-transparent-450x450.png)
 
-
 This is the repository for holding the source code for the Wireless Xpress 
 code bases, including Silicon Labs BGX13 mobile frameworks and applications, 
 and demos for AMW007 and BGX13.
@@ -14,9 +13,9 @@ https://www.silabs.com/products/wireless/bluetooth/xpress
 You can find more information about the AMW007 here
 https://www.silabs.com/products/wireless/wi-fi/xpress
 
-The official documentation is found here https://docs.silabs.com/bgx, or on
-Github at https://siliconlabs.github.io/wireless-xpress.  Documentation for 
-AMW007 can be found at https://docs.silabs.com/wgx.
+The official documentation for BGX13 is found at https://docs.silabs.com/gecko-os/1/bgx/latest/.
+
+Documentation for AMW007 can be found at https://docs.silabs.com/gecko-os/amw007-w00001/2.0/.
 
 The source code repository is on Github at
 https://github.com/SiliconLabs/wireless-xpress
