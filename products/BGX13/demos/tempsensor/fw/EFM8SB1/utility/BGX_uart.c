@@ -57,14 +57,14 @@ void UART0_receiveCompleteCb()
   }
 }
 
-uint8_t BGX_Write(const char *buff)
+uint8_t BGX_Write(const char *buff, bool expectResponse)
 {
   DECL_PAGE;
   SET_PAGE(UART0_SFR_PAGE);
   strcpy(BGX_transmitBuffer, buff);
   UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
   RESTORE_PAGE;
-  if(MODE_PIN == COMMAND_MODE)
+  if(expectResponse == GET_RESPONSE)
   {
     return BGX_getResponse();
   }
@@ -191,15 +191,7 @@ void BGX_reset(int baudrate)
   }
 
   // Sends a breakout sequence to exit stream mode
-  delayAndWaitFor(600);
-  strcpy(BGX_transmitBuffer, "$$$");
-  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
-  delayAndWaitFor(1000);
-
-  // Flushes out any erroneous characters
-  strcpy(BGX_transmitBuffer, "\r");
-  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
-  delayAndWaitFor(50);
+  BGX_sendBreakoutSequence();
 
   // Sends a reboot command to the BGX
   strcpy(BGX_transmitBuffer, "reboot\r");
@@ -229,6 +221,20 @@ void BGX_setBaudRate()
   // Set SB1 baud rate to 9600
   TH1 = (0x7E << TH1_TH1__SHIFT);
   delayAndWaitFor(100);
+}
+
+void BGX_sendBreakoutSequence(void)
+{
+  // Sends a breakout sequence to exit stream mode
+  delayAndWaitFor(600);
+  strcpy(BGX_transmitBuffer, "$$$");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(1000);
+
+  // Flushes out any erroneous characters
+  strcpy(BGX_transmitBuffer, "\r");
+  UART0_writeBuffer(BGX_transmitBuffer, strlen(BGX_transmitBuffer));
+  delayAndWaitFor(50);
 }
 
 void listenerOn(void)

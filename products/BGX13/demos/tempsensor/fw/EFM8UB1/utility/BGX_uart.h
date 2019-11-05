@@ -1,6 +1,6 @@
 #ifndef BGX_UART_H_
 #define BGX_UART_H_
-#include <compiler_defs.h>
+#include <si_toolchain.h>
 uint8_t BGX_Write(const char*);
 uint8_t BGX_getResponse(void);
 void listenerOn(void);

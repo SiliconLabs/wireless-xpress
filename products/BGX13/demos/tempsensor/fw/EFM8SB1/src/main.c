@@ -77,36 +77,49 @@ int main(void)
   // Sets baud rate to 9600 for low power
   BGX_setBaudRate();
   // Puts the BGX BLE command interface to machine mode for easy parsing
-  BGX_Write("set sy c m machine\r");
+  BGX_Write("set sy c m machine\r", GET_RESPONSE);
   // Turns advertising off
-  BGX_Write("adv off\r");
+  BGX_Write("adv off\r", GET_RESPONSE);
   // Clears GPIO4, as it is connected to PB1
-  BGX_Write("gfu 4 none\r");
-  // Sets MODE_PIN (1 - COMMAND_MODE / 0 - STREAM_MODE)
-  BGX_Write("gfu 6 none\r");
-  BGX_Write("gfu 6 str_active_n\r");
+  BGX_Write("gfu 4 none\r", GET_RESPONSE);
+  // Sets CONNECTION_PIN
+  BGX_Write("gfu 6 none\r", GET_RESPONSE);
+  BGX_Write("gfu 6 con_active_n\r", GET_RESPONSE);
   // Decreases BLE advertising high duration 30s -> 5s
-  BGX_Write("set bl v h d 5\r");
-  // Increase BLE connection interval 15ms -> 500ms
-  BGX_Write("set bl c i 625\r");
+  BGX_Write("set bl v h d 5\r", GET_RESPONSE);
 
   while (1)
   {
     // BGX and EFM8SB1 sleep until PB1 is pressed
-    BGX_Write("sleep\r");
+    BGX_Write("sleep\r", GET_RESPONSE);
     delayAndWaitFor(20);
     sleep_with_wake(pb1_pressed);
-    while (BSP_PB1 != BSP_PB_PRESSED);
+    while (BSP_PB1 == BSP_PB_UNPRESSED);
 
     // EFM8SB1 sleeps until BGX is connected to via BGX Commander
-    BGX_Write("wake\r");
+    BGX_Write("wake\r", GET_RESPONSE);
     delayAndWaitFor(20);
     sleep_with_wake(bgx_connected);
-    while (MODE_PIN == COMMAND_MODE);
+    while (CONNECTION_PIN == DISCONNECTED);
+
+    // Connecting to BGX Commander will take a significant amount of
+    // time if the BLE connection interval was 500ms so we can quickly
+    // set it after establishing a connection
+
+    // Exit Stream mode, enter Command mode
+    BGX_sendBreakoutSequence();
+
+    // Increase BLE connection interval 12 (15 ms) -> 625 (500 ms)
+    // Units: 1.25 ms
+    BGX_Write("set bl c i 625\r", GET_RESPONSE);
+
+    // Enter stream mode
+    BGX_Write("str\r", IGNORE_RESPONSE);
+    delayAndWaitFor(500);
 
     listenerOn();
 
-    P0MASK = 0x22;    // Wake up on MODE_PIN high or UART_RX low
+    P0MASK = 0x22;    // Wake up on CONNECTION_PIN high or UART_RX low
     P0MAT = 0xFD;
 
     while (1)
@@ -120,7 +133,7 @@ int main(void)
       {
         ADC0CN0 |= ADC0CN0_ADEN__ENABLED;  // Enable ADC
         delayAndWaitFor(20);
-        BGX_Write (getTempString(BGX_transmitBuffer));
+        BGX_Write (getTempString(BGX_transmitBuffer), IGNORE_RESPONSE);
         delayAndWaitFor(50);
         RTC_Alarm = 0;
         ADC0CN0 &= ~ADC0CN0_ADEN__ENABLED; // Disable ADC
@@ -128,7 +141,7 @@ int main(void)
 
       if(Port_Match_Wakeup)
       {
-        if(MODE_PIN == COMMAND_MODE)
+        if(CONNECTION_PIN == DISCONNECTED)
         {
           Port_Match_Wakeup = 0;
           break;

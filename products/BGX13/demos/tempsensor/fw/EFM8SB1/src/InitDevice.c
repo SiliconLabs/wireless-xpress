@@ -110,6 +110,7 @@ extern void PCACH_2_enter_DefaultMode_from_RESET(void) {
   // [PCA0CPL2 - PCA Channel 2 Capture Module Low Byte]$
 
   // $[PCA0CPH2 - PCA Channel 2 Capture Module High Byte]
+  PCA0CPH2 = 0x00;
   // [PCA0CPH2 - PCA Channel 2 Capture Module High Byte]$
 
   // $[Auto-reload]
@@ -325,9 +326,9 @@ extern void TIMER16_3_enter_DefaultMode_from_RESET(void) {
 
   // $[TMR3RLL - Timer 3 Reload Low Byte]
   /***********************************************************************
-   - Timer 3 Reload Low Byte = 0xDF
+   - Timer 3 Reload Low Byte = 0xF0
    ***********************************************************************/
-  TMR3RLL = (0xDF << TMR3RLL_TMR3RLL__SHIFT);
+  TMR3RLL = (0xF0 << TMR3RLL_TMR3RLL__SHIFT);
   // [TMR3RLL - Timer 3 Reload Low Byte]$
 
   // $[TMR3CN0]
@@ -587,19 +588,6 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
   // [P1MDOUT - Port 1 Output Mode]$
 
   // $[P1MDIN - Port 1 Input Mode]
-  /***********************************************************************
-   - P1.0 pin is configured for digital mode
-   - P1.1 pin is configured for digital mode
-   - P1.2 pin is configured for digital mode
-   - P1.3 pin is configured for digital mode
-   - P1.4 pin is configured for digital mode
-   - P1.5 pin is configured for digital mode
-   - P1.6 pin is configured for analog mode
-   - P1.7 pin is configured for analog mode
-   ***********************************************************************/
-  P1MDIN = P1MDIN_B0__DIGITAL | P1MDIN_B1__DIGITAL | P1MDIN_B2__DIGITAL
-      | P1MDIN_B3__DIGITAL | P1MDIN_B4__DIGITAL | P1MDIN_B5__DIGITAL
-      | P1MDIN_B6__ANALOG | P1MDIN_B7__ANALOG;
   // [P1MDIN - Port 1 Input Mode]$
 
   // $[P1SKIP - Port 1 Skip]
@@ -644,36 +632,26 @@ extern void VREG_0_enter_DefaultMode_from_RESET(void) {
 
 extern void RTC_0_enter_DefaultMode_from_RESET(void) {
   // $[RTC Initialization]
-  // A variable for providing a delay for external oscillator startup
-  uint16_t delayCounter;
-  // Save the system clock (the system clock will be slowed during the startup delay)
-  uint8_t CLKSEL_save;
-  CLKSEL_save = CLKSEL;
-
-  // Enable power to the SmaRTClock oscillator circuit (RTC0EN = 1)
   // [RTC Initialization]$
 
   // $[RTC0XCN0 - RTC Oscillator Control: Initial start-up setting]
-  // Set SmaRTClock to Crystal Mode (XMODE = 1).
-  // Disable Automatic Gain Control (AGCEN) and enable Bias Doubling (BIASX2) for fast crystal startup.
-  RTC0ADR = RTC0XCN0;
-  RTC0DAT = RTC0XCN0_XMODE__CRYSTAL | RTC0XCN0_BIASX2__ENABLED;
-  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-    ;    //Poll Busy Bit
   // [RTC0XCN0 - RTC Oscillator Control: Initial start-up setting]$
 
   // $[RTC0XCN - RTC Oscillator Control]
+  /***********************************************************************
+   - Self-Oscillate Mode selected
+   - Enable AGC
+   - Disable the Bias Double feature
+   - LFOSC0 enabled and selected as RTC oscillator source
+   ***********************************************************************/
+  RTC0ADR = RTC0XCN0;
+  RTC0DAT = RTC0XCN0_XMODE__SELF_OSCILLATE | RTC0XCN0_AGCEN__ENABLED
+      | RTC0XCN0_BIASX2__DISABLED | RTC0XCN0_LFOEN__ENABLED;
+  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
+    ;    //Poll Busy Bit
   // [RTC0XCN - RTC Oscillator Control]$
 
   // $[RTC0XCF - RTC Oscillator Configuration]
-  /***********************************************************************
-   - Enable load capacitance stepping
-   - Load Capacitance Programmed Value = 0x03
-   ***********************************************************************/
-  RTC0ADR = RTC0XCF;
-  RTC0DAT = RTC0XCF_AUTOSTP__ENABLED | (0x03 << RTC0XCF_LOADCAP__SHIFT);
-  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-    ;    //Poll Busy Bit
   // [RTC0XCF - RTC Oscillator Configuration]$
 
   // $[CAPTURE0 - RTC Timer Capture 0]
@@ -710,78 +688,6 @@ extern void RTC_0_enter_DefaultMode_from_RESET(void) {
   // $[RTC0CN - RTC Control]
   /***********************************************************************
    - Enable RTC oscillator
-   ***********************************************************************/
-  RTC0ADR = RTC0CN0;
-  RTC0DAT = 0;
-  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-    ;    //Poll Busy Bit
-
-  RTC0ADR = RTC0CN0;
-  RTC0DAT |= RTC0CN0_RTC0EN__ENABLED;
-  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-    ;    //Poll Busy Bit
-
-  // [RTC0CN - RTC Control]$
-
-  // $[External Oscillator Setup]
-  // Set the clock to a known value for the delay
-  CLKSEL = CLKSEL_CLKSL__LPOSC | CLKSEL_CLKDIV__SYSCLK_DIV_128;
-
-  // Delay for > 20 ms
-  for (delayCounter = 0x150; delayCounter != 0; delayCounter--)
-    ;
-
-  // Poll the SmaRTClock Clock Valid Bit (CLKVLD) until the crystal oscillator stabilizes
-  do {
-    RTC0ADR = RTC0ADR_BUSY__SET | RTC0ADR_ADDR__RTC0XCN0;
-    while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-      ;    //Poll Busy Bit
-  } while ((RTC0DAT & RTC0XCN0_CLKVLD__BMASK) == RTC0XCN0_CLKVLD__NOT_SET);
-
-  // Poll the SmaRTClock Load Capacitance Ready Bit (LOADRDY) until the load capacitance reaches its programmed value
-  do {
-    RTC0ADR = RTC0ADR_BUSY__SET | RTC0ADR_ADDR__RTC0XCF;
-    while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-      ;    //Poll Busy Bit
-  } while ((RTC0DAT & RTC0XCF_LOADRDY__BMASK) == RTC0XCF_LOADRDY__NOT_SET);
-
-  // Enable Automatic Gain Control (AGCEN) and disable Bias Doubling (BIASX2) for maximum power savings
-  /***********************************************************************
-   - Crystal Mode selected
-   - Enable AGC
-   - Disable the Bias Double feature
-   - XMODE determines RTC oscillator source
-   ***********************************************************************/
-  RTC0ADR = RTC0XCN0;
-  RTC0DAT = RTC0XCN0_XMODE__CRYSTAL | RTC0XCN0_AGCEN__ENABLED
-      | RTC0XCN0_BIASX2__DISABLED | RTC0XCN0_LFOEN__DISABLED;
-  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-    ;    //Poll Busy Bit
-
-  // Enable the SmaRTClock missing clock detector.
-  /***********************************************************************
-   - Enable missing RTC detector
-   ***********************************************************************/
-  RTC0ADR = RTC0CN0;
-  RTC0DAT |= RTC0CN0_MCLKEN__ENABLED;
-  while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
-    ;    //Poll Busy Bit
-
-  // Delay for > 2 ms
-  for (delayCounter = 0x100; delayCounter != 0; delayCounter--)
-    ;
-
-  // Clear PMU wake-up source flags
-  PMU0CF = PMU0CF_CLEAR__ALL_FLAGS;
-
-  // Restore system clock
-  CLKSEL = CLKSEL_save;
-  // Poll CLKRDY to wait for the clock to stabilize
-  while (!((CLKSEL & CLKSEL_CLKRDY__BMASK) == CLKSEL_CLKRDY__SET))
-    ;
-
-  /***********************************************************************
-   - Enable RTC oscillator
    - RTC timer is running
    - Enable missing RTC detector
    - Enable RTC alarm
@@ -796,6 +702,9 @@ extern void RTC_0_enter_DefaultMode_from_RESET(void) {
   while ((RTC0ADR & RTC0ADR_BUSY__BMASK) == RTC0ADR_BUSY__SET)
     ;    //Poll Busy Bit
 
+  // [RTC0CN - RTC Control]$
+
+  // $[External Oscillator Setup]
   // [External Oscillator Setup]$
 
 }
