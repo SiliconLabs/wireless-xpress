@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,13 @@
 
 package com.silabs.bgxmulticonnect;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +27,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
+import com.silabs.bgxpress.BGXpressService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import android.os.Handler;
 
 public class BGXDeviceListAdapter extends RecyclerView.Adapter<BGXDeviceListAdapter.ViewHolder> {
 

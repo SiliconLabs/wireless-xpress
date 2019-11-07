@@ -146,11 +146,12 @@
 					};
 				};
 			};
-			buildConfigurationList = F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "bgxpress" */;
+			buildConfigurationList = F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "BGXpress" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = F4EFC7D11E44076200D19263;
@@ -239,7 +240,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -292,7 +293,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -343,7 +344,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "bgxpress" */ = {
+		F4EFC7D51E44076200D19263 /* Build configuration list for PBXProject "BGXpress" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4EFC7ED1E44076200D19263 /* Debug */,

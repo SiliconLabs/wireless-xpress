@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,25 +13,14 @@
 
 package com.silabs.bgxmulticonnect;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
@@ -46,16 +35,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.os.Handler;
 import android.widget.Toast;
-
-import java.util.List;
-import java.util.Queue;
-import java.util.UUID;
-
 
 import static com.silabs.bgxmulticonnect.TextSource.LOCAL;
 import static com.silabs.bgxmulticonnect.TextSource.REMOTE;
+
+import com.silabs.bgxpress.BGXpressService;
+import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
+import com.silabs.bgxpress.BusMode;
+
 
 public class DeviceDetails extends AppCompatActivity {
 

@@ -29,7 +29,6 @@
 		441F33D4202E537C00EA767C /* OTA_UI_Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 441F33D3202E537C00EA767C /* OTA_UI_Manager.m */; };
 		441F33D6202E539300EA767C /* OTA_UI.xib in Resources */ = {isa = PBXBuildFile; fileRef = 441F33D5202E539300EA767C /* OTA_UI.xib */; };
 		4424E972200E69CD006968D3 /* overlay_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 4424E971200E69CD006968D3 /* overlay_close.png */; };
-		4448A88A202D0BAE0071694F /* BGXpress.framework in Embed bgxpress framework */ = {isa = PBXBuildFile; fileRef = 4448A885202D0B9E0071694F /* BGXpress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		444B1F3922021353001A56CD /* DecoratedMMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B1F3822021353001A56CD /* DecoratedMMDrawerBarButtonItem.m */; };
 		444B1F4022036F20001A56CD /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 444B1F3E22036F20001A56CD /* Version.m */; };
 		444B1F73220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 444B1F72220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib */; };
@@ -42,8 +41,7 @@
 		4472181620C87228004FC35D /* FirmwareVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4472181520C87228004FC35D /* FirmwareVersionTableViewCell.m */; };
 		4472181820C884E7004FC35D /* firmware_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4472181720C884E7004FC35D /* firmware_icon.png */; };
 		4472181B20C9831C004FC35D /* misc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4472181A20C9831C004FC35D /* misc.m */; };
-		448F4750205991F90000C9E8 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 448F474E205991F90000C9E8 /* About.xib */; };
-		44A935E520068D8100D68AEF /* Connecting.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44A935E320068D8100D68AEF /* Connecting.xib */; };
+		44A1C0C7232AF49D003CFBB9 /* ConnectingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A1C0C6232AF49D003CFBB9 /* ConnectingViewController.m */; };
 		44A935E82006A1C300D68AEF /* bgx_app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A935E62006A1C200D68AEF /* bgx_app_icon@2x.png */; };
 		44A935E92006A1C300D68AEF /* bgx_app_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A935E72006A1C200D68AEF /* bgx_app_icon@3x.png */; };
 		44B3DB341FE8660500A081DF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B3DB331FE8660500A081DF /* AppDelegate.m */; };
@@ -66,6 +64,10 @@
 		44B3DB801FEAD97D00A081DF /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44B3DB761FEAD97D00A081DF /* OpenSans-ExtraBoldItalic.ttf */; };
 		44B3DB811FEAD97D00A081DF /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44B3DB771FEAD97D00A081DF /* OpenSans-BoldItalic.ttf */; };
 		44B3DB821FEAD97D00A081DF /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44B3DB781FEAD97D00A081DF /* OpenSans-Light.ttf */; };
+		44D7E2BA232AD14600C51BC2 /* AboutBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7E2B8232AD14600C51BC2 /* AboutBoxViewController.m */; };
+		44E28251230C63DD00B7A450 /* PasswordEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2824F230C63DD00B7A450 /* PasswordEntryViewController.m */; };
+		44E28252230C63DD00B7A450 /* PasswordEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44E28250230C63DD00B7A450 /* PasswordEntryViewController.xib */; };
+		44E28254230F443200B7A450 /* dispatch_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E28253230F443200B7A450 /* dispatch_utils.m */; };
 		44E436A21FEC089000665178 /* Gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44E436A01FEC089000665178 /* Gear.png */; };
 		44E436A31FEC089000665178 /* Gear_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 44E436A11FEC089000665178 /* Gear_small.png */; };
 		44E436A51FEC092A00665178 /* Gear_smaller.png in Resources */ = {isa = PBXBuildFile; fileRef = 44E436A41FEC092A00665178 /* Gear_smaller.png */; };
@@ -85,20 +87,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4448A884202D0B9E0071694F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F4EFC7DB1E44076200D19263;
-			remoteInfo = bgxpress;
-		};
-		4448A888202D0BA80071694F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F4EFC7DA1E44076200D19263;
-			remoteInfo = bgxpress;
-		};
 		44B3DB481FE8660500A081DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44B3DB271FE8660400A081DF /* Project object */;
@@ -122,7 +110,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4448A88A202D0BAE0071694F /* BGXpress.framework in Embed bgxpress framework */,
 			);
 			name = "Embed bgxpress framework";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,7 +145,6 @@
 		441F33D3202E537C00EA767C /* OTA_UI_Manager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OTA_UI_Manager.m; sourceTree = "<group>"; };
 		441F33D5202E539300EA767C /* OTA_UI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OTA_UI.xib; sourceTree = "<group>"; };
 		4424E971200E69CD006968D3 /* overlay_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_close.png; sourceTree = "<group>"; };
-		4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bgxpress.xcodeproj; path = ../bgxpress/bgxpress.xcodeproj; sourceTree = "<group>"; };
 		444B1F3722021353001A56CD /* DecoratedMMDrawerBarButtonItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DecoratedMMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		444B1F3822021353001A56CD /* DecoratedMMDrawerBarButtonItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecoratedMMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		444B1F3E22036F20001A56CD /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = ../../BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
@@ -176,8 +162,8 @@
 		4472181720C884E7004FC35D /* firmware_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firmware_icon.png; sourceTree = "<group>"; };
 		4472181920C982D0004FC35D /* misc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
 		4472181A20C9831C004FC35D /* misc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = misc.m; sourceTree = "<group>"; };
-		448F474F205991F90000C9E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/About.xib; sourceTree = "<group>"; };
-		44A935E420068D8100D68AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Connecting.xib; sourceTree = "<group>"; };
+		44A1C0C5232AF49D003CFBB9 /* ConnectingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectingViewController.h; sourceTree = "<group>"; };
+		44A1C0C6232AF49D003CFBB9 /* ConnectingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectingViewController.m; sourceTree = "<group>"; };
 		44A935E62006A1C200D68AEF /* bgx_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bgx_app_icon@2x.png"; sourceTree = "<group>"; };
 		44A935E72006A1C200D68AEF /* bgx_app_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bgx_app_icon@3x.png"; sourceTree = "<group>"; };
 		44B3DB2F1FE8660400A081DF /* BGXCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BGXCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +196,13 @@
 		44B3DB771FEAD97D00A081DF /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		44B3DB781FEAD97D00A081DF /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		44B3DB841FEAE80F00A081DF /* WhiteSilabsLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WhiteSilabsLogo.png; path = BGXCommander/WhiteSilabsLogo.png; sourceTree = SOURCE_ROOT; };
+		44D7E2B7232AD14600C51BC2 /* AboutBoxViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutBoxViewController.h; sourceTree = "<group>"; };
+		44D7E2B8232AD14600C51BC2 /* AboutBoxViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutBoxViewController.m; sourceTree = "<group>"; };
+		44E2824E230C63DD00B7A450 /* PasswordEntryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasswordEntryViewController.h; sourceTree = "<group>"; };
+		44E2824F230C63DD00B7A450 /* PasswordEntryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasswordEntryViewController.m; sourceTree = "<group>"; };
+		44E28250230C63DD00B7A450 /* PasswordEntryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordEntryViewController.xib; sourceTree = "<group>"; };
+		44E28253230F443200B7A450 /* dispatch_utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dispatch_utils.m; sourceTree = "<group>"; };
+		44E28255230F444500B7A450 /* dispatch_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dispatch_utils.h; sourceTree = "<group>"; };
 		44E436A01FEC089000665178 /* Gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Gear.png; path = BGXCommander/Gear.png; sourceTree = SOURCE_ROOT; };
 		44E436A11FEC089000665178 /* Gear_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Gear_small.png; path = BGXCommander/Gear_small.png; sourceTree = SOURCE_ROOT; };
 		44E436A41FEC092A00665178 /* Gear_smaller.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Gear_smaller.png; path = BGXCommander/Gear_smaller.png; sourceTree = SOURCE_ROOT; };
@@ -285,18 +278,9 @@
 			path = Update;
 			sourceTree = "<group>";
 		};
-		4448A880202D0B9D0071694F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4448A885202D0B9E0071694F /* BGXpress.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		44B3DB261FE8660400A081DF = {
 			isa = PBXGroup;
 			children = (
-				4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */,
 				44B3DB831FEAE74900A081DF /* Images */,
 				44B3DB311FE8660400A081DF /* BGXCommander */,
 				44B3DB4A1FE8660500A081DF /* BGXCommanderTests */,
@@ -336,8 +320,10 @@
 				44B3DB651FE96DED00A081DF /* Drawer.storyboard */,
 				44B3DB3B1FE8660500A081DF /* Assets.xcassets */,
 				44B3DB3D1FE8660500A081DF /* LaunchScreen.storyboard */,
-				44A935E320068D8100D68AEF /* Connecting.xib */,
-				448F474E205991F90000C9E8 /* About.xib */,
+				44A1C0C5232AF49D003CFBB9 /* ConnectingViewController.h */,
+				44A1C0C6232AF49D003CFBB9 /* ConnectingViewController.m */,
+				44D7E2B7232AD14600C51BC2 /* AboutBoxViewController.h */,
+				44D7E2B8232AD14600C51BC2 /* AboutBoxViewController.m */,
 				44B3DB401FE8660500A081DF /* Info.plist */,
 				44B3DB411FE8660500A081DF /* main.m */,
 				44E436A71FFC37A500665178 /* BGXCommanderPrefixHeader.pch */,
@@ -350,6 +336,11 @@
 				444B1F3722021353001A56CD /* DecoratedMMDrawerBarButtonItem.h */,
 				444B1F3822021353001A56CD /* DecoratedMMDrawerBarButtonItem.m */,
 				44FAAC752008043000072591 /* Tutorial */,
+				44E2824E230C63DD00B7A450 /* PasswordEntryViewController.h */,
+				44E2824F230C63DD00B7A450 /* PasswordEntryViewController.m */,
+				44E28250230C63DD00B7A450 /* PasswordEntryViewController.xib */,
+				44E28253230F443200B7A450 /* dispatch_utils.m */,
+				44E28255230F444500B7A450 /* dispatch_utils.h */,
 			);
 			path = BGXCommander;
 			sourceTree = "<group>";
@@ -486,7 +477,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				4448A889202D0BA80071694F /* PBXTargetDependency */,
 			);
 			name = BGXCommander;
 			productName = BGXCommander;
@@ -567,12 +557,6 @@
 			mainGroup = 44B3DB261FE8660400A081DF;
 			productRefGroup = 44B3DB301FE8660400A081DF /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 4448A880202D0B9D0071694F /* Products */;
-					ProjectRef = 4448A87F202D0B9D0071694F /* bgxpress.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				44B3DB2E1FE8660400A081DF /* BGXCommander */,
@@ -581,16 +565,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		4448A885202D0B9E0071694F /* BGXpress.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = BGXpress.framework;
-			remoteRef = 4448A884202D0B9E0071694F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		44B3DB2D1FE8660400A081DF /* Resources */ = {
@@ -620,7 +594,7 @@
 				440BA447200032FC00C3946B /* bgx_tut12.rtf in Resources */,
 				44E436A21FEC089000665178 /* Gear.png in Resources */,
 				44B3DB3C1FE8660500A081DF /* Assets.xcassets in Resources */,
-				448F4750205991F90000C9E8 /* About.xib in Resources */,
+				44E28252230C63DD00B7A450 /* PasswordEntryViewController.xib in Resources */,
 				44E436B61FFC442700665178 /* TutorialWindow.xib in Resources */,
 				44E436A51FEC092A00665178 /* Gear_smaller.png in Resources */,
 				44A935E92006A1C300D68AEF /* bgx_app_icon@3x.png in Resources */,
@@ -629,7 +603,6 @@
 				440BA42C1FFEAD9600C3946B /* bgx_tut1.png in Resources */,
 				440BA42D1FFEAD9600C3946B /* bgx_tut2.png in Resources */,
 				446D31971FFD680D001E48D3 /* close.png in Resources */,
-				44A935E520068D8100D68AEF /* Connecting.xib in Resources */,
 				44B3DB811FEAD97D00A081DF /* OpenSans-BoldItalic.ttf in Resources */,
 				44B3DB7D1FEAD97D00A081DF /* OpenSans-Bold.ttf in Resources */,
 				440BA4352000122800C3946B /* bgx_tut4.rtf in Resources */,
@@ -742,7 +715,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BGXCommander/Pods-BGXCommander-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-BGXCommander/Pods-BGXCommander-resources.sh",
 				"${PODS_ROOT}/PullToRefresh/arrow.png",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -751,7 +724,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BGXCommander/Pods-BGXCommander-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BGXCommander/Pods-BGXCommander-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -763,9 +736,12 @@
 			files = (
 				4472181B20C9831C004FC35D /* misc.m in Sources */,
 				44FAAC7B200819AD00072591 /* StepView.m in Sources */,
+				44D7E2BA232AD14600C51BC2 /* AboutBoxViewController.m in Sources */,
 				44B3DB421FE8660500A081DF /* main.m in Sources */,
 				441F33D4202E537C00EA767C /* OTA_UI_Manager.m in Sources */,
 				4419AB821FEC06580044AC72 /* DeviceDetailsViewController.m in Sources */,
+				44E28254230F443200B7A450 /* dispatch_utils.m in Sources */,
+				44A1C0C7232AF49D003CFBB9 /* ConnectingViewController.m in Sources */,
 				4419AB7D1FEB1E2C0044AC72 /* DeviceTableViewCell.m in Sources */,
 				444B1F7B220C91CB001A56CD /* FirmwareReleaseNotesViewController.m in Sources */,
 				44E436B91FFD2FC400665178 /* SpotlightView.m in Sources */,
@@ -773,6 +749,7 @@
 				440BA4331FFFFDAB00C3946B /* NSAttributedString+AttributedStringFromRTF.m in Sources */,
 				4405F7C02007BC25006FA3B9 /* AutoScrollTextView.m in Sources */,
 				444B1F3922021353001A56CD /* DecoratedMMDrawerBarButtonItem.m in Sources */,
+				44E28251230C63DD00B7A450 /* PasswordEntryViewController.m in Sources */,
 				44E436AC1FFC38BD00665178 /* NotificationNames.m in Sources */,
 				44FAAC722008042900072591 /* TutorialViewController.m in Sources */,
 				4472181620C87228004FC35D /* FirmwareVersionTableViewCell.m in Sources */,
@@ -801,11 +778,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4448A889202D0BA80071694F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = bgxpress;
-			targetProxy = 4448A888202D0BA80071694F /* PBXContainerItemProxy */;
-		};
 		44B3DB491FE8660500A081DF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 44B3DB2E1FE8660400A081DF /* BGXCommander */;
@@ -819,22 +791,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		448F474E205991F90000C9E8 /* About.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				448F474F205991F90000C9E8 /* Base */,
-			);
-			name = About.xib;
-			sourceTree = "<group>";
-		};
-		44A935E320068D8100D68AEF /* Connecting.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				44A935E420068D8100D68AEF /* Base */,
-			);
-			name = Connecting.xib;
-			sourceTree = "<group>";
-		};
 		44B3DB381FE8660500A081DF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -912,7 +868,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -963,7 +919,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -980,7 +936,7 @@
 				GCC_PREFIX_HEADER = BGXCommander/BGXCommanderPrefixHeader.pch;
 				INFOPLIST_FILE = BGXCommander/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.BGXCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -998,7 +954,7 @@
 				GCC_PREFIX_HEADER = BGXCommander/BGXCommanderPrefixHeader.pch;
 				INFOPLIST_FILE = BGXCommander/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.BGXCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";

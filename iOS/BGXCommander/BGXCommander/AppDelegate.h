@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,12 +12,15 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <bgxpress/bgxpress.h>
+#import <BGXpress/bgxpress.h>
 
 #import "MMDrawerController.h"
 #import "SpotlightView.h"
 #import "TutorialViewController.h"
 #import "DecoratedMMDrawerBarButtonItem.h"
+#import "PasswordEntryViewController.h"
+
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, BGXpressScanDelegate, BGXDeviceDelegate, BGXSerialDelegate>
 
@@ -48,10 +51,11 @@
 @property (nonatomic, strong) id temporary_observer_reference;
 
 
-@property (nonatomic, strong) IBOutlet UIWindow * aboutWindow;
-@property (nonatomic, weak) IBOutlet UILabel * versionLabel;
 
-- (IBAction)closeAboutBox:(id)sender;
+- (void)askUserForPasswordFor:(password_kind_t)passwordKind
+                    forDevice:(BGXDevice *)device
+               ok_post_action:(dispatch_block_t)ok_post_block
+           cancel_post_action:(dispatch_block_t) cancel_post_block;
 
 @end
 

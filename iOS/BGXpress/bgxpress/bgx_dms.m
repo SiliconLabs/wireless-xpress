@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,14 +12,14 @@
  */
 
 #import "bgx_dms.h"
-#import <SystemConfiguration/SystemConfiguration.h>
 #import "SafeType.h"
-//#import "Version.h"
 #import "bgxpress.h"
 
-NSString * kBGX13SPartID      = @"080447D0";
-NSString * kBGX13PPartID      = @"4C892A6A";
-NSString * kBGX13InvalidPartID= @"BAD1DEAD";
+NSString * kBGX13SPartID         = @"080447D0";
+NSString * kBGX13PPartID         = @"4C892A6A";
+NSString * kBGX13InvalidPartID   = @"BAD1DEAD";
+NSString * kBGXV3SPartID         = @"F65FD7F0";
+NSString * kBGXV3PPartID         = @"76786556";
 
 typedef void (^VersionsListCompletionBlock)(NSError *, NSArray *);
 
@@ -35,8 +35,6 @@ NSString * NewBGXFirmwareListNotificationName = @"NewBGXFirmwareListNotification
 
 @interface bgx_dms()
 
-+ (NSArray *)bgxPartInfo;
-
 /*
   Returns the correct local versions file for the current device type
   already expanded.
@@ -51,7 +49,6 @@ NSString * NewBGXFirmwareListNotificationName = @"NewBGXFirmwareListNotification
 - (NSURL *)firmwareURL:(NSString *)svers;
 
 @property (nonatomic, strong) NSString * bgx_unique_device_id;
-@property (nonatomic) SCNetworkReachabilityRef reachabilityRef;
 @property (nonatomic) BOOL dms_reachable;
 
 @property (nonatomic, strong) NSTimer * reachabilityListRefreshTimer;
@@ -77,7 +74,6 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 @implementation bgx_dms
 
-
 - (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id
 {
   self = [super init];
@@ -85,40 +81,21 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
       self.versionsListCompletion = nil;
       
-    self.reachabilityRef = nil;
+    _reachabilityRef = nil;
       
     self.bgx_unique_device_id = bgx_unique_device_id;
-
-    BOOL deviceOK;
-
-    if ([self.bgx_unique_device_id hasPrefix:kBGX13InvalidPartID]) {
-      deviceOK = NO;
-    } else {
-      deviceOK = NO;
-      for (NSDictionary * rec in [bgx_dms bgxPartInfo]) {
-        if ([self.bgx_unique_device_id hasPrefix:[rec objectForKey:@"partid"]]) {
-          deviceOK = YES;
-          break;
-        }
-      }
-    }
-
-    if (!deviceOK) {
-
-      [NSException raise:@"Invalid BGX Device" format:@"The BGX Device you are attempting to update appears to be an invalid part and cannot be updated."];
-    }
 
     // load the list from the file.
     [self loadFirmwareList];
 
-    self.reachabilityRef = SCNetworkReachabilityCreateWithName(NULL, kDMSServer);
+    _reachabilityRef = SCNetworkReachabilityCreateWithName(NULL, kDMSServer);
     SCNetworkReachabilityContext context = { 0, (__bridge void *)(self), NULL, NULL, NULL };
 
-    Boolean result = SCNetworkReachabilitySetCallback(self.reachabilityRef, MyReachabilityCallback, &context);
+    Boolean result = SCNetworkReachabilitySetCallback(_reachabilityRef, MyReachabilityCallback, &context);
     NSAssert(result, @"SCNetworkReachabilitySetCallback failed.");
 
-      self.runloop4Reachability = CFRunLoopGetCurrent();
-    result = SCNetworkReachabilityScheduleWithRunLoop(self.reachabilityRef, self.runloop4Reachability, kCFRunLoopDefaultMode);
+    self.runloop4Reachability = CFRunLoopGetCurrent();
+    result = SCNetworkReachabilityScheduleWithRunLoop(_reachabilityRef, self.runloop4Reachability, kCFRunLoopDefaultMode);
 
     NSAssert(result, @"SCNetworkReachabilityScheduleWithRunLoop failed.");
 
@@ -128,9 +105,11 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 - (void)dealloc
 {
-    SCNetworkReachabilityUnscheduleFromRunLoop(self.reachabilityRef, self.runloop4Reachability, kCFRunLoopDefaultMode );
-    CFRelease(self.reachabilityRef);
-    self.reachabilityRef = nil;
+    if (_reachabilityRef) {
+        SCNetworkReachabilityUnscheduleFromRunLoop(_reachabilityRef, self.runloop4Reachability, kCFRunLoopDefaultMode );
+        CFRelease(_reachabilityRef);
+        _reachabilityRef = nil;
+    }
     self.runloop4Reachability = nil;
 }
 
@@ -262,23 +241,24 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 - (void)loadFirmwareList
 {
-  if ([[NSFileManager defaultManager] fileExistsAtPath:[self localVersionsFile]] ) {
-    NSError * myError = nil;
-    NSData * jsonData = [NSData dataWithContentsOfFile:[self localVersionsFile]];
-    self.firmwareList = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&myError];
-    if (myError) {
-      NSLog(@"Error loading file: %@", [myError description]);
-      myError = nil;
-      [[NSFileManager defaultManager] removeItemAtPath:[self localVersionsFile] error:&myError];
-      if (myError) {
-        NSLog(@"Error failed to remove file: %@", [myError description]);
-      }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self localVersionsFile]] ) {
+        NSError * myError = nil;
+        NSData * jsonData = [NSData dataWithContentsOfFile:[self localVersionsFile]];
+
+        self.firmwareList = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&myError];
+        if (myError) {
+            NSLog(@"Error loading file: %@", [myError description]);
+            myError = nil;
+            [[NSFileManager defaultManager] removeItemAtPath:[self localVersionsFile] error:&myError];
+            if (myError) {
+                NSLog(@"Error failed to remove file: %@", [myError description]);
+            }
+        }
     }
-  }
 }
 
 /*
-  This call takes a firmware version and loads it. Then we will take the call
+  This call takes a firmware version and downloads it. Then we will take the call
   the completion block with the path to the firmware image.
  */
 - (void)loadFirmwareVersion:(NSString *)version completion:(void (^)(NSError * error, NSString * firmware_path))completionBlock
@@ -329,33 +309,14 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 }
 
 
-+ (NSArray *)bgxPartInfo
-{
-  return @[ @{ @"partid" : kBGX13SPartID, @"product_code" : @"bgx13s" }
-            ,@{ @"partid" : kBGX13PPartID, @"product_code" : @"bgx13p" } ];
-}
 
-+ (NSString *)bgxPartInfoForDeviceID:(NSString *)device_uuid
-{
-  for (NSDictionary * irec in [bgx_dms bgxPartInfo]) {
-    if ([device_uuid hasPrefix:[irec objectForKey:@"partid"]]) {
 
-      return [irec objectForKey:@"product_code"];
-    }
-  }
-  return nil;
-}
+
 
 - (NSURL *)versionsURL
 {
-  for (NSDictionary * irec in [bgx_dms bgxPartInfo]) {
-    if ([self.bgx_unique_device_id hasPrefix:[irec objectForKey:@"partid"]]) {
-
-      return [NSURL URLWithString: [NSString stringWithFormat:@"https://bgx13.zentri.com/products/%@/versions", [irec objectForKey:@"product_code"]]];
-
-    }
-  }
-  return nil;
+   NSString * partid = [self.bgx_unique_device_id substringWithRange:NSMakeRange(0, 8)];
+   return [NSURL URLWithString:[NSString stringWithFormat:@"https://xpress-api.zentri.com/platforms/%@/products/bgx13/versions", partid]];
 }
 
 - (NSURL *)firmwareURL:(NSString *)svers
@@ -365,7 +326,7 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 - (NSString *)localVersionsFile
 {
-  return [[NSString stringWithFormat:@"~/Documents/%@/versions.json", [bgx_dms bgxPartInfoForDeviceID:self.bgx_unique_device_id] ] stringByExpandingTildeInPath];
+  return [[NSString stringWithFormat:@"~/Documents/%@/versions.json", [self.bgx_unique_device_id substringWithRange:NSMakeRange(0,8)] ] stringByExpandingTildeInPath];
 }
 
 + (void)reportInstallationResultWithDeviceUUID:(NSString*)bgx_device_uuid version:(NSString*)version

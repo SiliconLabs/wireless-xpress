@@ -12,4 +12,5 @@
         android:id="@+id/scan_menuitem"
         android:title="@string/scan_menuitem_label"
         app:showAsAction="always" />
+
 </menu>

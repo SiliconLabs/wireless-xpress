@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -206,8 +206,8 @@ const double kTutorialOpacity = 0.7;
 
 - (IBAction)invisibleCancelAction:(id)sender
 {
-  [[DevicesTableViewController devicesTableViewController] cancelConnectingAction:sender];
-  [[AppDelegate sharedAppDelegate] stopTutorial:nil];
+    [[AppDelegate sharedAppDelegate].selectedDevice disconnect];
+    [[AppDelegate sharedAppDelegate] stopTutorial:nil];
 }
 
 // executes a timed script to show the action on step 8.

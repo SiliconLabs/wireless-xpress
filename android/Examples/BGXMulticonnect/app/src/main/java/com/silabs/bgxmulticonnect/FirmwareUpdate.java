@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,9 +37,12 @@ import org.json.JSONObject;
 
 
 import static android.view.View.GONE;
-import static com.silabs.bgxmulticonnect.BGXpressService.ACTION_OTA_WITH_IMAGE;
-import static com.silabs.bgxmulticonnect.BGXpressService.DMS_VERSION_LOADED;
-import static com.silabs.bgxmulticonnect.BGXpressService.OTA_STATUS_MESSAGE;
+import com.silabs.bgxpress.BGXpressService;
+import com.silabs.bgxpress.OTA_Status;
+
+import static com.silabs.bgxpress.BGXpressService.ACTION_OTA_WITH_IMAGE;
+import static com.silabs.bgxpress.BGXpressService.DMS_VERSION_LOADED;
+import static com.silabs.bgxpress.BGXpressService.OTA_STATUS_MESSAGE;
 import static com.silabs.bgxmulticonnect.TagsToShow.FW_VERS_ALL;
 import static com.silabs.bgxmulticonnect.TagsToShow.FW_VERS_RELEASE;
 

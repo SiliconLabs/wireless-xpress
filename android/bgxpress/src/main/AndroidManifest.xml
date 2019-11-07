@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.silabs.bgxpress">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <application>
+
+        <service
+            android:name="com.silabs.bgxpress.BGXpressService"
+            android:exported="true">
+            <meta-data
+                android:name="DMS_API_KEY"
+                android:value="${DMS_API_KEY}" />
+        </service>
+    </application>
+
+</manifest>

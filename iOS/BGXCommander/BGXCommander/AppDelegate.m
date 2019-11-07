@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,9 @@
 #import "AppDelegate.h"
 #import "OTA_UI_Manager.h"
 #import "DevicesTableViewController.h"
+#import "PasswordEntryViewController.h"
+#import "dispatch_utils.h"
+#import "AboutBoxViewController.h"
 
 @interface AppDelegate ()
 
@@ -27,7 +30,7 @@ const NSTimeInterval kScanInterval = 8.0f;
 
 + (AppDelegate *)sharedAppDelegate
 {
-  return (AppDelegate *)[UIApplication sharedApplication].delegate;
+  return SafeType([UIApplication sharedApplication].delegate, [AppDelegate class]);
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -225,31 +228,19 @@ const NSTimeInterval kScanInterval = 8.0f;
   self.tutorial_observer = nil;
 }
 
-/** This is a notification handler that displays the about box.
-    It is hooked up to an item in the drawer that the user can choose
-    in order to see the app version.
- */
 - (void)aboutThisApp:(NSNotification *)n
 {
-  [self.drawerController closeDrawerAnimated:YES completion:nil];
+    [self.drawerController closeDrawerAnimated:YES completion:nil];
 
-  [[NSBundle mainBundle] loadNibNamed:@"About" owner:self options:nil];
-
-  self.versionLabel.text = [NSString stringWithFormat:@"%@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-
-  [self.aboutWindow makeKeyAndVisible];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"AboutBGXCommander"];
+    
+    UIViewController * cvc = self.drawerController.centerViewController;
+    
+    [cvc presentViewController:vc animated:YES completion:^{}];
 }
 
-/** This IBAction is called when the user presses the close button
-    on the about box.
-    Set the IBOutlet references from About.xib back to nil.
- */
-- (IBAction)closeAboutBox:(id)sender
-{
-  [self.aboutWindow resignKeyWindow];
-  self.aboutWindow = nil;
-  self.versionLabel = nil;
-}
+
 
 /** Called to begin scanning for devices.
     @Returns bool to indicate whether the scan call was successful.
@@ -332,7 +323,7 @@ const NSTimeInterval kScanInterval = 8.0f;
 {
     NSAssert(self.selectedDevice == device, @"Unexpected device notification.");
     NSString * cs = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:DeviceStateChangedNotificationName object: [NSNumber numberWithInt:device.deviceState]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DeviceStateChangedNotificationName object: [NSNumber numberWithInt: (int)device.deviceState]];
     
     switch (device.deviceState) {
         case Disconnected:
@@ -464,7 +455,7 @@ const NSTimeInterval kScanInterval = 8.0f;
                                              [self.update_ui_manager showUpdateUI];
 
                                                BGXDevice * device2Update = [AppDelegate sharedAppDelegate].selectedDevice;
-//                                             CBPeripheral * device2Update = [DevicesTableViewController devicesTableViewController].selectedPeripheral;
+
 
                                              @try {
                                              [self.update_ui_manager updateFirmwareForBGXDevice:device2Update withDeviceID:deviceUniqueID];
@@ -498,6 +489,30 @@ const NSTimeInterval kScanInterval = 8.0f;
 }
 
 
+- (void)askUserForPasswordFor:(password_kind_t)passwordKind
+                    forDevice:(BGXDevice *)device
+               ok_post_action:(dispatch_block_t)ok_post_block
+           cancel_post_action:(dispatch_block_t) cancel_post_block
+{
+    
+    
+    
+    executeBlockOnMainThread(^{
+        PasswordEntryViewController * pevc = [[PasswordEntryViewController alloc] initWithNibName:@"PasswordEntryViewController" bundle:nil];
+        
+        pevc.ok_post_action = ok_post_block;
+        pevc.cancel_post_action = cancel_post_block;
+        pevc.password_kind = passwordKind;
+        pevc.device = device;
+        
+        [self.drawerController.centerViewController presentViewController:pevc animated:YES completion:^{
+            NSLog(@"The pevc is done animating now.");
+        }];
+    });
+    
+    
+    
+}
 
 @end
 

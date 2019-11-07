@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,11 +13,11 @@
 
 
 #import <Foundation/Foundation.h>
-#import <bgxpress/bgxpress.h>
+#import <BGXpress/bgxpress.h>
 
 
 
-@interface OTA_UI_Manager : NSObject <UITableViewDataSource, UITableViewDelegate> {
+@interface OTA_UI_Manager : NSObject <UITableViewDataSource, UITableViewDelegate, BGX_OTA_Updater_Delegate> {
     
     IBOutlet UIWindow * _ota_update_window;
     IBOutlet UILabel * updateWindowLabel;
@@ -53,6 +53,9 @@
 - (IBAction)cancelAction:(id)sender;
 
 - (void)updateFirmwareForBGXDevice:(BGXDevice *)peripheral2Update withDeviceID:(NSString *)bgx_unique_device_id;
+
+// required delegate method of BGX_OTA_Updater_Delegate
+- (void)ota_requires_password:(NSError *)err;
 
 @property (nonatomic, strong) UIWindow * ota_update_window;
 

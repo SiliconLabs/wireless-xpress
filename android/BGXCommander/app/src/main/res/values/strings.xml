@@ -18,6 +18,7 @@
     <string name="OTA_Status_Installing">Transferring firmware…</string>
     <string name="OTA_Status_Finishing">Updating firmware - Do not disconnect!</string>
     <string name="OTA_Status_Finished">Firmware Update Complete.</string>
+    <string name="OTA_Status_PasswordRequired">Password Required</string>
 
     <string name="OTA_Status_UserCanceled">Firmware Update Canceled.</string>
 
@@ -49,7 +50,7 @@
 
     <string name="FirmwareIconDescription">Firmware Icon</string>
 
-    <string name="VersionNameLabel">Version %1$s</string>
+    <string name="VersionNameLabel">Version %1$s (%2$d)</string>
     <string name="FirmwareUpdateFailedLabel">Firmware Update Failed.</string>
     <string name="InstallingFirmwareFormatString">Installing Firmware %1$s</string>
     <string name="security_update_description">A security update is available for this device.</string>
@@ -61,6 +62,8 @@
     <string name="title_activity_firmware_release_notes">Firmware Release Notes</string>
     <string name="help_item">Help</string>
     <string name="help_url">https://www.silabs.com/bgx-docs</string>
+
+    <string name="password_instructions">A password is required for this operation.</string>
 
 
 </resources>

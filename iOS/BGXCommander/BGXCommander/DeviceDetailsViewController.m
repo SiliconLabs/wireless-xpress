@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
 #import "MMDrawerBarButtonItem.h"
 #import "AppDelegate.h"
 #import "DecoratedMMDrawerBarButtonItem.h"
-
+#import "dispatch_utils.h"
 
 typedef enum {
     SEND_MODE
@@ -43,6 +43,9 @@ typedef enum {
 
 @property (nonatomic, strong) BGXDevice * deviceUnderObservation;
 
+@property (nonatomic) int timesToIgnoreViewWillDisappear;
+@property (nonatomic) int timesToIgnoreViewWillAppear;
+
 @end
 
 __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
@@ -57,6 +60,8 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.timesToIgnoreViewWillDisappear = 0;
+    self.timesToIgnoreViewWillAppear = 0;
     gDeviceDetailsViewController = self;
     
     self.busMode = UNKNOWN_MODE;
@@ -95,6 +100,10 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if (self.timesToIgnoreViewWillAppear > 0) {
+        --self.timesToIgnoreViewWillAppear;
+        return;
+    }
     self.deviceUnderObservation = [AppDelegate sharedAppDelegate].selectedDevice;
     
     [self.deviceUnderObservation addObserver:self forKeyPath:@"busMode" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
@@ -114,6 +123,11 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    if (self.timesToIgnoreViewWillDisappear > 0) {
+        --self.timesToIgnoreViewWillDisappear;
+        ++self.timesToIgnoreViewWillAppear;
+        return;
+    }
     self.selected_device_bgx_dms = nil;
     
     [self.deviceUnderObservation removeObserver:self forKeyPath:@"busMode"];
@@ -262,7 +276,7 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
                     [self.selected_device_bgx_dms retrieveAvailableVersions:^(NSError * error, NSArray * availableVersions){
                     
                         if (!error) {
-                            dispatch_block_t myBlock = ^{
+                            executeBlockOnMainThread(^{
                                 @try {
                                     Version * currentDeviceFWVersion = [[Version alloc] initWithString: [AppDelegate sharedAppDelegate].selectedDevice.firmwareRevision];
                                     for (NSDictionary * iVersion in availableVersions) {
@@ -282,13 +296,7 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
                                     
                                 }
                                 
-                            };
-                            
-                            if ([NSThread isMainThread]) {
-                                (myBlock)();
-                            } else {
-                                dispatch_async(dispatch_get_main_queue(), myBlock);
-                            }
+                            });
 
                         }
                         
@@ -307,17 +315,42 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
  */
 - (IBAction)userSelectedBusMode:(id)sender
 {
+#if ! TARGET_IPHONE_SIMULATOR
     const NSInteger kStreamMode = 0;
-    const NSInteger kBusMode = 1;
+    const NSInteger kRemoteCommandMode = 1;
     
     switch (self.busModeSelector.selectedSegmentIndex) {
         case kStreamMode:
             [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode: STREAM_MODE];
             break;
-        case kBusMode:
-            [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode: REMOTE_COMMAND_MODE];
+        case kRemoteCommandMode:
+        {
+            NSString * passwd = [PasswordEntryViewController passwordForType: remoteConsolePasswordKind forDevice: self.deviceUnderObservation];
+            NSLog(@"%@", passwd);
+            [[AppDelegate sharedAppDelegate].selectedDevice writeBusMode: REMOTE_COMMAND_MODE
+                                                                password: passwd
+                                                       completionHandler: ^(BGXDevice * device, NSError * err) {
+                NSLog(@"write completion for %@ err: %@", [device description], [err description]);
+                
+                if (err) {
+                    
+                    if ( STREAM_MODE == [AppDelegate sharedAppDelegate].selectedDevice.busMode ) {
+                        [self.busModeSelector setSelectedSegmentIndex:kStreamMode];
+                    }
+                    
+                    ++self.timesToIgnoreViewWillDisappear;
+                    // need a password.
+                    [[AppDelegate sharedAppDelegate] askUserForPasswordFor:remoteConsolePasswordKind
+                                                                 forDevice: self.deviceUnderObservation
+                                                            ok_post_action: nil
+                                                        cancel_post_action: nil];
+                }
+                
+            }];
+        }
             break;
     }
+#endif
 }
 
 /** Data received from the BGX device is passed to the BGXCommanderDelegate which

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,27 +13,20 @@
 
 package com.silabs.bgxcommander;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.bluetooth.BluetoothSocket;
+import android.accounts.AccountManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
@@ -47,23 +40,20 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.os.Handler;
 import android.widget.Toast;
+
+import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
+import com.silabs.bgxpress.BGXpressService;
+import com.silabs.bgxpress.BusMode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.Queue;
-import java.util.UUID;
-
-import static com.silabs.bgxcommander.BGXpressService.BGX_DEVICE_INFO;
+import static com.silabs.bgxcommander.PasswordKind.BusModePasswordKind;
 import static com.silabs.bgxcommander.TextSource.LOCAL;
 import static com.silabs.bgxcommander.TextSource.REMOTE;
-
 
 public class DeviceDetails extends AppCompatActivity {
 
@@ -98,6 +88,7 @@ public class DeviceDetails extends AppCompatActivity {
 
     private BGXpressService.BGXPartID mBGXPartID;
     private String mBGXDeviceID;
+    private String mBGXPartIdentifier;
 
     final static Integer kBootloaderSecurityVersion = 1229;
 
@@ -122,6 +113,8 @@ public class DeviceDetails extends AppCompatActivity {
         bgxpressServiceFilter.addAction(BGXpressService.BGX_DATA_RECEIVED);
         bgxpressServiceFilter.addAction(BGXpressService.BGX_DEVICE_INFO);
         bgxpressServiceFilter.addAction(BGXpressService.DMS_VERSIONS_AVAILABLE);
+        bgxpressServiceFilter.addAction(BGXpressService.BUS_MODE_ERROR_PASSWORD_REQUIRED);
+        bgxpressServiceFilter.addAction(BGXpressService.BGX_INVALID_GATT_HANDLES);
 
         mConnectionBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -132,6 +125,21 @@ public class DeviceDetails extends AppCompatActivity {
                 }
 
                 switch(intent.getAction()) {
+
+                    case BGXpressService.BGX_INVALID_GATT_HANDLES: {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("Invalid GATT Handles");
+                        builder.setMessage("The bonding information on this device is invalid (probably due to a firmware update). You should select "+mDeviceName+" in the Bluetooth Settings and choose \"Forget\".");
+                        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dlg = builder.create();
+                        dlg.show();
+                    }
+                    break;
 
                     case BGXpressService.DMS_VERSIONS_AVAILABLE: {
 
@@ -214,7 +222,7 @@ public class DeviceDetails extends AppCompatActivity {
 
                         mBGXDeviceID = intent.getStringExtra("bgx-device-uuid");
                         mBGXPartID = (BGXpressService.BGXPartID) intent.getSerializableExtra("bgx-part-id" );
-
+                        mBGXPartIdentifier = intent.getStringExtra("bgx-part-identifier");
 
                         if ( bootloaderVersion >= kBootloaderSecurityVersion) {
                             // request DMS VERSIONS at this point because now we know the part id.
@@ -223,11 +231,27 @@ public class DeviceDetails extends AppCompatActivity {
 
                             intent2.putExtra("bgx-part-id", mBGXPartID);
                             intent2.putExtra("DeviceAddress", mDeviceAddress);
+                            intent2.putExtra("bgx-part-identifier", mBGXPartIdentifier);
+
 
                             startService(intent2);
                         } else if ( bootloaderVersion > 0) {
                             mIconItem.setIcon(ContextCompat.getDrawable(mContext, R.drawable.security_decoration));
                         }
+                    }
+                    break;
+                    case BGXpressService.BUS_MODE_ERROR_PASSWORD_REQUIRED: {
+
+                        setBusMode(BusMode.STREAM_MODE);
+
+                        Intent passwordIntent = new Intent(context, Password.class);
+                        passwordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        passwordIntent.putExtra("DeviceAddress", mDeviceAddress);
+                        passwordIntent.putExtra("PasswordKind", BusModePasswordKind);
+                        passwordIntent.putExtra("DeviceName", mDeviceName);
+
+                        context.startActivity(passwordIntent);
+
                     }
                     break;
                 }
@@ -369,7 +393,32 @@ public class DeviceDetails extends AppCompatActivity {
             case R.id.update_menuitem: {
                 Log.d("bgx_dbg", "Update menu item pressed.");
 
-                if ( null == mBGXPartID || BGXpressService.BGXPartID.BGXInvalid == mBGXPartID ) {
+                String api_key = null;
+                try {
+                    ComponentName myService = new ComponentName(this, BGXpressService.class);
+                    Bundle data = getPackageManager().getServiceInfo(myService, PackageManager.GET_META_DATA).metaData;
+                    if (null != data) {
+                        api_key = data.getString("DMS_API_KEY");
+                    }
+                } catch (PackageManager.NameNotFoundException exception) {
+                    exception.printStackTrace();
+                }
+
+                if (null == api_key || 0 == api_key.compareTo("MISSING_KEY") ) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("MISSING_KEY");
+                    builder.setMessage("The DMS_API_KEY supplied in your app's AndroidManifest.xml is missing. Contact Silicon Labs xpress@silabs.com for a DMS API Key for BGX.");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog dlg = builder.create();
+                    dlg.show();
+
+                } else if ( null == mBGXPartID || BGXpressService.BGXPartID.BGXInvalid == mBGXPartID ) {
                     Toast.makeText(this, "Invalid BGX Part ID", Toast.LENGTH_LONG).show();
                 } else {
 
@@ -377,6 +426,7 @@ public class DeviceDetails extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("bgx-device-uuid", mBGXDeviceID);
                     intent.putExtra("bgx-part-id", mBGXPartID);
+                    intent.putExtra("bgx-part-identifier", mBGXPartIdentifier);
                     intent.putExtra("DeviceAddress", mDeviceAddress);
                     intent.putExtra("DeviceName", mDeviceName);
 
@@ -449,6 +499,20 @@ public class DeviceDetails extends AppCompatActivity {
         intent.setClass(this, BGXpressService.class);
         intent.putExtra("busmode", busMode);
         intent.putExtra("DeviceAddress", mDeviceAddress);
+
+        /* Here we need to check to see if a busmode password is set for this device.
+         * If there is one, then we would need to add it to the intent.
+         */
+
+
+        AccountManager am = AccountManager.get(this);
+        String password = Password.RetrievePassword(am, BusModePasswordKind, mDeviceAddress);
+
+        if (null != password) {
+            intent.putExtra("password", password);
+        }
+
+
         startService(intent);
     }
 

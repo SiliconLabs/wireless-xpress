@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <bgxpress/bgxpress.h>
+#import <BGXpress/bgxpress.h>
 
 /**
  The purpose of this controller class is to show

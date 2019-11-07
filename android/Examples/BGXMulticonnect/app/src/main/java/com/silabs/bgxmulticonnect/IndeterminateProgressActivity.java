@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,7 +26,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import static com.silabs.bgxmulticonnect.BGXpressService.BGX_CONNECTION_ERROR;
+import static com.silabs.bgxpress.BGXpressService.BGX_CONNECTION_ERROR;
+import com.silabs.bgxpress.BGXpressService;
+import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
 
 public class IndeterminateProgressActivity extends AppCompatActivity {
 

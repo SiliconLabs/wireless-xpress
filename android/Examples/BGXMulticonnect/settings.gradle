@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':bgxpress'
+project(':bgxpress').projectDir=new File('../../bgxpress')

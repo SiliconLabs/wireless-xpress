@@ -1,10 +1,15 @@
-//
-//  BGXDevice.m
-//  BGXpress
-//
-//  Created by Brant Merryman on 10/11/18.
-//  Copyright © 2018 Zentri. All rights reserved.
-//
+/*
+ * Copyright 2018-2019 Silicon Labs
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * {{ http://www.apache.org/licenses/LICENSE-2.0}}
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #import "BGXDevice.h"
 #import "BGXpressScanner.h"
@@ -50,9 +55,17 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     
     
     NSUInteger _dataWriteSize;
+
+    BOOL _fastAck;
+    NSInteger _fastAckRxBytes;
+    NSInteger _fastAckTxBytes;
+    
+    NSMutableArray * mBusModeCompletionHandlers;
 }
 
+const NSInteger kInitialFastAckRxBytes = 0x7FFF;
 
+const NSUInteger kHandlerDefaultCapacity = 0x10;
 
 + (instancetype)deviceWithCBPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advData rssi:(NSNumber *)rssi discoveredBy:(BGXpressScanner *)scanner
 {
@@ -75,6 +88,11 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
         rssiTimer = nil;
         _acknowledgedWrites = YES;
         _dataWriteSize = 0;
+        _writeWithResponse = YES;
+        _fastAck = NO;
+        _fastAckRxBytes = 0;
+        _fastAckTxBytes = 0;
+        mBusModeCompletionHandlers = [NSMutableArray arrayWithCapacity:kHandlerDefaultCapacity];
         
     }
     return self;
@@ -172,6 +190,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     firRevStrChar = nil;
     deviceUniqueIdenChar = nil;
     _dataWriteSize = 0;
+    _busMode = UNKNOWN_MODE;
 }
 
 
@@ -179,14 +198,28 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 // Call this to change the device state from inside the class. Calls deviceDelegate as needed.
 - (void)changeDeviceState:(DeviceState)ds
 {
-//    NSLog(@"%@ changing DeviceState: %@", [self description], [BGXDevice nameForDeviceState: ds] );
     [self willChangeValueForKey:@"deviceState"];
+    if (_deviceState != ds) {
+        NSLog(@"deviceState changing from %@ to %@", [BGXDevice nameForDeviceState:_deviceState], [BGXDevice nameForDeviceState:ds]);
+    }
     _deviceState = ds;
     [self didChangeValueForKey:@"deviceState"];
     
     if ([self.deviceDelegate respondsToSelector:@selector(stateChangedForDevice:)]) {
         [self.deviceDelegate stateChangedForDevice:self];
     }
+    
+    if ( self.fastAck && Connected == _deviceState) {
+        char bytes[3];
+        assert(_fastAckRxBytes >=0 && _fastAckRxBytes <= kInitialFastAckRxBytes);
+
+        bytes[0] = 0x00;
+        bytes[1] = _fastAckRxBytes & 0xFF;
+        bytes[2] = (_fastAckRxBytes & 0xFF00) >> 8;
+
+        [self.peripheral writeValue:[NSData dataWithBytes:bytes length:3] forCharacteristic:perTXchar type:CBCharacteristicWriteWithoutResponse];
+    }
+    
 }
 
 #pragma mark - BGX Serial Methods
@@ -194,6 +227,11 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 - (BOOL)canWrite
 {
     if (Connected == self.deviceState) {
+        
+        if (_fastAck) {
+            return _fastAckTxBytes > 0 ? YES : NO;
+        }
+        
         if (!self.writeWithResponse) {
             return self.peripheral.canSendWriteWithoutResponse;
         } else if (!dataToWrite) {
@@ -213,6 +251,35 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     [peripheral readValueForCharacteristic:modeChar];
     
     return YES;
+}
+
+- (BOOL)writeBusMode:(BusMode)newBusMode password:(NSString * _Nullable )password completionHandler:(busmode_write_completion_handler_t)completionHandler
+{
+    [mBusModeCompletionHandlers addObject:completionHandler];
+
+    if (self.deviceState != Connected)
+    {
+        return NO;
+    }
+    
+    NSMutableData * md = [[NSMutableData alloc] initWithCapacity:[password lengthOfBytesUsingEncoding:NSASCIIStringEncoding] + 1];
+    
+    [md appendBytes:&newBusMode length:1];
+    if (password) {
+        unsigned char zero = 0;
+        [md appendData: [password dataUsingEncoding:NSASCIIStringEncoding]];
+        [md appendBytes:&zero length:1];
+    }
+    
+    if (self.busMode != newBusMode)
+    {
+        [peripheral writeValue:md forCharacteristic:modeChar type:CBCharacteristicWriteWithResponse];
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 - (BOOL)writeBusMode:(BusMode)newBusMode
@@ -260,14 +327,32 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (void) writeChunkOfData
 {
-    NSAssert(0 != _dataWriteSize, @"Invalid write size");
-    range.length = dataToWrite.length - range.location;
-    if (range.length > _dataWriteSize)
-    {
-        range.length = _dataWriteSize;
+    if (!_fastAck || _fastAckTxBytes > 0) {
+        NSAssert(0 != _dataWriteSize, @"Invalid write size");
+        range.length = dataToWrite.length - range.location;
+        
+        NSUInteger maxWriteSz = self.fastAck ? MIN(_fastAckTxBytes, _dataWriteSize) : _dataWriteSize;
+        
+        if (range.length > maxWriteSz)
+        {
+            range.length = maxWriteSz;
+        }
+        NSData * data2Write = [dataToWrite subdataWithRange:range];
+        if (data2Write != nil) {
+        
+            if (self.fastAck) {
+                [peripheral writeValue:data2Write forCharacteristic:perRXchar type: CBCharacteristicWriteWithoutResponse];
+            } else {
+                [peripheral writeValue:data2Write forCharacteristic:perRXchar type: self.writeWithResponse ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse];
+            }
+            range.location += range.length;
+            
+            if (_fastAck) {
+                _fastAckTxBytes -= data2Write.length;
+//                NSLog(@"_fastAckTxBytes: %ld (subtracted %ld)", (long int) _fastAckTxBytes, data2Write.length);
+            }
+        }
     }
-    [peripheral writeValue:[dataToWrite subdataWithRange:range] forCharacteristic:perRXchar type: self.writeWithResponse ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse];
-    range.location += range.length;
 }
 
 - (BOOL) writeString:(NSString *) string
@@ -284,6 +369,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
 {
+    NSLog(@"peripheral: %@ didDiscoverServices", peripheral.name);
     if (!error)
     {
         perRXchar = nil;
@@ -301,6 +387,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 - (void) peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
+    NSLog(@"peripheral: %@ didDiscoverCharacteristicsForService: %@", peripheral.name, service.UUID.UUIDString);
     if (!error)
     {
         if ([service.UUID isEqual:[CBUUID UUIDWithString:SERVICE_DEVICE_INFORMATION_UUID]])
@@ -322,7 +409,16 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
                 if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_PER_RX_UUID]])
                 {
                     perRXchar = characteristic;
-                    //                NSLog(@"perRXchar discovered");
+                    
+                    if (perRXchar.properties & CBCharacteristicPropertyNotify) {
+                        [peripheral setNotifyValue:YES forCharacteristic:perRXchar];
+                        _fastAck = YES;
+                        NSLog(@"_fastAck: YES");
+                        _writeWithResponse = NO;
+                        _fastAckRxBytes = kInitialFastAckRxBytes;
+//                        NSLog(@"_fastAckRxBytes: %ld (initial)", (long int)_fastAckRxBytes);
+
+                    }
                 }
                 else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_PER_TX_UUID]])
                 {
@@ -358,13 +454,49 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 {
     if (error) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Error" object:error];
-        
-        [self changeDeviceState:Disconnected];
+        [self disconnectWithError:error];
         return;
     }
     
-    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_FIRMWARE_REVISION_STRING_UUID]]) {
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_PER_RX_UUID]]) {
+        
+        
+        
+        // fast-ack backchannel data received.
+        if (!self.fastAck) {
+            NSLog(@"Warning: fastAck received but fastAck is not enabled.");
+        }
+        
+        NSUInteger length = [characteristic.value length];
+        
+        if (3 == length) {
+            char bytes[3];
+            memcpy(bytes, characteristic.value.bytes, length);
+            BOOL fNeedToCallWriteChunkOfData = NO;
+            uint8_t opcode = bytes[0];
+            uint16_t txbytes;
+            memcpy(&txbytes, bytes + 1, 2);
+            
+            switch (opcode) {
+                case 0x00: // initial credit value
+                    _fastAckTxBytes = txbytes;
+//                    NSLog(@"_fastAckTxBytes: %ld", (long int) _fastAckTxBytes);
+                    break;
+                case 0x01: // update credit
+                    if (_dataWriteSize > 0 && _fastAckTxBytes == 0) {
+                        fNeedToCallWriteChunkOfData = YES;
+                    }
+                    _fastAckTxBytes += txbytes;
+//                    NSLog(@"_fastAckTxBytes: %ld (added %ld)", (long int) _fastAckTxBytes, (long int) txbytes);
+                    break;
+            }
+            
+            if (fNeedToCallWriteChunkOfData) {
+                dispatch_async(dispatch_get_main_queue(), ^{ [self writeChunkOfData]; });
+            }
+        }
+
+    } else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_FIRMWARE_REVISION_STRING_UUID]]) {
 
         NSString * rawVersionString =  [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
         NSArray * comps = [rawVersionString componentsSeparatedByString:@"-"];
@@ -386,40 +518,82 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
             }
             
             self.bootloaderVersion = comps[1];
+        } else {
+            
+            // Treat this as Invalid GATT handles.
+            [self disconnectWithError:[NSError errorWithDomain:CBATTErrorDomain code:1 userInfo:@{}]];
+            
         }
         
         
     } else  if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_PER_TX_UUID]])
     {
+        NSInteger rxDataLength = characteristic.value.length;
+        if (self.fastAck) {
+            _fastAckRxBytes -= rxDataLength;
+//            NSLog(@"_fastAckRxBytes: %ld (subtracted %ld)", (long int)_fastAckRxBytes, (long int)rxDataLength);
+        }
+        
         [[self serialDelegate] dataRead:characteristic.value forDevice: self];
+
+        if (self.fastAck) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_fastAckRxBytes += rxDataLength;
+//                NSLog(@"_fastAckRxBytes: %ld (added %ld)", (long int)_fastAckRxBytes, (long int)rxDataLength);
+                assert(self->_fastAckRxBytes >=0 && self->_fastAckRxBytes <= kInitialFastAckRxBytes);
+                char bytes[3];
+                bytes[0] = 0x01;
+                bytes[1] = rxDataLength & 0x00FF;
+                bytes[2] = (rxDataLength & 0xFF00) >> 8;
+
+                [self.peripheral writeValue:[NSData dataWithBytes:bytes length:3] forCharacteristic:self->perTXchar type:CBCharacteristicWriteWithoutResponse];
+            });
+        }
     }
     else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_MODE_UUID]])
     {
         char mode;
         [characteristic.value getBytes:&mode length:1];
         
-        [self willChangeValueForKey:@"busMode"];
-        _busMode = (BusMode)mode;
-        [self didChangeValueForKey:@"busMode"];
-        
-        [[self serialDelegate] busModeChanged:self.busMode forDevice: self];
-        
-        if (self.deviceState  == Interrogating)
-        {
-            [self changeDeviceState: Connected];
+        BusMode bm = (BusMode) mode;
+        if (_busMode != bm) {
+            [self willChangeValueForKey:@"busMode"];
+            _busMode = (BusMode)mode;
+            [self didChangeValueForKey:@"busMode"];
+            
+            [[self serialDelegate] busModeChanged:self.busMode forDevice: self];
+            
+            if (self.deviceState  == Interrogating)
+            {
+                [self changeDeviceState: Connected];
 
+            }
         }
     }
     else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_MODEL_STRING_UUID]])
     {
-        _modelNumber = [[NSString alloc] initWithUTF8String:[characteristic.value bytes]];
+        NSLog(@"%ld", (long int) characteristic.value.length);
+//        _modelNumber = [[NSString alloc] initWithUTF8String:[characteristic.value bytes]];
+        
+        _modelNumber = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"Model Number: %@", _modelNumber);
         [peripheral readValueForCharacteristic:modeChar];
     }
 }
 
 - (void) peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    if (!error)
+    
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_MODE_UUID]]) {
+        busmode_write_completion_handler_t handler = [mBusModeCompletionHandlers firstObject];
+
+        if (handler) {
+            [mBusModeCompletionHandlers removeObject:handler];
+            (handler)(self, error);
+        }
+    }
+    else if (!error)
     {
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_SS_PER_RX_UUID]])
         {
@@ -436,6 +610,7 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     }
     else
     {
+
         NSLog(@"Error %@ writing to the characteristic (UUID): %@", [error description], characteristic.UUID);
     }
 }
@@ -492,6 +667,49 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
 
 #pragma mark -
 
+
+
+- (CBPeripheral *)peripheral
+{
+    return peripheral;
+}
+
+- (void)setWriteWithResponse:(BOOL)writeWithResponse
+{
+    if (self.fastAck) {
+        _writeWithResponse = NO;
+        if (writeWithResponse) {
+            NSLog(@"BGX Warning: Attempt to set writeWithResponse YES failed because fastAck is enabled for the current device.");
+        }
+    } else {
+        _writeWithResponse = writeWithResponse;
+    }
+}
+
+- (BOOL)writeWithResponse
+{
+    if (self.fastAck) {
+        return NO;
+    } else {
+        return _writeWithResponse;
+    }
+}
+
+/*
+ * disconnectWithError
+ *
+ * Do not call this. The intention is that it will be
+ * called from inside the framework when an unrecoverable
+ * error is detected such as Invalid Gatt Handles.
+ */
+- (void)disconnectWithError:(NSError *)error
+{
+    [self disconnect];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Error" object:[NSError errorWithDomain:CBATTErrorDomain code:1 userInfo:@{}]];
+}
+
+#pragma mark - Misc Class Methods
+
 + (NSString *)nameForDeviceState:(DeviceState)ds
 {
     switch (ds) {
@@ -513,12 +731,5 @@ const NSTimeInterval kRSSIReadInterval = 15.0f;
     }
     return @"?";
 }
-
-- (CBPeripheral *)peripheral
-{
-    return peripheral;
-}
-
-
 
 @end

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,7 @@
 
 
   self.tableView.backgroundView = [[UIView alloc] init];
-  self.tableView.backgroundColor = [UIColor colorWithRed:0.831f green:0.483f blue:0.005f alpha:1.0f];
+    self.tableView.backgroundColor = [UIColor colorNamed:@"Silabs Orange"];
 
 
   UIImage * logoImg = [UIImage imageNamed:@"WhiteSilabsLogo_small"];
@@ -114,7 +114,7 @@
         cell.imageView.image = nil;
     }
     
-    cell.contentView.backgroundColor = [UIColor colorWithRed:0.831f green:0.483f blue:0.005f alpha:1.0f];
+    cell.contentView.backgroundColor = [UIColor colorNamed:@"Silabs Orange"];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.textAlignment = NSTextAlignmentRight;
     cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.0f];

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,6 +38,7 @@
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -76,6 +75,9 @@
                     <rect key="frame" x="264" y="330" width="70" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Next_Step1">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
                     <state key="normal" title="Next &gt;"/>
                     <userDefinedRuntimeAttributes>
@@ -286,6 +288,7 @@ Cg
                         </fragment>
                     </attributedString>
                     <nil key="highlightedColor"/>
+                    <string key="userLabel">BGXpressScanner    - (BOOL)startScan;  Call this method to begin scanning. When devices are discovered, the deviceDiscovered method will be called on your BGXpressScanDelegate. To access the devices, use the devicesDiscovered property of the BGXpressScanner object.</string>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="9"/>
@@ -303,6 +306,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -324,7 +328,7 @@ Cg
                     <integer key="value" value="40"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="24.800000000000001" y="51.724137931034484"/>
+            <point key="canvasLocation" x="-895" y="52"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="w8I-84-xWw" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -511,6 +515,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -532,7 +537,7 @@ Cg
                     <integer key="value" value="80"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="503.19999999999999" y="51.724137931034484"/>
+            <point key="canvasLocation" x="-145" y="53"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="fVg-6E-Toh" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -542,6 +547,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -580,6 +586,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -986,6 +993,9 @@ Cg
                     <rect key="frame" x="257" y="454" width="70" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Next_Step4">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
                     <state key="normal" title="Next &gt;"/>
                     <userDefinedRuntimeAttributes>
@@ -1008,7 +1018,7 @@ Cg
                     <integer key="value" value="0"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="1472.8" y="51.724137931034484"/>
+            <point key="canvasLocation" x="574" y="53"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="X1L-cT-36l" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1018,6 +1028,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1700,6 +1711,9 @@ Cg
                     <rect key="frame" x="240" y="384" width="70" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Next_Step5">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
                     <state key="normal" title="Next &gt;"/>
                     <userDefinedRuntimeAttributes>
@@ -1741,7 +1755,7 @@ Cg
                     <integer key="value" value="170"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="1960" y="53"/>
+            <point key="canvasLocation" x="1332" y="53"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="4U3-g2-c6T" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1751,6 +1765,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1969,7 +1984,7 @@ Cg
                     <integer key="value" value="50"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="2428.5" y="52.5"/>
+            <point key="canvasLocation" x="2054" y="52"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bqM-Pz-S9g" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1979,6 +1994,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -2128,6 +2144,9 @@ Cg
                     <rect key="frame" x="251" y="484" width="70" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Next_Step7">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
                     <state key="normal" title="Next &gt;"/>
                     <userDefinedRuntimeAttributes>
@@ -2165,7 +2184,7 @@ Cg
                     <integer key="value" value="70"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="2898.4000000000001" y="51.724137931034484"/>
+            <point key="canvasLocation" x="2743" y="53"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="1YB-Eg-KEN" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -2175,6 +2194,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -2323,6 +2343,9 @@ Cg
                     <rect key="frame" x="251" y="484" width="70" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Next_Step8">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
                     <state key="normal" title="Next &gt;"/>
                     <userDefinedRuntimeAttributes>
@@ -2360,7 +2383,7 @@ Cg
                     <integer key="value" value="90"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="3370.4000000000001" y="51.724137931034484"/>
+            <point key="canvasLocation" x="3612" y="53"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="y6P-6I-lSk" customClass="StepView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -2370,6 +2393,7 @@ Cg
                     <rect key="frame" x="335" y="20" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="OverlayClose"/>
                     <state key="normal" image="overlay_close.png"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -2460,6 +2484,9 @@ Cg
                     <rect key="frame" x="233" y="484" width="90" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="Disconnect_Button">
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
                     <state key="normal" title="Disconnect "/>
                     <userDefinedRuntimeAttributes>
@@ -2506,7 +2533,7 @@ Cg
                     <integer key="value" value="70"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="3874.5" y="52.5"/>
+            <point key="canvasLocation" x="4553" y="53"/>
         </view>
     </objects>
     <resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,23 +13,23 @@
 
 package com.silabs.bgxcommander;
 
+import android.accounts.AccountManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
@@ -46,11 +46,15 @@ import java.util.Comparator;
 import java.util.List;
 
 import static android.view.View.GONE;
-import static com.silabs.bgxcommander.BGXpressService.ACTION_OTA_WITH_IMAGE;
-import static com.silabs.bgxcommander.BGXpressService.DMS_VERSION_LOADED;
-import static com.silabs.bgxcommander.BGXpressService.OTA_STATUS_MESSAGE;
+import static com.silabs.bgxpress.BGXpressService.ACTION_OTA_WITH_IMAGE;
+import static com.silabs.bgxpress.BGXpressService.DMS_VERSION_LOADED;
+import static com.silabs.bgxpress.BGXpressService.OTA_STATUS_MESSAGE;
 import static com.silabs.bgxcommander.DeviceDetails.kBootloaderSecurityVersion;
+import static com.silabs.bgxcommander.Password.ACTION_PASSWORD_UPDATED;
+import static com.silabs.bgxcommander.PasswordKind.OTAPasswordKind;
 
+import com.silabs.bgxpress.BGXpressService;
+import com.silabs.bgxpress.OTA_Status;
 
 public class FirmwareUpdate extends AppCompatActivity implements SelectionChangedListener {
 
@@ -61,7 +65,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
     private BroadcastReceiver mFirmwareUpdateBroadcastReceiver;
 
     private RecyclerView mDMSVersionsRecyclerView;
-    //private RecyclerView.Adapter mDMSVersionsAdapter;
+
 
     private JSONArray mDMSVersions;
 
@@ -69,6 +73,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
     private String mBGXDeviceID;
     private String mBGXDeviceAddress;
     private String mBGXDeviceName;
+    private String mBGXPartIdentifier;
 
     private ConstraintLayout selectionContents;
     private ConstraintLayout updateContents;
@@ -87,6 +92,9 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
     private Handler mHandler;
     private ImageView decorationImageView;
+
+    private String mImagePath;
+
 
     @Override
     public void selectionDidChange(int position, JSONObject selectedObject) {
@@ -111,6 +119,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
         mBGXDeviceID = getIntent().getStringExtra("bgx-device-id");
         mBGXDeviceAddress = getIntent().getStringExtra("DeviceAddress");
         mBGXDeviceName = getIntent().getStringExtra("DeviceName");
+        mBGXPartIdentifier = getIntent().getStringExtra("bgx-part-identifier");
 
         mDMSVersionsRecyclerView = (RecyclerView)findViewById(R.id.dmsVersionsRecyclerView);
         mDMSVersionsRecyclerView.setHasFixedSize(true);
@@ -126,6 +135,9 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
         intent.putExtra("bgx-part-id", mBGXPartID);
         intent.putExtra("DeviceAddress", mBGXDeviceAddress);
+        if (null != mBGXPartIdentifier) {
+            intent.putExtra("bgx-part-identifier", mBGXPartIdentifier);
+        }
 
         startService(intent);
 
@@ -158,6 +170,7 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
         ifilter.addAction(DMS_VERSION_LOADED);
         ifilter.addAction(OTA_STATUS_MESSAGE);
+        ifilter.addAction(ACTION_PASSWORD_UPDATED);
 
         mFirmwareUpdateBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -165,6 +178,9 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
                 switch (intent.getAction()) {
 
+                    case ACTION_PASSWORD_UPDATED:
+                        startOTAUpdate();
+                        break;
                     case BGXpressService.DMS_VERSIONS_AVAILABLE: {
                         String versionJSON = intent.getStringExtra("versions-available-json");
                         try {
@@ -176,15 +192,10 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                         break;
                     case BGXpressService.DMS_VERSION_LOADED: {
 
-                        String versionFilePath = intent.getStringExtra("file_path");
-                        Log.d("bgx_dbg", "path: "+versionFilePath);
+                        mImagePath = intent.getStringExtra("file_path");
+                        Log.d("bgx_dbg", "path: "+mImagePath);
 
-                        // tell BGXpressService to install it.
-                        Intent updateIntent = new Intent(mContext, BGXpressService.class);
-                        updateIntent.setAction(ACTION_OTA_WITH_IMAGE);
-                        updateIntent.putExtra("image_path", versionFilePath);
-                        updateIntent.putExtra("DeviceAddress", mBGXDeviceAddress);
-                        startService(updateIntent);
+                        startOTAUpdate();
                     }
                         break;
                     case BGXpressService.OTA_STATUS_MESSAGE: {
@@ -263,6 +274,24 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
         currentVersionTextView.setText( BGXpressService.getFirmwareRevision(mBGXDeviceAddress) );
     }
 
+    public void startOTAUpdate()
+    {
+        // tell BGXpressService to install it.
+        Intent updateIntent = new Intent(mContext, BGXpressService.class);
+        updateIntent.setAction(ACTION_OTA_WITH_IMAGE);
+        updateIntent.putExtra("image_path", mImagePath);
+        updateIntent.putExtra("DeviceAddress", mBGXDeviceAddress);
+
+        // add a password.
+        AccountManager am = AccountManager.get(mContext);
+        String password = Password.RetrievePassword(am, OTAPasswordKind, mBGXDeviceAddress );
+
+        if (null != password) {
+            updateIntent.putExtra("password", password);
+        }
+
+        startService(updateIntent);
+    }
 
     @Override
     public void onDestroy() {
@@ -352,7 +381,6 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
         Boolean fOTAFailed = intent.getBooleanExtra("ota_failed", false);
         if (fOTAFailed) {
             upperProgressMessageTextView.setText(R.string.FirmwareUpdateFailedLabel);
-            return;
         }
 
 
@@ -362,6 +390,18 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 break;
             case Idle:
                 lowerProgressMessageTextView.setText("");
+                break;
+            case Password_Required: {
+                lowerProgressMessageTextView.setText(R.string.OTA_Status_PasswordRequired);
+
+                Intent passwordIntent = new Intent(mContext, Password.class);
+                passwordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                passwordIntent.putExtra("DeviceAddress", mBGXDeviceAddress);
+                passwordIntent.putExtra("PasswordKind", OTAPasswordKind);
+                passwordIntent.putExtra("DeviceName", mBGXDeviceName);
+
+                mContext.startActivity(passwordIntent);
+            }
                 break;
             case Downloading:
                 lowerProgressMessageTextView.setText(R.string.OTA_Status_Downloading);
@@ -374,10 +414,33 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 break;
             case Finished:
                 lowerProgressMessageTextView.setText(R.string.OTA_Status_Finished);
-                mHandler.post(new Runnable() {
+
+                // show alert message telling user to forget the BGX in the settings.
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Important");
+                builder.setMessage("You should select "+mBGXDeviceName+" in the Bluetooth Settings on any paired devices and choose \"Forget\" and then turn Bluetooth off and back on again for correct operation.");
+                builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
-                    public void run() {
-                        OTA_Finished();
+                    public void onClick(DialogInterface dialog, int which) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                OTA_Finished();
+                            }
+                        });
+                    }
+                });
+                AlertDialog dlg = builder.create();
+                dlg.show();
+
+
+                break;
+            case Failed:
+                lowerProgressMessageTextView.setText(R.string.FirmwareUpdateFailedLabel);
+                CancelUpdateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
                     }
                 });
                 break;

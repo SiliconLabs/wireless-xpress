@@ -1,0 +1,28 @@
+{
+  "name": "bgxpress",
+  "version": "2.2",
+  "summary": "bgxpress helps iOS apps work with Silicon Labs Serial to BLE bridges BGX13P Bluetooth 5 PCB Module and BGX13S Bluetooth 5 SiP Module.",
+  "description": "bgxpress is an iOS framework for interoperation with Silicon Labs Serial to BLE bridge parts,\nBGX13P Bluetooth 5 PCB Module and BGX13S Bluetooth 5 SiP Module. These parts would be useful\nto add BLE support for an electronic design having a serial data connection. bgxpress allows\niOS apps to be written to interoperate with these products. It allows the iOS app to discover,\nconnect, control, communicate, and update the firmware on these modules.",
+  "homepage": "https://www.silabs.com/products/wireless/bluetooth/xpress",
+  "license": "Apache License, Version 2.0",
+  "authors": {
+    "Silicon Labs": "brant.merryman@silabs.com"
+  },
+  "platforms": {
+    "ios": "10.2"
+  },
+  "source": {
+    "git": "https://github.com/SiliconLabs/wireless-xpress.git",
+    "tag": "2.2"
+  },
+  "source_files": [
+    "iOS/BGXpress/BGXpress",
+    "iOS/BGXpress/BGXpress/*.{h,m}"
+  ],
+  "public_header_files": "iOS/BGXpress/BGXpress/*.h",
+  "frameworks": [
+    "Foundation",
+    "CoreBluetooth"
+  ],
+  "requires_arc": true
+}

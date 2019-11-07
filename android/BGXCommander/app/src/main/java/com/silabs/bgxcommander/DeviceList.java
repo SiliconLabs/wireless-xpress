@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,54 +16,42 @@ package com.silabs.bgxcommander;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanRecord;
-import android.bluetooth.le.ScanResult;
-import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.ParcelUuid;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.le.BluetoothLeScanner;
-
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.content.pm.PackageInfoCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.silabs.bgxpress.BGX_CONNECTION_STATUS;
+import com.silabs.bgxpress.BGXpressService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import static com.silabs.bgxcommander.BGX_CONNECTION_STATUS.CONNECTED;
 
 public class DeviceList extends AppCompatActivity {
 
@@ -86,11 +74,16 @@ public class DeviceList extends AppCompatActivity {
     private BroadcastReceiver mDeviceDiscoveryReceiver;
 
     private MenuItem mScanItem;
+    private Context mContext;
+
+    private Boolean mInvalidGattHandles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
+        mContext = this;
+        mInvalidGattHandles = false;
 
         mDeviceDiscoveryReceiver = new BroadcastReceiver() {
             @Override
@@ -135,28 +128,53 @@ public class DeviceList extends AppCompatActivity {
                         break;
 
                     case BGXpressService.BGX_CONNECTION_STATUS_CHANGE: {
-                        BGX_CONNECTION_STATUS connectionStatusValue = (BGX_CONNECTION_STATUS)intent.getSerializableExtra("bgx-connection-status");
+                        if (!mInvalidGattHandles) {
+                            BGX_CONNECTION_STATUS connectionStatusValue = (BGX_CONNECTION_STATUS) intent.getSerializableExtra("bgx-connection-status");
 
 
-                        if ( BGX_CONNECTION_STATUS.CONNECTED == connectionStatusValue) {
-                            BluetoothDevice btDevice = (BluetoothDevice) intent.getParcelableExtra("device");
-                            Intent intent2 = new Intent(context, DeviceDetails.class);
-                            intent2.putExtra("BLUETOOTH_DEVICE", btDevice);
-                            intent2.putExtra("DeviceName", btDevice.getName());
-                            intent2.putExtra("DeviceAddress", btDevice.getAddress());
-                            intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            if (BGX_CONNECTION_STATUS.CONNECTED == connectionStatusValue) {
+                                BluetoothDevice btDevice = (BluetoothDevice) intent.getParcelableExtra("device");
+                                Intent intent2 = new Intent(context, DeviceDetails.class);
+                                intent2.putExtra("BLUETOOTH_DEVICE", btDevice);
+                                intent2.putExtra("DeviceName", btDevice.getName());
+                                intent2.putExtra("DeviceAddress", btDevice.getAddress());
+                                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                            BGXpressService.setBGXAcknowledgedReads(btDevice.getAddress(), true);
-                            BGXpressService.setBGXAcknowledgedWrites(btDevice.getAddress(), true);
+                                BGXpressService.setBGXAcknowledgedReads(btDevice.getAddress(), true);
+                                BGXpressService.setBGXAcknowledgedWrites(btDevice.getAddress(), true);
 
-                            context.startActivity(intent2);
+                                context.startActivity(intent2);
+                            }
                         }
                     }
                         break;
                     case BGXpressService.BGX_SCAN_MODE_CHANGE: {
                         fScanning = intent.getBooleanExtra("isscanning", false);
-                        mScanItem.setEnabled(!fScanning);
+                        boolean fScanFailed = intent.getBooleanExtra("scanFailed", false);
+                        if (fScanFailed) {
+                            int error = intent.getIntExtra("error", 0);
+                            Toast.makeText(mContext, "Scan Failed. Error: "+error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    break;
+                    case BGXpressService.BGX_INVALID_GATT_HANDLES: {
 
+
+                        String deviceAddress = intent.getStringExtra("DeviceAddress");
+                        String deviceName = intent.getStringExtra("DeviceName");
+                        BGXpressService.startActionBGXCancelConnect(mContext, deviceAddress);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("Invalid GATT Handles");
+                        builder.setMessage("The bonding information on this device is invalid (probably due to a firmware update). You should select "+deviceName+" in the Bluetooth Settings and choose \"Forget\" and then turn Bluetooth off and back on.");
+                        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dlg = builder.create();
+                        dlg.show();
                     }
                     break;
 
@@ -168,6 +186,7 @@ public class DeviceList extends AppCompatActivity {
         IntentFilter listIntentFilter = new IntentFilter(BGXpressService.BGX_SCAN_DEVICE_DISCOVERED);
         listIntentFilter.addAction(BGXpressService.BGX_CONNECTION_STATUS_CHANGE);
         listIntentFilter.addAction(BGXpressService.BGX_SCAN_MODE_CHANGE);
+        listIntentFilter.addAction(BGXpressService.BGX_INVALID_GATT_HANDLES);
 
 
 
@@ -233,9 +252,17 @@ public class DeviceList extends AppCompatActivity {
                     return true;
                 }
 
-                if (!fScanning) {
-                    scanForDevices();
+                if (fScanning) {
+                    BGXpressService.startActionStopScan(this);
                 }
+
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        scanForDevices();
+                    }
+                }, 200);
+
                 return true;
             case R.id.about_menuitem:
                 try {
@@ -247,7 +274,7 @@ public class DeviceList extends AppCompatActivity {
 
                     TextView versionText = (TextView)aboutDialog.findViewById(R.id.version_info);
 
-                    versionText.setText(getString(R.string.VersionNameLabel, pInfo.versionName));
+                    versionText.setText(getString(R.string.VersionNameLabel, pInfo.versionName, PackageInfoCompat.getLongVersionCode(pInfo) ));
 
                     Button okayButton = (Button)aboutDialog.findViewById(R.id.btn_ok);
                     okayButton.setOnClickListener(new View.OnClickListener() {
@@ -325,6 +352,10 @@ public class DeviceList extends AppCompatActivity {
 
         if (fAdapterEnabled && fLocationPermissionGranted) {
 
+            if (null != mScanItem) {
+                mScanItem.setEnabled(true);
+            }
+
             if (null == BluetoothAdapter.getDefaultAdapter() || !fAdapterEnabled) {
                 Log.d("bgx_dbg", "bluetooth adapter is not available.");
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -357,7 +388,7 @@ public class DeviceList extends AppCompatActivity {
     private void scanForDevices() {
         final Context myContext = this;
 
-//        mScanResults.clear();
+        mScanResults = new ArrayList<Map<String, String>>();
 
         mDeviceListAdapter = new BGXDeviceListAdapter(getApplicationContext(), mScanResults);
         mDeviceListRecyclerView.swapAdapter(mDeviceListAdapter, true);
@@ -369,18 +400,9 @@ public class DeviceList extends AppCompatActivity {
 
                 BGXpressService.startActionStartScan(myContext);
             }
-        }, 0);
+        }, 200);
 
-        /*
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("bgx_dbg", "stopping scan");
-                BGXpressService.startActionStopScan(myContext);
 
-            }
-        }, SCAN_PERIOD);
-        */
     }
 
 

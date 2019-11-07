@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,7 +52,7 @@
   XCUIApplication *app = [[XCUIApplication alloc] init];
   [[[app.navigationBars[@"BGX Commander"] childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1] tap];
   [app.tables/*@START_MENU_TOKEN@*/.staticTexts[@"Tutorial"]/*[[".cells.staticTexts[@\"Tutorial\"]",".staticTexts[@\"Tutorial\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
-  [app.buttons[@"overlay close"] tap];
+  [app.buttons[@"OverlayClose"] tap];
 
 }
 
@@ -61,8 +61,8 @@
   XCUIApplication *app = [[XCUIApplication alloc] init];
   [[[app.navigationBars[@"BGX Commander"] childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1] tap];
   [app.tables/*@START_MENU_TOKEN@*/.staticTexts[@"Tutorial"]/*[[".cells.staticTexts[@\"Tutorial\"]",".staticTexts[@\"Tutorial\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
-  [app.buttons[@"Next >"] tap];
-  [app.buttons[@"overlay close"] tap];
+  [app.buttons[@"Next_Step1"] tap];
+  [app.buttons[@"OverlayClose"] tap];
 
 }
 
@@ -71,7 +71,7 @@
   XCUIApplication *app = [[XCUIApplication alloc] init];
   [[[app.navigationBars[@"BGX Commander"] childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1] tap];
   [app.tables/*@START_MENU_TOKEN@*/.staticTexts[@"Tutorial"]/*[[".cells.staticTexts[@\"Tutorial\"]",".staticTexts[@\"Tutorial\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
-  [app.buttons[@"Next >"] tap];
+  [app.buttons[@"Next_Step1"] tap];
 
   XCUIElementQuery * query = [app.buttons matchingIdentifier:@"ConnectToDeviceTutorialButton"];
   XCTAssert(1 == query.count, @"Invalid query.");
@@ -79,7 +79,7 @@
   [ConnectToDeviceTutorialButton tap];
 
 
-  [app.buttons[@"overlay close"] tap];
+  [app.buttons[@"OverlayClose"] tap];
 
 }
 
@@ -89,7 +89,7 @@
   [[[app.navigationBars[@"BGX Commander"] childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1] tap];
   [app.tables/*@START_MENU_TOKEN@*/.staticTexts[@"Tutorial"]/*[[".cells.staticTexts[@\"Tutorial\"]",".staticTexts[@\"Tutorial\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
 
-  XCUIElement *nextButton = app.buttons[@"Next >"];
+  XCUIElement *nextButton = app.buttons[@"Next_Step1"];
   [nextButton tap];
 
   XCUIElementQuery * query = [app.buttons matchingIdentifier:@"ConnectToDeviceTutorialButton"];
@@ -97,10 +97,14 @@
   XCUIElement * ConnectToDeviceTutorialButton = [query elementBoundByIndex:0];
   [ConnectToDeviceTutorialButton tap];
 
-  [[app.otherElements containingType:XCUIElementTypeButton identifier:@"overlay close"].element tap];
+  
+
+  nextButton = app.buttons[@"Next_Step4"];
   [nextButton tap];
+
+  nextButton = app.buttons[@"Next_Step5"];
   [nextButton tap];
-  [app.buttons[@"overlay close"] tap];
+  [app.buttons[@"OverlayClose"] tap];
 
 }
 
@@ -110,7 +114,7 @@
   [[[app.navigationBars[@"BGX Commander"] childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1] tap];
   [app.tables/*@START_MENU_TOKEN@*/.staticTexts[@"Tutorial"]/*[[".cells.staticTexts[@\"Tutorial\"]",".staticTexts[@\"Tutorial\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
 
-  XCUIElement *nextButton = app.buttons[@"Next >"];
+  XCUIElement *nextButton = app.buttons[@"Next_Step1"];
   [nextButton tap];
 
   XCUIElementQuery * query = [app.buttons matchingIdentifier:@"ConnectToDeviceTutorialButton"];
@@ -118,9 +122,11 @@
   XCUIElement * ConnectToDeviceTutorialButton = [query elementBoundByIndex:0];
   [ConnectToDeviceTutorialButton tap];
 
+  nextButton = app.buttons[@"Next_Step4"];
   [nextButton tap];
 
 
+  nextButton = app.buttons[@"Next_Step5"];
   while (![nextButton isEnabled]) {
     NSLog(@"waiting");
     usleep(1000000);
@@ -128,13 +134,20 @@
 
   [nextButton tap];
   [app.buttons[@"Send "] tap];
+
+  nextButton = app.buttons[@"Next_Step7"];
   [nextButton tap];
 
 
 
-
+  nextButton = app.buttons[@"Next_Step8"];
+  while (![nextButton isEnabled]) {
+    NSLog(@"waiting");
+    usleep(1000000);
+  }
+    
   [nextButton tap];
-  [app.buttons[@"overlay close"] tap];
+  [app.buttons[@"OverlayClose"] tap];
 
 }
 
@@ -144,15 +157,18 @@
   [[[app.navigationBars[@"BGX Commander"] childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1] tap];
   [app.tables/*@START_MENU_TOKEN@*/.staticTexts[@"Tutorial"]/*[[".cells.staticTexts[@\"Tutorial\"]",".staticTexts[@\"Tutorial\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
 
-  XCUIElement *nextButton = app.buttons[@"Next >"];
+  XCUIElement *nextButton = app.buttons[@"Next_Step1"];
   [nextButton tap];
   XCUIElementQuery * query = [app.buttons matchingIdentifier:@"ConnectToDeviceTutorialButton"];
   XCTAssert(1 == query.count, @"Invalid query.");
   XCUIElement * ConnectToDeviceTutorialButton = [query elementBoundByIndex:0];
   [ConnectToDeviceTutorialButton tap];
 
+  nextButton = app.buttons[@"Next_Step4"];
   [nextButton tap];
 
+    nextButton = app.buttons[@"Next_Step5"];
+    
   while (![nextButton isEnabled]) {
     NSLog(@"waiting");
     usleep(1000000);
@@ -167,17 +183,20 @@
   }
 
   [app.buttons[@"Send "] tap];
+    
+  nextButton = app.buttons[@"Next_Step7"];
   while (![nextButton isEnabled]) {
     NSLog(@"waiting");
     usleep(1000000);
   }
+    
   [nextButton tap];
-
+  
+  nextButton = app.buttons[@"Next_Step8"];
   while (![nextButton isEnabled]) {
     NSLog(@"waiting");
     usleep(1000000);
   }
-
 
   [nextButton tap];
   [app.buttons[@"Disconnect "] tap];

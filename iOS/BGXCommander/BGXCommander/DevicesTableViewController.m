@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Silicon Labs
+ * Copyright 2018-2019 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,12 +16,15 @@
 #import "DeviceTableViewCell.h"
 #import "DeviceDetailsViewController.h"
 #import "AppDelegate.h"
+#import "ConnectingViewController.h"
 
 DevicesTableViewController * gDevicesTableViewController = nil;
 
 @interface DevicesTableViewController ()
 
 @property (nonatomic, strong) id errorObserverReference;
+
+@property (nonatomic, strong) ConnectingViewController * connectingViewController;
 
 @end
 
@@ -44,8 +47,8 @@ DevicesTableViewController * gDevicesTableViewController = nil;
     
 #if TARGET_IPHONE_SIMULATOR
     // Create simulated devices.
-    self.devices =   @[  @{ @"name" : @"BGX-1628", @"UUID" : @"B159CD32-0FC5-4BEA-943C-114AE1920539", @"RSSI" : @"-43" }
-                         ,@{ @"name" : @"BGX-1208", @"UUID" : @"4412F05E-A45B-462A-818B-0ACAFE319423", @"RSSI" : @"-97" }];
+    self.devices =   @[  @{ @"name" : @"BGX-SAMPLE1", @"UUID" : @"B159CD32-0FC5-4BEA-943C-114AE1920539", @"RSSI" : @-43 }
+                         ,@{ @"name" : @"BGX-SAMPLE2", @"UUID" : @"4412F05E-A45B-462A-818B-0ACAFE319423", @"RSSI" : @-97 }];
     
 #else
     self.devices = @[];
@@ -82,6 +85,11 @@ DevicesTableViewController * gDevicesTableViewController = nil;
                                                  name:ConnectedToDeviceNotitficationName
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deviceStateChanged:)
+                                                 name:DeviceStateChangedNotificationName
+                                               object:nil];
+    
 #endif
     [[NSNotificationCenter defaultCenter] addObserverForName:TutorialConnectToDeviceNotificationName object:nil queue:nil usingBlock:^(NSNotification * tutorialConnectToDeviceNotification){
         
@@ -105,10 +113,24 @@ DevicesTableViewController * gDevicesTableViewController = nil;
     // Register for errors that may be sent from the bgx framework.
     self.errorObserverReference = [[NSNotificationCenter defaultCenter] addObserverForName:@"Error" object:nil queue:nil usingBlock:^(NSNotification * n){
         
-        [self cancelConnectingAction:nil];
+        [[AppDelegate sharedAppDelegate].selectedDevice disconnect];
+        [self.connectingViewController dismissViewControllerAnimated:YES completion:^{ self.connectingViewController = nil;}];
+
         NSError * error = SafeType( [n object], [NSError class]);
         
-        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"user alert title") message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController * alertController;
+        
+        if (CBATTErrorDomain == error.domain && 1 == error.code) {
+            NSIndexPath * ip = self.tableView.indexPathForSelectedRow;
+            
+            BGXDevice * device = SafeType([self.devices objectAtIndex: ip.row], [BGXDevice class]);
+            
+            alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"user alert title") message:[NSString stringWithFormat: NSLocalizedString(@"The bonding information on this device is invalid (probably due to a firmware update). You should select %@ in the Bluetooth Settings and choose \"Forget this device\" and then turn Bluetooth off and back on.", @"Argument is device name"), device.name] preferredStyle:UIAlertControllerStyleAlert];
+
+        } else {
+        
+            alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"user alert title") message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+        }
         
         [alertController addAction: [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action){
             
@@ -168,7 +190,19 @@ extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
 - (void)connectedToDevice:(NSNotification *)connectedToDeviceNotification
 {
     [self performSegueWithIdentifier:@"pushDetails" sender:self];
-    [self exitConnectingWindow];
+    [self.connectingViewController dismissViewControllerAnimated:YES completion:^{self.connectingViewController = nil;}];
+}
+
+- (void)deviceStateChanged:(NSNotification *)deviceStateChangedNotification
+{
+    NSNumber * ds = SafeType([deviceStateChangedNotification object], [NSNumber class]);
+    if (nil != ds) {
+        if (Disconnected == [ds intValue]) {
+            [self.connectingViewController dismissViewControllerAnimated:YES completion:^{self.connectingViewController = nil;}];
+            
+
+        }
+    }
 }
 
 -(void)rightDrawerButtonPress:(id)sender{
@@ -206,11 +240,17 @@ extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DeviceCell" forIndexPath:indexPath];
+    
+#if TARGET_IPHONE_SIMULATOR
+    NSDictionary * idevice = SafeType([self.devices objectAtIndex:indexPath.row], [NSDictionary class]);
+    NSString * name = [idevice objectForKey:@"name"];
+    NSNumber * rssi = [idevice objectForKey:@"RSSI"];
+#else
     BGXDevice * idevice = SafeType([self.devices objectAtIndex:indexPath.row], [BGXDevice class]);
-    
     NSNumber * rssi = idevice.rssi;
-    
     NSString * name = idevice.name;
+#endif
+    
     cell.deviceNameField.text = name;
     cell.deviceRSSIField.text = [NSString stringWithFormat:@"%d", [rssi intValue]];
     
@@ -227,27 +267,35 @@ extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    self.connectingViewController = [storyboard instantiateViewControllerWithIdentifier:@"Connecting"];
+
 #if TARGET_IPHONE_SIMULATOR
-    [[NSNotificationCenter defaultCenter] postNotificationName:ConnectedToDeviceNotitficationName object:SafeType([self.devices objectAtIndex: indexPath.row], [BGXDevice class])];
-    [self performSegueWithIdentifier:@"pushDetails" sender:self];
+    [self.navigationController presentViewController:self.connectingViewController animated:YES completion:^{
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:ConnectedToDeviceNotitficationName object:SafeType([self.devices objectAtIndex: indexPath.row], [BGXDevice class])];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.connectingViewController dismissViewControllerAnimated:YES completion:^{
+
+                [self performSegueWithIdentifier:@"pushDetails" sender:self];
+            }];
+        });
+    }];
+    
 #else
     [AppDelegate sharedAppDelegate].selectedDevice = SafeType([self.devices objectAtIndex:indexPath.row], [BGXDevice class]);
     [AppDelegate sharedAppDelegate].selectedDevice.deviceDelegate = [AppDelegate sharedAppDelegate];
     [AppDelegate sharedAppDelegate].selectedDevice.serialDelegate = [AppDelegate sharedAppDelegate];
     [AppDelegate sharedAppDelegate].selectedDeviceDectorator = NoDecoration;
     
-    [self showConnectingWindow];
+    [self.navigationController presentViewController:self.connectingViewController animated:YES completion:^{}];
+    
     if (![[AppDelegate sharedAppDelegate].selectedDevice connect]) {
-        [self cancelConnectingAction: nil];
+        [self dismissViewControllerAnimated:YES completion: ^{}];
     }
 #endif
-}
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (NSNotFound == tableView.indexPathForSelectedRow.row) {
-        NSLog(@"nothing is selected.");
-    }
 }
 
 #pragma mark - Navigation
@@ -261,37 +309,5 @@ extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
     BGXDevice * idevice = SafeType([self.devices objectAtIndex:self.tableView.indexPathForSelectedRow.row], [BGXDevice class]);
     ddvc.title = idevice.name;
 }
-
-#pragma mark -
-#pragma mark Connecting.xib stuff
-
-- (void)showConnectingWindow
-{
-    [[UINib nibWithNibName:@"Connecting" bundle:nil] instantiateWithOwner:self options:nil];
-    
-    [self.connectingWindow makeKeyAndVisible];
-}
-
-- (IBAction)cancelConnectingAction:(id)sender
-{
-    if (self.connectingWindow) {
-        
-        
-        [[AppDelegate sharedAppDelegate].selectedDevice disconnect];
-        
-        [self exitConnectingWindow];
-    }
-    
-    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-}
-
-- (void)exitConnectingWindow
-{
-    [self.connectingWindow setHidden:YES];
-    self.connectingWindow = nil;
-    [self.tableView.window makeKeyAndVisible];
-}
-
-
 
 @end
