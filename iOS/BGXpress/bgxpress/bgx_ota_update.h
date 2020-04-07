@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -151,6 +151,15 @@ typedef NS_ENUM(int, ota_operation_t) {
  * @param password The password to use for the update (if a password is required).
  */
 - (void)setPassword:(NSString *)password;
+
+/**
+ *  This API sets the type of writes used to upload the OTA image.
+ *   A value of YES means that writeWithAcknowledgement will be used.
+ *   A value of NO means that writeWithoutAcknowledgement will be used.
+ *   This API returns 0 if it succeeds and non-zero if it fails.
+ *   The API can only be called prior to starting the OTA.
+ */
+- (int)setOTAUploadWithResponse:(BOOL)useAcknowledgedWrites;
 
 @property (nonatomic, weak) NSObject<BGX_OTA_Updater_Delegate> * delegate;
 

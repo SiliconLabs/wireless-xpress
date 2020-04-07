@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,11 +17,13 @@
 #import "AppDelegate.h"
 #import "DecoratedMMDrawerBarButtonItem.h"
 #import "dispatch_utils.h"
+#import "OptionsViewController.h"
 
 typedef enum {
     SEND_MODE
     ,RECEIVE_MODE
     ,BUS_MODE_CHANGE_MODE
+    ,RAW_MODE
     ,ERROR_MODE
     
     ,INVALID_MODE
@@ -67,7 +69,20 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
     self.busMode = UNKNOWN_MODE;
     self.textMode = INVALID_MODE;
     
-    self.lineEndings = CRLF;
+    NSNumber * numNewLinesOnSend = SafeType([[NSUserDefaults standardUserDefaults]
+                                             objectForKey: (NSString *) kNewLinesOnSendKeyName]
+                                            ,[NSNumber class]);
+    
+    if (nil == numNewLinesOnSend) {
+        numNewLinesOnSend = [NSNumber numberWithBool:YES];
+    }
+    
+    if ([numNewLinesOnSend boolValue]) {
+        self.lineEndings = CRLF;
+    } else {
+        self.lineEndings = None;
+        self.textMode = RAW_MODE;
+    }
     
     self.mmDrawerBarButtonItem = [[DecoratedMMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(rightDrawerButtonPress:)];
     
@@ -117,6 +132,8 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceived:) name:DataReceivedNotificationName object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(optionsChanged:) name: OptionsChangedNotificationName object:nil];
+    
     [super viewWillAppear:animated];
     
 }
@@ -135,7 +152,8 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
     [self.deviceUnderObservation removeObserver:self forKeyPath:@"bootloaderVersion"];
 
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DataReceivedNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DataReceivedNotificationName object: nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:OptionsChangedNotificationName object: nil];
     
     for (id iRef in self.observerReferences) {
         [[NSNotificationCenter defaultCenter] removeObserver:iRef];
@@ -162,31 +180,39 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
         
         if ([[AppDelegate sharedAppDelegate].selectedDevice canWrite]) {
             
-            self.textMode = SEND_MODE;
-            
-            attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n< %@", self.sendTextField.text]
-                                                   attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
-            
-            
             NSMutableString * string2Send = [self.sendTextField.text mutableCopy];
             
-            switch (self.lineEndings) {
-                case None:
-                    break;
-                case CR:
-                    [string2Send appendString:[NSString stringWithFormat:@"%c", 0x0D]];
-                    break;
-                case LF:
-                    [string2Send appendString:[NSString stringWithFormat:@"%c", 0x0A]];
-                    break;
-                case CRLF:
-                    [string2Send appendString:[NSString stringWithFormat:@"%c%c", 0x0D, 0x0A]];
-                    break;
-                case LFCR:
-                    [string2Send appendString:[NSString stringWithFormat:@"%c%c", 0x0A, 0x0D]];
-                    break;
-                default:
-                    break;
+            if (RAW_MODE == self.textMode) {
+                attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", self.sendTextField.text]
+                attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+            } else {
+            
+                self.textMode = SEND_MODE;
+                
+                attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n< %@", self.sendTextField.text]
+                                                       attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+                
+                
+                
+                
+                switch (self.lineEndings) {
+                    case None:
+                        break;
+                    case CR:
+                        [string2Send appendString:[NSString stringWithFormat:@"%c", 0x0D]];
+                        break;
+                    case LF:
+                        [string2Send appendString:[NSString stringWithFormat:@"%c", 0x0A]];
+                        break;
+                    case CRLF:
+                        [string2Send appendString:[NSString stringWithFormat:@"%c%c", 0x0D, 0x0A]];
+                        break;
+                    case LFCR:
+                        [string2Send appendString:[NSString stringWithFormat:@"%c%c", 0x0A, 0x0D]];
+                        break;
+                    default:
+                        break;
+                }
             }
             
             [[AppDelegate sharedAppDelegate].selectedDevice writeString:string2Send];
@@ -194,6 +220,7 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
             self.sendTextField.text = @"";
             
             [self writeAttributedTextToConsole:attr];
+            
             
         } else {
             NSLog(@"Can't write data");
@@ -225,37 +252,41 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
         
         if (self.busMode != [AppDelegate sharedAppDelegate].selectedDevice.busMode) {
             
-            self.textMode = BUS_MODE_CHANGE_MODE;
-            
             self.busMode = [AppDelegate sharedAppDelegate].selectedDevice.busMode;
-            NSString * modeName = @"?";
             
-            switch([AppDelegate sharedAppDelegate].selectedDevice.busMode) {
-                case STREAM_MODE:
-                    modeName = @"STREAM_MODE";
-                    self.busModeSelector.selectedSegmentIndex = 0;
-                    self.busModeSelector.enabled = YES;
-                    break;
-                case LOCAL_COMMAND_MODE: /// This case ordinarily wouldn't happen while you are connected.
-                    modeName = @"LOCAL_COMMAND_MODE";
-                    self.busModeSelector.selectedSegmentIndex = 1;
-                    self.busModeSelector.enabled = NO;
-                    break;
-                case REMOTE_COMMAND_MODE:
-                    modeName = @"REMOTE_COMMAND_MODE";
-                    self.busModeSelector.selectedSegmentIndex = 1;
-                    self.busModeSelector.enabled = YES;
-                    break;
-                default:
-                    modeName = @"SOME_OTHER_MODE";
-                    break;
+            if (RAW_MODE != self.textMode) {
+                self.textMode = BUS_MODE_CHANGE_MODE;
+                
+                
+                NSString * modeName = @"?";
+                
+                switch([AppDelegate sharedAppDelegate].selectedDevice.busMode) {
+                    case STREAM_MODE:
+                        modeName = @"STREAM_MODE";
+                        self.busModeSelector.selectedSegmentIndex = 0;
+                        self.busModeSelector.enabled = YES;
+                        break;
+                    case LOCAL_COMMAND_MODE: /// This case ordinarily wouldn't happen while you are connected.
+                        modeName = @"LOCAL_COMMAND_MODE";
+                        self.busModeSelector.selectedSegmentIndex = 1;
+                        self.busModeSelector.enabled = NO;
+                        break;
+                    case REMOTE_COMMAND_MODE:
+                        modeName = @"REMOTE_COMMAND_MODE";
+                        self.busModeSelector.selectedSegmentIndex = 1;
+                        self.busModeSelector.enabled = YES;
+                        break;
+                    default:
+                        modeName = @"SOME_OTHER_MODE";
+                        break;
+                }
+                
+                
+                NSAttributedString * attributedBusMode = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n %@", modeName]
+                                                                                         attributes: @{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+                
+                [self writeAttributedTextToConsole: attributedBusMode];
             }
-            
-            
-            NSAttributedString * attributedBusMode = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n %@", modeName]
-                                                                                     attributes: @{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
-            
-            [self writeAttributedTextToConsole: attributedBusMode];
             
         }
     } else if ([keyPath isEqualToString:@"bootloaderVersion"]) {
@@ -363,18 +394,39 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
     
     NSData * data = [n object];
     
-    if ( RECEIVE_MODE != self.textMode) {
+    plainString = [NSString stringWithFormat: @"%@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] ];
+    
+    if ( RAW_MODE != self.textMode && RECEIVE_MODE != self.textMode) {
         plainString = [NSString stringWithFormat: @"\n> %@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] ];
         self.textMode = RECEIVE_MODE;
-    } else {
-        plainString = [NSString stringWithFormat: @"%@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] ];
     }
+    
     NSAttributedString * attributedReceivedString = [[NSAttributedString alloc] initWithString: plainString
                                                                                     attributes: @{ NSForegroundColorAttributeName : [UIColor greenColor] }];
     
     
     [self writeAttributedTextToConsole: attributedReceivedString];
     
+}
+
+
+- (void)optionsChanged:(NSNotification *)n
+{
+    NSDictionary * optionsD = SafeType([n object], [NSDictionary class]);
+    
+    if (optionsD) {
+        NSNumber * numNewLines = SafeType([optionsD objectForKey:kNewLinesOnSendKeyName], [NSNumber class]);
+        if (nil != numNewLines) {
+            
+            if ([numNewLines boolValue]) {
+                self.lineEndings = CRLF;
+                self.textMode = INVALID_MODE;
+            } else {
+                self.lineEndings = None;
+                self.textMode = RAW_MODE;
+            }
+        }
+    }
 }
 
 - (void)writeAttributedTextToConsole:(NSAttributedString *)attrs

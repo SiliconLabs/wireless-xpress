@@ -47,7 +47,7 @@
 
 - (IBAction)doneAction:(id)sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:FirmwareReleaseNotesShouldCloseNotificationName object:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
 @end

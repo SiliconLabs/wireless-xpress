@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,12 +41,13 @@ NSString * DisableFirmwareUpdateNotificationName = @"DisableFirmwareUpdateNotifi
 
 NSString * UpdateFirmwareNotificationName = @"UpdateFirmwareNotificationName";
 
-NSString * UpdateCompleteNotificationName = @"UpdateCompleteNotificationName";
-
 NSString * DeviceStateChangedNotificationName = @"ConnectionStateChangedNotificationName";
 
 NSString * CleanupUpdateUIObserverNotificationName = @"CleanupUpdateUIObserverNotificationName";
 
+NSString * OptionsItemNotificationName = @"OptionsItemNotificationName";
+
 NSString * AboutItemNotificationName = @"AboutItemNotificationName";
 
-NSString * FirmwareReleaseNotesShouldCloseNotificationName = @"FirmwareReleaseNotesShouldClose";
+NSString * OptionsChangedNotificationName = @"OptionsChanged";
+

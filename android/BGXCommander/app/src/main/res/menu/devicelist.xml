@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/options_menuitem"
+        android:title="@string/options_menuitem_label"/>
+    <item
         android:id="@+id/about_menuitem"
         android:title="@string/about_menuitem_label" />
     <item

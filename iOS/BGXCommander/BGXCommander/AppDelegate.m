@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,17 +12,12 @@
  */
 
 #import "AppDelegate.h"
-#import "OTA_UI_Manager.h"
 #import "DevicesTableViewController.h"
 #import "PasswordEntryViewController.h"
 #import "dispatch_utils.h"
 #import "AboutBoxViewController.h"
+#import "UpdateViewController.h"
 
-@interface AppDelegate ()
-
-@property (nonatomic, strong) OTA_UI_Manager * update_ui_manager;
-
-@end
 
 const NSTimeInterval kScanInterval = 8.0f;
 
@@ -131,10 +126,10 @@ const NSTimeInterval kScanInterval = 8.0f;
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanupUpdateUIObserver:) name:CleanupUpdateUIObserverNotificationName object:nil];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeUpdateUI:) name:UpdateCompleteNotificationName object:nil];
-
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutThisApp:) name:AboutItemNotificationName object:nil];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appOptions:) name:OptionsItemNotificationName object:nil];
+    
   return YES;
 }
 
@@ -226,6 +221,18 @@ const NSTimeInterval kScanInterval = 8.0f;
   [[NSNotificationCenter defaultCenter] removeObserver:self.tutorial_observer name:TutorialStep3NotificationName object:nil];
 
   self.tutorial_observer = nil;
+}
+
+- (void)appOptions:(NSNotification *)n
+{
+    [self.drawerController closeDrawerAnimated:YES completion:nil];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"Options"];
+    
+    UIViewController * cvc = self.drawerController.centerViewController;
+    
+    [cvc presentViewController:vc animated:YES completion:^{}];
+
 }
 
 - (void)aboutThisApp:(NSNotification *)n
@@ -398,8 +405,27 @@ const NSTimeInterval kScanInterval = 8.0f;
 
 - (void)updateFirmware:(NSNotification *)n
 {
-  NSLog(@"updateFirmware: %@", [n description]);
-  [self openUpdateUI];
+    NSString * device_unique_id = [self.selectedDevice device_unique_id];
+
+    if (device_unique_id) {
+        [self.drawerController closeDrawerAnimated:YES completion:nil];
+
+        UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Update" bundle:nil];
+        UIViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"UpdateController"];
+        
+        UpdateViewController * uvc = SafeType(vc, [UpdateViewController class]);
+        
+        [uvc setDeviceInfo: @{
+            @"device" : self.selectedDevice,
+            @"device_unique_id" : device_unique_id,
+        } ];
+        
+        UIViewController * cvc = self.drawerController.centerViewController;
+        
+        [cvc presentViewController:vc animated:YES completion:^{}];
+    } else {
+        NSLog(@"Error: could not get unique id of selected device: %@", [self.selectedDevice description]);
+    }
 }
 
 - (void)cleanupUpdateUIObserver:(NSNotification *)n
@@ -410,83 +436,6 @@ const NSTimeInterval kScanInterval = 8.0f;
   }
 }
 
-- (void)openUpdateUI
-{
-  /*
-    In this case, we are connected. If we weren't connected the user shouldn't
-    have been able to start the update. We want to close the drawer, disconnect,
-    and then wait until we are disconnected. Once we are disconnected we want to
-    pop back to the root controller, open the OTA update UI and show it to the user.
-    Then we want to tell it to begin the update.
-
-    So to do that, we register for a ConnectionStateChangedNotificationName
-    which means we have to clean up the registration once we get one which is
-    why we have this temporary_observer_reference property which isn't the most
-    elegant solution but seems to work OK. We will get a series of
-    ConnectionStateChange notifications and we only care about the one that tells
-    us we are disconnected.
-   */
-  NSAssert(Connected == self.selectedDevice.deviceState, @"Invalid state.");
-
-  NSString * deviceUniqueID = [self.selectedDevice device_unique_id];
-
-  [self.drawerController closeDrawerAnimated:YES completion:^(BOOL finished){
-
-    self.temporary_observer_reference = [[NSNotificationCenter defaultCenter]
-                                         addObserverForName:DeviceStateChangedNotificationName
-                                         object:nil
-                                         queue:nil
-                                         usingBlock:^(NSNotification * n){
-
-                                           NSNumber * num = [n object];
-                                           DeviceState cs = (DeviceState) [num intValue];
-
-                                           if (Disconnected == cs) {
-
-                                             [[NSNotificationCenter defaultCenter] postNotificationName:CleanupUpdateUIObserverNotificationName object:nil];
-
-                                             UINavigationController * centerNavControl = (UINavigationController *) self.drawerController.centerViewController;
-                                             [centerNavControl popToRootViewControllerAnimated:YES];
-
-                                             self.update_ui_manager = [[OTA_UI_Manager alloc] init];
-
-                                             [[UINib nibWithNibName:@"OTA_UI" bundle:nil] instantiateWithOwner:self.update_ui_manager options:nil];
-
-                                             [self.update_ui_manager showUpdateUI];
-
-                                               BGXDevice * device2Update = [AppDelegate sharedAppDelegate].selectedDevice;
-
-
-                                             @try {
-                                             [self.update_ui_manager updateFirmwareForBGXDevice:device2Update withDeviceID:deviceUniqueID];
-                                             } @catch(NSException * exception) {
-
-                                               UIAlertController * alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"user alert title") message:exception.reason preferredStyle:UIAlertControllerStyleAlert];
-
-                                               [alertController addAction: [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action){
-
-                                               }]];
-
-                                               [self.update_ui_manager closeUpdateUI];
-
-                                               [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
-
-                                             }
-
-                                           }
-                                         }];
-
-
-    [[AppDelegate sharedAppDelegate].selectedDevice disconnect];
-
-  }];
-}
-
-- (void)closeUpdateUI:(NSNotification *)n
-{
-  [self.update_ui_manager closeUpdateUI];
-  self.update_ui_manager = nil;
-}
 
 
 - (void)askUserForPasswordFor:(password_kind_t)passwordKind
@@ -498,7 +447,10 @@ const NSTimeInterval kScanInterval = 8.0f;
     
     
     executeBlockOnMainThread(^{
-        PasswordEntryViewController * pevc = [[PasswordEntryViewController alloc] initWithNibName:@"PasswordEntryViewController" bundle:nil];
+        UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        PasswordEntryViewController * pevc = [storyboard instantiateViewControllerWithIdentifier:@"PasswordEntryViewController"];
+
         
         pevc.ok_post_action = ok_post_block;
         pevc.cancel_post_action = cancel_post_block;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -77,10 +77,6 @@ extern NSString * DisableFirmwareUpdateNotificationName;
  */
 extern NSString * UpdateFirmwareNotificationName;
 
-/** Posted to indicate that the firmware update is finished.
- */
-extern NSString * UpdateCompleteNotificationName;
-
 /** Posted to indicate the connection state of the BGXpressManager has changed.
  */
 extern NSString * DeviceStateChangedNotificationName;
@@ -91,8 +87,14 @@ extern NSString * CleanupUpdateUIObserverNotificationName;
  */
 extern NSString * AboutItemNotificationName;
 
-/** Posted to indicate that the user pressed the Done button on the firmware release notes view controller.
+/** Posted to indicate the user pressed the Options item in the drawer menu.
  */
-extern NSString * FirmwareReleaseNotesShouldCloseNotificationName;
+extern NSString * OptionsItemNotificationName;
+
+/** Posted to indicate the user changed something in the Options.
+ *  The object of the notification will be an NSDictionary with key/values for the updated options.
+ *  The same values could be read from NSUserDefaults if desired.
+ */
+extern NSString * OptionsChangedNotificationName;
 
 #endif /* NotificationNames_h */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-#import <BGXpress/bgx_ota_update.h>
-#import <BGXpress/bgx_dms.h>
-#import <BGXpress/SafeType.h>
-#import <BGXpress/BGXDevice.h>
-#import <BGXpress/BGXpressScanner.h>
-#import <BGXpress/Version.h>
+#import <bgxpress/bgx_ota_update.h>
+#import <bgxpress/bgx_dms.h>
+#import <bgxpress/SafeType.h>
+#import <bgxpress/BGXDevice.h>
+#import <bgxpress/BGXpressScanner.h>
+#import <bgxpress/Version.h>
 

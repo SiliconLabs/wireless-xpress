@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 
 #import <Security/Security.h>
-#import <BGXpress/bgxpress.h>
+#import <bgxpress/bgxpress.h>
 
 @interface PasswordEntryViewController ()
 

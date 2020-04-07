@@ -217,6 +217,7 @@ public class BGXpressService extends IntentService {
      * image_path - String - path to the image file. You could get this from a DMS_VERSION_LOADED broadcast intent.
      * DeviceAddress - String - The address of the device to update.
      * password - String - the password to use for the OTA update if one is set.
+     * writeType - Int - Optional - either BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT or WRITE_TYPE_NO_RESPONSE.
      */
     public static final String ACTION_OTA_WITH_IMAGE = "com.silabs.bgx.action.OTA";
 
@@ -413,6 +414,7 @@ public class BGXpressService extends IntentService {
      *
      * Extras:
      * mtu - Integer - the MTU to request. Default value is 250.
+     * DeviceAddress - String - the address of the device to perform the operation.
      */
     private static final String ACTION_REQUEST_MTU = "com.silabs.bgx.request_mtu";
 
@@ -555,7 +557,7 @@ public class BGXpressService extends IntentService {
             this.mOTAState = OTA_State.OTA_Idle;
             this.fOTAUserCanceled = false;
             this.mBootloaderVersion = -1;
-            this.mFirmwareRevisionString = "";
+            this.mFirmwareRevisionString = null;
             this.deviceWriteChunkSize = kDataWriteChunkDefaultSize;
             this.mMTUInitialReadComplete = false;
             this.mLastBondState = BOND_NONE;
@@ -719,6 +721,7 @@ public class BGXpressService extends IntentService {
         }
 
         private void executeNextGattIntent() {
+            boolean executeAnother = false;
             if (!fGattBusy) {
                 synchronized (this) {
                     if (mIntentArray.size() > 0) {
@@ -828,6 +831,9 @@ public class BGXpressService extends IntentService {
                                 fOTAInProgress = true;
                                 String image_path = intent.getStringExtra("image_path");
                                 String password = intent.getStringExtra("password");
+                                int theWriteType = intent.getIntExtra("writeType", WRITE_TYPE_DEFAULT);
+
+                                mOTADataCharacteristic.setWriteType(theWriteType);
 
                                 handleActionOTAWithImage(image_path, password);
                             }
@@ -896,7 +902,15 @@ public class BGXpressService extends IntentService {
                             case ACTION_REQUEST_MTU: {
                                 int mtu;
                                 mtu = intent.getIntExtra("mtu", 250);
-                                mBluetoothGatt.requestMtu(mtu);
+                                if (mBluetoothGatt != null) {
+                                   if (!mBluetoothGatt.requestMtu(mtu)) {
+                                       Log.d("bgx_dbg", "Error: requestMTU returned false.");
+                                   } else {
+                                       Log.d("bgx_dbg", "Called mBluetoothGatt.requestMtu(" + mtu + ")");
+                                   }
+                                } else {
+                                    executeAnother = true;
+                                }
                             }
                             break;
 
@@ -927,18 +941,7 @@ public class BGXpressService extends IntentService {
                                     Log.d("bgx_fastAck", "fastAck: NO");
                                     mFastAck = false;
                                     fGattBusy = false;
-
-                                    mHandler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            executeNextGattIntent();
-                                        }
-                                    });
-
-
-
-
-
+                                    executeAnother = true;
                                 }
                             }
                                 break;
@@ -999,6 +1002,7 @@ public class BGXpressService extends IntentService {
                                     mRxCharacteristic2.setWriteType(writeType);
                                 }
                                 fGattBusy = false;
+                                executeAnother = true;
                             }
                                 break;
                             case ACTION_SET_READ_TYPE: {
@@ -1027,6 +1031,7 @@ public class BGXpressService extends IntentService {
                             case BGX_CONNECTION_STATUS_CHANGE:
                                 sendBroadcast(intent);
                                 fGattBusy = false;
+                                executeAnother = true;
                                 break;
                             case ACTION_POLL_BOND_STATUS: {
 
@@ -1099,6 +1104,16 @@ public class BGXpressService extends IntentService {
                 }
                 Log.d("bgx_dbg", "GattBusy - can't execute. Last intent action: " + mLastExecutedIntent.getAction() + " Next intent action: " + nextAction);
             }
+
+            if (!fGattBusy && executeAnother) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        executeNextGattIntent();
+                    }
+                });
+            }
+
         }
 
         /**
@@ -1360,6 +1375,9 @@ public class BGXpressService extends IntentService {
                             break;
                         case BluetoothProfile.STATE_DISCONNECTED:
 
+                            mMTUInitialReadComplete = false;
+                            mFirmwareRevisionString = null;
+
                             // clean up the gattt queue
                             clearGattQueue();
 
@@ -1566,13 +1584,6 @@ public class BGXpressService extends IntentService {
                     }
                 }
 
-
-                if (!mMTUInitialReadComplete) {
-                    Intent mtuIntent = new Intent(ACTION_REQUEST_MTU);
-                    mtuIntent.putExtra("mtu", 250);
-                    queueGattIntent(mtuIntent);
-                }
-
                 if (null != dps.mBGXSS) {
                     mBGXDeviceConnectionState = BGX_CONNECTION_STATUS.CONNECTED;
                     Intent broadcastIntent = new Intent();
@@ -1651,15 +1662,24 @@ public class BGXpressService extends IntentService {
                                 break;
                             case 0x01:
 
-                                if ( 0 == mFastAckTxBytes /* TODO: and there is data to write */ ) {
-                                    /* TO DO: Queue a call to write more data */
-                                    Log.d("bgx_fastAck", "queue a call to write more data.");
+                                Boolean fQueueAWrite = false;
+
+                                if ( 0 >= mFastAckTxBytes ) {
+                                    fQueueAWrite = true;
                                 }
 
                                 mFastAckTxBytes += txbytes;
                                 Log.d("bgx_fastAck", "fastAckTxBytes: "+mFastAckTxBytes+" (added "+txbytes+" bytes)");
 
-                                break;
+                                if (fQueueAWrite) {
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            writeChunkOfData();
+                                        }
+                                    }, 10);
+                                    break;
+                                }
                         }
 
 
@@ -1737,8 +1757,22 @@ public class BGXpressService extends IntentService {
                             mBootloaderVersion = -2;
                         }
                         String firmwareVers = pieces[0];
-                        if (firmwareVers.startsWith("BGX13")) {
+                        if (firmwareVers.startsWith("BGX13") || firmwareVers.startsWith("BGX220") ) {
                             mFirmwareRevisionString = firmwareVers.substring( firmwareVers.indexOf('.')+1 );
+
+
+                            if (!mMTUInitialReadComplete) {
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent mtuIntent = new Intent(ACTION_REQUEST_MTU);
+                                        mtuIntent.putExtra("mtu", 247);
+                                        queueGattIntent(mtuIntent);
+                                    }
+                                }, 1000);
+                            }
+
+
                         } else {
                             // this is probably invalid gatt handles
 
@@ -1909,6 +1943,11 @@ public class BGXpressService extends IntentService {
 
             int ibegin, iend;
 
+            if (mFastAck && mFastAckTxBytes <= 0) {
+                Log.d("bgx_fastAck", "FastAck Stall: mFastAckTxBytes = "+mFastAckTxBytes);
+                return;
+            }
+
             BluetoothGattCharacteristic rxChar;
             if ( this.mRxCharacteristic2 != null) {
                 rxChar = this.mRxCharacteristic2;
@@ -1922,27 +1961,44 @@ public class BGXpressService extends IntentService {
 
             synchronized (this.dataWriteSync) {
 
-                ibegin = this.mWriteOffset;
-                iend = this.mData2Write.length;
+                if (null != this.mData2Write) {
 
-                if (iend - ibegin > this.deviceWriteChunkSize) {
-                    iend = ibegin + this.deviceWriteChunkSize;
+                    ibegin = this.mWriteOffset;
+                    iend = this.mData2Write.length;
+
+                    if (iend - ibegin > this.deviceWriteChunkSize) {
+                        iend = ibegin + this.deviceWriteChunkSize;
+                    }
+
+                    if (mFastAck) {
+                        for (int amt2write = (iend - ibegin); amt2write > mFastAckTxBytes; amt2write = (iend - ibegin)) {
+                            iend = ibegin + mFastAckTxBytes;
+                        }
+                    }
+
+                    rxChar.setValue(Arrays.copyOfRange(this.mData2Write, ibegin, iend));
+
+                    boolean writeResult = this.mBluetoothGatt.writeCharacteristic(rxChar);
+
+
+                    if (writeResult) {
+
+                        if (mFastAck) {
+                            mFastAckTxBytes -= (iend - ibegin);
+                            Log.d("bgx_fastAck", "mFastAckTxBytes: " + mFastAckTxBytes + " (subtracted " + (iend - ibegin) + " bytes)");
+                        }
+
+                        Log.d("bgx_dbg", "Rx Char Write success.");
+
+                        if (this.mData2Write.length > iend) {
+                            this.mWriteOffset = iend;
+                        } else {
+                            this.mWriteOffset = 0;
+                            this.mData2Write = null;
+                        }
+
+                    }
                 }
-
-
-                rxChar.setValue(Arrays.copyOfRange(this.mData2Write, ibegin, iend));
-
-                if (this.mData2Write.length > iend) {
-                    this.mWriteOffset = iend ;
-                } else {
-                    this.mWriteOffset = 0;
-                    this.mData2Write = null;
-                }
-            }
-
-            boolean writeResult = this.mBluetoothGatt.writeCharacteristic(rxChar);
-            if (!writeResult) {
-                Log.e("bgx_dbg", "An error occurred while writing to the rx characteristic of the bgxss service.");
             }
         }
 
@@ -1960,6 +2016,10 @@ public class BGXpressService extends IntentService {
                 return;
             }
 
+            /*
+             *  Chunk Size should be evenly divisible by four because this is required by some hardware.
+             *  An odd chunk size will cause the update to fail.
+             */
             try {
                 byte[] buffer = new byte[kChunkSize];
                 int bytesRead = mOTAImageFileInputStream.read(buffer);
@@ -2141,7 +2201,6 @@ public class BGXpressService extends IntentService {
 
     static private HandlerThread mHandlerThread = null;
     static public Handler mHandler = null;
-
 
 
     public void onCreate()
@@ -2430,6 +2489,11 @@ public class BGXpressService extends IntentService {
                     if (dps.fOTAInProgress) {
                         // cancel it.
                         dps.fOTAUserCanceled = true;
+                    }
+                } else if (ACTION_REQUEST_MTU.equals(action)) {
+                    int mtuValue = intent.getIntExtra("mtu", 250);
+                    if (mtuValue >= 23) {
+                        dps.queueGattIntent(intent);
                     }
                 }
             }

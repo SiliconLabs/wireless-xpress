@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="200dp"
+    android:layout_gravity="center"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:text="@string/OptionsLabel"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        />
+
+
+    <CheckBox
+        android:id="@+id/newline_cb"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:checked="true"
+        android:text="@string/send_with_newline_label" />
+
+    <CheckBox
+        android:id="@+id/acknowledgedOTA"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:checked="true"
+        android:text="@string/useAckdOTA" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Cancel"
+            android:layout_gravity="bottom" />
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Save"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+
+
+</LinearLayout>

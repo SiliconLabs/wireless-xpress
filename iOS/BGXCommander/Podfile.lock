@@ -20,7 +20,7 @@ DEPENDENCIES:
   - PullToRefresh (~> 0.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - MMDrawerController
     - PullToRefresh
 
@@ -33,6 +33,6 @@ SPEC CHECKSUMS:
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
   PullToRefresh: 718b902fea1e8db4390bee24d515a37fd49bdbd7
 
-PODFILE CHECKSUM: 825f80a6be3b4b5ccad4ade8d621462a283f8d08
+PODFILE CHECKSUM: 8ec9df7105fa6f0e8e0b3274c2bf7eea4f201341
 
 COCOAPODS: 1.8.4

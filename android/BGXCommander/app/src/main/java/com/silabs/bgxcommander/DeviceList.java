@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -41,6 +42,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,8 +56,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeviceList extends AppCompatActivity {
-
-
 
     private int REQUEST_ENABLE_BT = 1;
     private Handler mHandler;
@@ -179,7 +179,6 @@ public class DeviceList extends AppCompatActivity {
                     break;
 
                 }
-
             }
         };
 
@@ -300,6 +299,51 @@ public class DeviceList extends AppCompatActivity {
 
                 return true;
             }
+            case R.id.options_menuitem: {
+                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+                Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
+                Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
+
+                final Dialog optionsDialog = new Dialog(this);
+                optionsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                optionsDialog.setContentView(R.layout.optionsbox);
+
+                final CheckBox newLineCB = (CheckBox) optionsDialog.findViewById(R.id.newline_cb);
+                final CheckBox otaAckdWrites = (CheckBox) optionsDialog.findViewById(R.id.acknowledgedOTA);
+
+                newLineCB.setChecked(fNewLinesOnSendValue);
+                otaAckdWrites.setChecked(fUseAckdWritesForOTA);
+
+                Button saveButton = (Button)optionsDialog.findViewById(R.id.save_btn);
+                saveButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+
+                        Boolean fValue = newLineCB.isChecked();
+                        Boolean fValue2 = otaAckdWrites.isChecked();
+
+                        SharedPreferences.Editor editor = sp.edit();
+
+                        editor.putBoolean("newlinesOnSend", fValue);
+                        editor.putBoolean("useAckdWritesForOTA", fValue2);
+
+                        editor.apply();
+
+                        optionsDialog.dismiss();
+                    }
+                });
+
+                Button cancelButton = (Button)optionsDialog.findViewById(R.id.cancel_btn);
+                cancelButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        optionsDialog.dismiss();
+                    }
+                });
+
+                optionsDialog.show();
+            }
+            break;
         }
         return super.onOptionsItemSelected(mi);
     }
