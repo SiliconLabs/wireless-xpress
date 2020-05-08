@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -244,6 +244,7 @@ typedef void (^busmode_write_completion_handler_t)(BGXDevice *, NSError * err);
 @property (nonatomic, strong) NSString *modelNumber;
 @property (nonatomic, strong) NSString *firmwareRevision;
 @property (nonatomic, strong) NSString *bootloaderVersion;
+@property (nonatomic, readonly) NSString * platformIdentifier;
 
 /**
  * YES = The device supports fastAck and will operate in fastAck mode.

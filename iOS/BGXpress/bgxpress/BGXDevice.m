@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -232,9 +232,11 @@ const NSUInteger kHandlerDefaultCapacity = 0x10;
             return _fastAckTxBytes > 0 ? YES : NO;
         }
         
-        if (!self.writeWithResponse) {
+        if (@available(iOS 11.0, *)) {
             return self.peripheral.canSendWriteWithoutResponse;
-        } else if (!dataToWrite) {
+        }
+        
+        if (!dataToWrite) {
             return YES;
         }
     }
@@ -265,7 +267,7 @@ const NSUInteger kHandlerDefaultCapacity = 0x10;
     NSMutableData * md = [[NSMutableData alloc] initWithCapacity:[password lengthOfBytesUsingEncoding:NSASCIIStringEncoding] + 1];
     
     [md appendBytes:&newBusMode length:1];
-    if (password) {
+    if (password && password.length > 0) {
         unsigned char zero = 0;
         [md appendData: [password dataUsingEncoding:NSASCIIStringEncoding]];
         [md appendBytes:&zero length:1];
@@ -504,10 +506,15 @@ const NSUInteger kHandlerDefaultCapacity = 0x10;
         if (3 == comps.count) {
             
             NSString * comp0Ver = comps[0];
-            NSString * versionPrefix = @"BGX13";
+            NSString * versionPrefix = @"BGX";
+            
+            NSArray * dotcomps = [comp0Ver componentsSeparatedByString:@"."];
+            
+            NSString * myPlatform = [dotcomps objectAtIndex:0];
+            _platformIdentifier = [myPlatform substringToIndex:[myPlatform length]-1];
+            
             if ([comp0Ver hasPrefix:versionPrefix]) {
-                // it starts with BGX13 - find the first . (dot) and trim from there.
-                
+                // it starts with BGX - find the first . (dot) and trim from there.
                 NSRange r = [comp0Ver rangeOfString:@"."];
                 if (NSNotFound != r.location) {
                     self.firmwareRevision = [comp0Ver substringFromIndex:r.location + r.length];

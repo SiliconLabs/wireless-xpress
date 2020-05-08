@@ -14,11 +14,13 @@
 package com.silabs.bgxcommander;
 
 import android.accounts.AccountManager;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -131,12 +133,16 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
         }
 
         Intent intent = new Intent(BGXpressService.ACTION_DMS_GET_VERSIONS);
+        String platformID = BGXpressService.getPlatformIdentifier(mBGXDeviceAddress);
         intent.setClass(this, BGXpressService.class);
 
         intent.putExtra("bgx-part-id", mBGXPartID);
         intent.putExtra("DeviceAddress", mBGXDeviceAddress);
         if (null != mBGXPartIdentifier) {
             intent.putExtra("bgx-part-identifier", mBGXPartIdentifier);
+        }
+        if (null != platformID) {
+            intent.putExtra("bgx-platform-identifier", platformID);
         }
 
         startService(intent);
@@ -276,11 +282,17 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
 
     public void startOTAUpdate()
     {
+        SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+        Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
+
+        int writeType = fUseAckdWritesForOTA ? BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT : BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE;
+
         // tell BGXpressService to install it.
         Intent updateIntent = new Intent(mContext, BGXpressService.class);
         updateIntent.setAction(ACTION_OTA_WITH_IMAGE);
         updateIntent.putExtra("image_path", mImagePath);
         updateIntent.putExtra("DeviceAddress", mBGXDeviceAddress);
+        updateIntent.putExtra("writeType", writeType);
 
         // add a password.
         AccountManager am = AccountManager.get(mContext);
@@ -313,7 +325,6 @@ public class FirmwareUpdate extends AppCompatActivity implements SelectionChange
                 @Override
                 public int compare(JSONObject o1, JSONObject o2) {
                     try {
-                        Log.d("bgx", "Got to here.");
                         String slversion = (String) o1.get("version");
                         String srversion = (String) o2.get("version");
                         Version lversion = new Version(slversion);

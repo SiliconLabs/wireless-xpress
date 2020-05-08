@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -145,7 +145,10 @@
           }
       }
       break;
-    case 1:
+    case 1: // options.
+          [[NSNotificationCenter defaultCenter] postNotificationName:OptionsItemNotificationName object:nil];
+          break;
+    case 2:
       // check if this device can support the tutorial.
       // it doesn't work on a 4" or smaller screen.
     {
@@ -166,7 +169,7 @@
       }
     }
       break;
-    case 2:
+    case 3:
           [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.silabs.com/bgx-docs"] options:@{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO  } completionHandler: ^(BOOL success){
               if (!success) {
                   NSLog(@"Failed to open the link.");
@@ -175,7 +178,7 @@
           
           
           break;
-    case 3: // About
+    case 4: // About
       [[NSNotificationCenter defaultCenter] postNotificationName:AboutItemNotificationName object:nil];
       break;
   }
@@ -203,9 +206,9 @@
 -(NSArray *)drawerItems
 {
   if (self.firmwareUpdateEnabled) {
-    return @[@"Update Firmware…", @"Tutorial", @"Help", /* @"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit",*/ @"About…"];
+    return @[@"Update Firmware…", @"Options", @"Tutorial", @"Help", /* @"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit",*/ @"About…"];
   } else {
-      return @[@"Tutorial", @"Help", /*@"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit", */@"About…"];
+      return @[@"Options", @"Tutorial", @"Help", /*@"iOS Framework", @"Command API", @"Datasheet", @"Purchase Starter Kit", */@"About…"];
   }
 }
 

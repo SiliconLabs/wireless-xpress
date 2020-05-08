@@ -14,12 +14,14 @@
 package com.silabs.bgxcommander;
 
 import android.accounts.AccountManager;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,7 +38,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -227,13 +231,16 @@ public class DeviceDetails extends AppCompatActivity {
                         if ( bootloaderVersion >= kBootloaderSecurityVersion) {
                             // request DMS VERSIONS at this point because now we know the part id.
                             Intent intent2 = new Intent(BGXpressService.ACTION_DMS_GET_VERSIONS);
+                            String platformID = BGXpressService.getPlatformIdentifier(mDeviceAddress);
+
                             intent2.setClass(mContext, BGXpressService.class);
 
                             intent2.putExtra("bgx-part-id", mBGXPartID);
                             intent2.putExtra("DeviceAddress", mDeviceAddress);
                             intent2.putExtra("bgx-part-identifier", mBGXPartIdentifier);
-
-
+                            if (null != platformID) {
+                                intent2.putExtra("bgx-platform-identifier", platformID);
+                            }
                             startService(intent2);
                         } else if ( bootloaderVersion > 0) {
                             mIconItem.setIcon(ContextCompat.getDrawable(mContext, R.drawable.security_decoration));
@@ -322,12 +329,24 @@ public class DeviceDetails extends AppCompatActivity {
 
                 // let's write it.
                 Intent writeIntent = new Intent(BGXpressService.ACTION_WRITE_SERIAL_DATA);
-                writeIntent.putExtra("value", msgText + "\r\n");
+
+                String msg2Send;
+
+                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+                Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
+
+                if (fNewLinesOnSendValue) {
+                    msg2Send = msgText + "\r\n";
+                } else {
+                    msg2Send = msgText;
+                }
+
+                writeIntent.putExtra("value", msg2Send );
                 writeIntent.setClass(mContext, BGXpressService.class);
                 writeIntent.putExtra("DeviceAddress", mDeviceAddress);
                 startService(writeIntent);
 
-                processText(msgText, LOCAL);
+                processText(msg2Send, LOCAL);
                 mMessageEditText.setText("", EditText.BufferType.EDITABLE);
             }
         });
@@ -434,6 +453,51 @@ public class DeviceDetails extends AppCompatActivity {
                 }
             }
                 break;
+            case R.id.options_menuitem: {
+                final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+                Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
+                Boolean fUseAckdWritesForOTA = sp.getBoolean("useAckdWritesForOTA", true);
+
+                final Dialog optionsDialog = new Dialog(this);
+                optionsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                optionsDialog.setContentView(R.layout.optionsbox);
+
+                final CheckBox newLineCB = optionsDialog.findViewById(R.id.newline_cb);
+                final CheckBox otaAckdWrites = (CheckBox) optionsDialog.findViewById(R.id.acknowledgedOTA);
+
+                newLineCB.setChecked(fNewLinesOnSendValue);
+                otaAckdWrites.setChecked(fUseAckdWritesForOTA);
+
+                Button saveButton = (Button)optionsDialog.findViewById(R.id.save_btn);
+                saveButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+
+                        Boolean fValue = newLineCB.isChecked();
+                        Boolean fValue2 = otaAckdWrites.isChecked();
+
+                        SharedPreferences.Editor editor = sp.edit();
+
+                        editor.putBoolean("newlinesOnSend", fValue);
+                        editor.putBoolean("useAckdWritesForOTA", fValue2);
+                        
+                        editor.apply();
+
+                        optionsDialog.dismiss();
+                    }
+                });
+
+                Button cancelButton = (Button)optionsDialog.findViewById(R.id.cancel_btn);
+                cancelButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        optionsDialog.dismiss();
+                    }
+                });
+
+                optionsDialog.show();
+            }
+            break;
         }
 
         return super.onOptionsItemSelected(mi);
@@ -527,18 +591,24 @@ public class DeviceDetails extends AppCompatActivity {
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
 
+        final SharedPreferences sp = mContext.getSharedPreferences("com.silabs.bgxcommander", MODE_PRIVATE);
+        Boolean fNewLinesOnSendValue =  sp.getBoolean("newlinesOnSend", true);
+
         switch (ts) {
             case LOCAL: {
-                ssb.append("\n>" + text, new ForegroundColorSpan(Color.WHITE), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (LOCAL != mTextSource && fNewLinesOnSendValue) {
+                    ssb.append("\n>", new ForegroundColorSpan(Color.WHITE), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+
+                ssb.append(text, new ForegroundColorSpan(Color.WHITE), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             break;
             case REMOTE: {
-                if (REMOTE != mTextSource) {
-                    newText = "\n<" + text;
-                } else {
-                    newText = text;
+                if (REMOTE != mTextSource && fNewLinesOnSendValue) {
+                    ssb.append("\n<", new ForegroundColorSpan(Color.GREEN), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
-                ssb.append(newText, new ForegroundColorSpan(Color.GREEN), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                ssb.append(text, new ForegroundColorSpan(Color.GREEN), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             }
         }

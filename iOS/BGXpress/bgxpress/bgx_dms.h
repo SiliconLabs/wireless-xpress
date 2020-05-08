@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,10 +37,20 @@
     SCNetworkReachabilityRef _reachabilityRef;
 }
 
+/**
+ * Initialize DMS for a specific BGX device ID, specify platformIdentifier.
+ * This new version allows you to specify the platformIdentifier which
+ * should be read from the platformIdentifier property of the BGXDevice.
+ * @param bgx_unique_device_id - the unique device ID of the device being updated
+ * @param platformIdentifier - a string identifying the platform usually "bgx13" or "bgx220"
+ * @returns the intialized instance of bgx_dms
+ */
+- (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id
+                    forPlatform:(NSString *)platformIdentifier;
 
 /**
  * Initialize DMS for a specific BGX device ID.
- *
+ * @deprecated - use initWithBGXUniqueDeviceID:forPlatform: instead.
  * @param bgx_unique_device_id - the unique device ID of the device being updated
  * @returns the intialized instance of bgx_dms
  */

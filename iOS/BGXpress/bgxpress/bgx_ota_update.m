@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,10 @@
 #import "BGXUUID.h"
 #import "bgxpress.h"
 
+/*
+ kChunkSize should be evenly divisible by four because this is required by some hardware.
+ An odd chunk size will cause the update to fail.
+ */
 const NSUInteger kChunkSize = 244;
 
 @interface BGX_OTA_Updater ()
@@ -23,6 +27,9 @@ const NSUInteger kChunkSize = 244;
 
 - (void)writeChunkOfPayload;
 
+- (void)ota_upload_no_response_continue;
+
+@property (nonatomic) ota_step_t uploadStep2Use;
 
 @property (nonatomic, strong) CBCentralManager * cb_central_manager;
 
@@ -59,6 +66,8 @@ const NSUInteger kChunkSize = 244;
     if (self) {
         _peripheral = peripheral;
         self.verbose = NO;
+        self.uploadStep2Use = ota_step_upload_no_response;
+        
         self.operationInProgress = ota_no_operation_in_progress;
         self.ota_step = ota_step_no_ota;
         self.upload_progress = -1.0f;
@@ -66,6 +75,22 @@ const NSUInteger kChunkSize = 244;
         self.bgx_device_uuid = bgx_device_uuid;
     }
     return self;
+}
+
+- (int)setOTAUploadWithResponse:(BOOL)useAcknowledgedWrites
+{
+    int rc = -1;
+    if (ota_step_no_ota == self.ota_step || ota_step_init == self.ota_step) {
+        
+        if (useAcknowledgedWrites) {
+            self.uploadStep2Use = ota_step_upload_with_response;
+        } else {
+            self.uploadStep2Use = ota_step_upload_no_response;
+        }
+        
+    }
+    
+    return rc;
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -116,7 +141,11 @@ const NSUInteger kChunkSize = 244;
         [central stopScan];
         _peripheral = peripheral;
         if ([self readyForUpdate]) {
-            self.ota_step = ota_step_upload_no_response;
+            
+            NSAssert( ota_step_upload_no_response == self.uploadStep2Use ||
+                      ota_step_upload_with_response == self.uploadStep2Use, @"uploadStep2Use: Logic error");
+            
+            self.ota_step = self.uploadStep2Use;
         } else {
             self.ota_step = ota_step_connect;
         }
@@ -167,7 +196,7 @@ const NSUInteger kChunkSize = 244;
     }
     
     if ([self readyForUpdate]) {
-        self.ota_step = ota_step_upload_with_response;
+        self.ota_step = self.uploadStep2Use;
         dispatch_async(self.update_dispatch_queue, ^{
             [self takeStep];
         });
@@ -220,7 +249,12 @@ const NSUInteger kChunkSize = 244;
             printf("Did write value for OTA Control characteristic.\n");
         }
         
-        if (ota_step_upload_with_response == self.ota_step) {
+        if (ota_step_upload_no_response == self.ota_step) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                [self ota_upload_no_response_continue];
+            });
+
+        } else if (ota_step_upload_with_response == self.ota_step) {
             [self writeChunkOfPayload];
         } else if (ota_step_upload_finish == self.ota_step) {
             
@@ -444,14 +478,28 @@ const NSUInteger kChunkSize = 244;
 
 - (void)ota_step_upload_no_response
 {
-    NSUInteger offset = 0;
-    NSUInteger amount2Write = 0;
     
+    NSMutableData * md = [NSMutableData dataWithCapacity: self.password.length +2]; // cmd byte + password length + null term.
     uint8_t cmd = 0;
-    [_peripheral writeValue:[NSData dataWithBytes:&cmd length:1] forCharacteristic:[self OTA_Control_Characteristic] type:CBCharacteristicWriteWithResponse];
+    
+    [md appendBytes:&cmd length:1];
+    if ( _password.length > 0) {
+        [md appendData: [_password dataUsingEncoding:NSASCIIStringEncoding]];
+        [md appendBytes:&cmd length:1];
+    }
+
+    [_peripheral writeValue:md forCharacteristic:[self OTA_Control_Characteristic] type:CBCharacteristicWriteWithResponse];
+
     if (self.verbose) {
         printf("wrote a 0 to OTA_Control_Characteristic\n");
     }
+}
+
+- (void)ota_upload_no_response_continue
+{
+    NSAssert(![NSThread isMainThread], @"This should not be on the main thread.");
+    self.data_offset = 0;
+    self.amount2write = 0;
     NSData * payload = nil;
     
     self.upload_progress = 0.0f;
@@ -459,22 +507,32 @@ const NSUInteger kChunkSize = 244;
     if (ota_firmware_update_in_progress == _operationInProgress) {
         payload = [NSData dataWithContentsOfFile:self.fw_image_path];
     }
+
+
     
-    while (offset < payload.length) {
-        amount2Write = (payload.length - offset) < kChunkSize ? (payload.length - offset) : kChunkSize;
+    while (self.data_offset < payload.length) {
+        if (ota_step_canceled == self.ota_step) {
+            return;
+        }
+        
+        self.amount2write = (payload.length - self.data_offset) < kChunkSize ? (payload.length - self.data_offset) : kChunkSize;
         
         
-        [_peripheral writeValue:[payload subdataWithRange:NSMakeRange(offset, amount2Write)] forCharacteristic:[self OTA_Data_Characteristic] type:CBCharacteristicWriteWithoutResponse];
+        [_peripheral writeValue:[payload subdataWithRange:NSMakeRange(self.data_offset, self.amount2write)] forCharacteristic:[self OTA_Data_Characteristic] type:CBCharacteristicWriteWithoutResponse];
         
         
-        offset += amount2Write;
-        self.upload_progress = ((float)offset / (float)payload.length);
+        self.data_offset += self.amount2write;
+        self.upload_progress = ((float)self.data_offset / (float)payload.length);
+        printf("Written %lu bytes %f%%\n", (unsigned long) self.data_offset, 100.0f * self.upload_progress);
         
         [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
     }
     
     self.ota_step = ota_step_upload_finish;
-    [self takeStep];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self takeStep];
+    });
 }
 
 - (void)ota_step_upload_with_response
@@ -649,7 +707,7 @@ const NSUInteger kChunkSize = 244;
 {
     if (ota_step_password_required == self.ota_step) {
         self.password = password;
-        self.ota_step = ota_step_upload_with_response;
+        self.ota_step = self.uploadStep2Use;
         [self takeStep];
     }
 }

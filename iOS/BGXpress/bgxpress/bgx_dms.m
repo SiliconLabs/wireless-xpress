@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Silicon Labs
+ * Copyright 2018-2020 Silicon Labs
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,12 +18,14 @@
 NSString * kBGX13SPartID         = @"080447D0";
 NSString * kBGX13PPartID         = @"4C892A6A";
 NSString * kBGX13InvalidPartID   = @"BAD1DEAD";
-NSString * kBGXV3SPartID         = @"F65FD7F0";
-NSString * kBGXV3PPartID         = @"76786556";
+NSString * kBGX13V3SPartID       = @"F65FD7F0";
+NSString * kBGX13V3PPartID       = @"76786556";
+NSString * kBGX220SPartID        = @"9C1F257E";
+NSString * kBGX220PPartID        = @"CF07449C";
 
 typedef void (^VersionsListCompletionBlock)(NSError *, NSArray *);
 
-const char * kDMSServer = "bgx13.zentri.com";
+const char * kDMSServer = "xpress-api.zentri.com";
 
 NSTimeInterval kDMSServerTimeout = 30.0f;
 
@@ -49,6 +51,7 @@ NSString * NewBGXFirmwareListNotificationName = @"NewBGXFirmwareListNotification
 - (NSURL *)firmwareURL:(NSString *)svers;
 
 @property (nonatomic, strong) NSString * bgx_unique_device_id;
+@property (nonatomic, strong) NSString * bgx_platform_id;
 @property (nonatomic) BOOL dms_reachable;
 
 @property (nonatomic, strong) NSTimer * reachabilityListRefreshTimer;
@@ -74,11 +77,19 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 @implementation bgx_dms
 
+// For compatibility, call the other version with a nil platformIdentifer
 - (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id
+{
+    return [self initWithBGXUniqueDeviceID:bgx_unique_device_id forPlatform:nil];
+}
+
+- (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id
+                    forPlatform:(NSString *)platformIdentifier
 {
   self = [super init];
   if (self) {
 
+      self.bgx_platform_id = platformIdentifier;
       self.versionsListCompletion = nil;
       
     _reachabilityRef = nil;
@@ -315,8 +326,27 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 - (NSURL *)versionsURL
 {
-   NSString * partid = [self.bgx_unique_device_id substringWithRange:NSMakeRange(0, 8)];
-   return [NSURL URLWithString:[NSString stringWithFormat:@"https://xpress-api.zentri.com/platforms/%@/products/bgx13/versions", partid]];
+    NSString * partid = [self.bgx_unique_device_id substringWithRange:NSMakeRange(0, 8)];
+    
+    NSString * platformID = self.bgx_platform_id;
+    
+    if (!platformID) {
+        if ([kBGX13SPartID isEqualToString:partid] ||
+            [kBGX13PPartID isEqualToString:partid] ||
+            [kBGX13V3SPartID isEqualToString:partid] ||
+            [kBGX13V3PPartID isEqualToString:partid] ) {
+            platformID = @"bgx13";
+        } else if ( [kBGX220PPartID isEqualToString:partid] ||
+                    [kBGX220SPartID isEqualToString:partid] ) {
+            platformID = @"bgx220";
+        } else {
+            NSLog(@"DMS Error: Unknown part id.");
+            return nil;
+        }
+    }
+    
+    
+   return [NSURL URLWithString:[NSString stringWithFormat:@"https://xpress-api.zentri.com/platforms/%@/products/%@/versions", partid, platformID]];
 }
 
 - (NSURL *)firmwareURL:(NSString *)svers
@@ -332,7 +362,7 @@ static void MyReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 + (void)reportInstallationResultWithDeviceUUID:(NSString*)bgx_device_uuid version:(NSString*)version
 {
   NSMutableURLRequest * mur = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:
-                                                                         [NSString stringWithFormat:@"https://bgx13.zentri.com/devices/%@", bgx_device_uuid]]
+                                                                         [NSString stringWithFormat:@"https://xpress-api.zentri.com/devices/%@", bgx_device_uuid]]
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                        timeoutInterval:kDMSServerTimeout];
 
