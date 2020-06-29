@@ -179,6 +179,7 @@ public class BGXpressService extends IntentService {
      *    bgx-device-uuid - A string containing the device uuid.
      *    bgx-part-id - An enum value from BGXPartID.
      *    bgx-part-identifier - String - An 8 character string identifying the type of BGX part.
+     *    bgx-platform-identifier - String - Currently BGX13 or BGX220.
      */
     private static final String ACTION_BGX_GET_INFO = "com.silabs.bgx.action.GetInfo";
 
@@ -369,6 +370,9 @@ public class BGXpressService extends IntentService {
         ,BGX13P
         ,BGXV3S
         ,BGXV3P
+        ,BGX220S
+        ,BGX220P
+        ,BGXUnknownPartID
         ,BGXInvalid
     }
 
@@ -580,6 +584,8 @@ public class BGXpressService extends IntentService {
 
         private BluetoothGatt mBluetoothGatt;
 
+        private String partIdentifier;
+        private String deviceIdentifier;
 
         private BGX_CONNECTION_STATUS mBGXDeviceConnectionState;
         private int mDeviceConnectionState;
@@ -1724,9 +1730,16 @@ public class BGXpressService extends IntentService {
                             hexChars[1 + (i*2)] = kHexArray[v & 0x0F];
                         }
                         String bgxDeviceUUID = new String(hexChars);
+
+                        dps.partIdentifier = bgxDeviceUUID.substring(0,8);
+                        dps.deviceIdentifier = bgxDeviceUUID;
+
+
                         Intent intent = new Intent(BGX_DEVICE_INFO);
-                        intent.putExtra("bgx-device-uuid", bgxDeviceUUID);
-                        intent.putExtra("bgx-part-identifier", bgxDeviceUUID.substring(0,8));
+                        intent.putExtra("bgx-device-uuid", deviceIdentifier);
+                        intent.putExtra("bgx-part-identifier", partIdentifier);
+                        intent.putExtra("bgx-platform-identifier", mPlatformString);
+
 
                         BGXPartID devicePartID;
                         if (bgxDeviceUUID.startsWith(BGX13S_Device_Prefix)) {
@@ -1739,17 +1752,13 @@ public class BGXpressService extends IntentService {
                             devicePartID = BGXPartID.BGXV3S;
                         } else if (bgxDeviceUUID.startsWith(BGXV3P_Device_Prefix)) {
                             devicePartID = BGXPartID.BGXV3P;
+                        } else if (bgxDeviceUUID.startsWith(BGX220P_Device_Prefix)) {
+                            devicePartID = BGXPartID.BGX220P;
+                        } else if (bgxDeviceUUID.startsWith(BGX220S_Device_Prefix)) {
+                            devicePartID = BGXPartID.BGX220S;
                         } else {
                             Log.e("bgx_dbg", "Unknown BGX PartID");
-                            devicePartID = BGXPartID.BGXInvalid;
-
-                            Intent bi = new Intent();
-                            bi.putExtra("DeviceAddress", dps.mBluetoothGatt.getDevice().getAddress());
-                            bi.putExtra("DeviceName", dps.mBluetoothGatt.getDevice().getName());
-
-                            bi.setAction(BGX_INVALID_GATT_HANDLES);
-                            sendBroadcast(bi);
-
+                            devicePartID = BGXPartID.BGXUnknownPartID;
                         }
                         intent.putExtra("bgx-part-id", devicePartID);
                         intent.putExtra("DeviceAddress", dps.mBluetoothGatt.getDevice().getAddress());
@@ -2461,11 +2470,10 @@ public class BGXpressService extends IntentService {
 
                 String dmsVersion = intent.getStringExtra("dms-version");
                 String apiKey = getDmsAPIKey();
-                BGXPartID partID = (BGXPartID) intent.getSerializableExtra("bgx-part-id");
-                String partIdentifier = intent.getStringExtra("bgx-part-identifier");
+                String deviceAddress = intent.getStringExtra("DeviceAddress");
                 Log.d("bgx_dbg", "Version Record: " + dmsVersion);
 
-                handleActionGetDMSVersion(apiKey, partID, partIdentifier, dmsVersion);
+                handleActionGetDMSVersion(apiKey, deviceAddress, dmsVersion);
 
 
             } else if (ACTION_BGX_CONNECT.equals(action)) {
@@ -2706,9 +2714,11 @@ public class BGXpressService extends IntentService {
         }
     }
 
-    private void handleActionGetDMSVersion(String apiKey, BGXPartID partID, String partIdentifier, String dmsVersion)
+    private void handleActionGetDMSVersion(String apiKey, String deviceAddress, String dmsVersion)
     {
         HttpsURLConnection versConnection = null;
+
+        DeviceProperties dps = mDeviceProperties.get(deviceAddress);
 
         // create the file name.
 
@@ -2721,13 +2731,7 @@ public class BGXpressService extends IntentService {
         intent.putExtra("ota_status", OTA_Status.Downloading);
         sendBroadcast(intent);
 
-        if (null != partIdentifier && 8 == partIdentifier.length()) {
-            partFolder = new File(this.getFilesDir(), partIdentifier);
-        } else if (BGXPartID.BGX13P.equals(partID)) {
-            partFolder = new File(this.getFilesDir(), "BGX13P");
-        } else if (BGXPartID.BGX13S.equals(partID)) {
-            partFolder = new File(this.getFilesDir(), "BGX13S");
-        }
+        partFolder = new File(this.getFilesDir(), dps.partIdentifier);
 
         if (!partFolder.exists()) {
             fResult = partFolder.mkdir();
@@ -2745,19 +2749,9 @@ public class BGXpressService extends IntentService {
         if (!versionFile.exists()) {
 
             try {
-                URL dmsVersionsURL;
-                if (null != partIdentifier && 8 == partIdentifier.length()) {
-                    dmsVersionsURL = new URL( String.format("https://xpress-api.zentri.com/platforms/%s/products/bgx13/versions/%s", partIdentifier, dmsVersion) );
-                } else if (BGXPartID.BGX13P == partID) {
-                    dmsVersionsURL = new URL(BGXpressService.DMS_VERSIONS_URL_P + "/" + dmsVersion);
-                } else if (BGXPartID.BGX13S == partID) {
-                    dmsVersionsURL = new URL(BGXpressService.DMS_VERSIONS_URL_S + "/" + dmsVersion);
-                } else {
-                    Log.e("bgx_dbg", "Invalid partID");
-                    return;
-                }
+                URL dmsVersionURL = new URL( String.format("https://xpress-api.zentri.com/platforms/%s/products/%s/versions/%s", dps.partIdentifier, dps.mPlatformString, dmsVersion ) );
 
-                versConnection = (HttpsURLConnection) dmsVersionsURL.openConnection();
+                versConnection = (HttpsURLConnection) dmsVersionURL.openConnection();
                 versConnection.addRequestProperty("x-api-key", apiKey);
 
                 InputStream sin = new BufferedInputStream(versConnection.getInputStream());

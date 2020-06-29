@@ -228,6 +228,7 @@
           [self->spinner setHidden:YES];
           [self->determined_progress setHidden:YES];
           [self->cancelButton setTitle:@"Close" forState:UIControlStateNormal];
+          [self->cancelButton setEnabled:YES];
           break;
         case ota_step_canceled:
           [self dismissViewControllerAnimated:YES completion:^{}];
