@@ -2019,6 +2019,8 @@ public class BGXpressService extends IntentService {
                         }
 
                     }
+                } else {
+                    clearGattBusyFlagAndExecuteNext();
                 }
             }
         }
