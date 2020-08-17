@@ -7,37 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08244A65900EAC954042037FF1542169 /* bgxpress.h in Headers */ = {isa = PBXBuildFile; fileRef = DF6AC82D486F68591D276642D4FF3D4E /* bgxpress.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		0BFAE0B6D633CF482AD04E90B7469628 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9F0C5D555B9DA6371FFD0420F49E60 /* MMDrawerBarButtonItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		0C5C488B5FA36873808A6901C8AA665B /* MMDrawerVisualState.h in Headers */ = {isa = PBXBuildFile; fileRef = A4F0585A3E4E2F63C2FBB4669D60901F /* MMDrawerVisualState.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		0E9F36316C3BBE2C9D951852C8631BB2 /* MMDrawerController+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 359BA12856DADDFBA5682964151D8A62 /* MMDrawerController+Subclass.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		166BB02DB8DA4FB6A93516B320FD502D /* BGXDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0BBADCB5706E7C597CB2FF6292223 /* BGXDevice.m */; };
-		18D62F969C931A3B1C68BAC121BF4C1C /* MMDrawerController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 73597667F955D669C42FCB3FB79E8B07 /* MMDrawerController-dummy.m */; };
+		08244A65900EAC954042037FF1542169 /* bgxpress.h in Headers */ = {isa = PBXBuildFile; fileRef = 16BE0C261087BCC532473605B68339E9 /* bgxpress.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		0BFAE0B6D633CF482AD04E90B7469628 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFA5741EDB3299AE89227938581843 /* MMDrawerBarButtonItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		0C5C488B5FA36873808A6901C8AA665B /* MMDrawerVisualState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CA404AC4B6CDB31CFC3D5C1604741D0 /* MMDrawerVisualState.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		0E9F36316C3BBE2C9D951852C8631BB2 /* MMDrawerController+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 752EC82E87B08E80C54BF7BD7E71C072 /* MMDrawerController+Subclass.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		166BB02DB8DA4FB6A93516B320FD502D /* BGXDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC33A45CB32A6957AA4FFD2F7811A25 /* BGXDevice.m */; };
+		18D62F969C931A3B1C68BAC121BF4C1C /* MMDrawerController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F43B3A62B8ED4E8B2BBD0DBE66F7D4 /* MMDrawerController-dummy.m */; };
 		2A488557ECAD07819B3821A5F96D964B /* Pods-BGXCommander-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B0846DF89942AEA227F45F45096374 /* Pods-BGXCommander-dummy.m */; };
-		2DC3CB9F01A8C6CBC0815E8CC988D434 /* SafeType.h in Headers */ = {isa = PBXBuildFile; fileRef = 778773A1B44852D93E29CE75B60F471A /* SafeType.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		32DB564F2A999A3C8BD0FA9D09121A2A /* MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2F72EB87D6E139B18115778FF685A5DC /* MMDrawerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		4291E0FE73E03E852AD7B16063CE622B /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5C523A532234C6186A5D754188A9D2 /* UIViewController+MMDrawerController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		472F4ECF32800EF5611770C2BD5712E2 /* bgxpress-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CA141427D54E834E971F85A9C948C71C /* bgxpress-dummy.m */; };
-		618E65C0D09D0C72B07F76263469F15D /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3242E7A4EAB04CDB2F4DF1B04A0D0DDF /* MMDrawerVisualState.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		6C15977F2A726FA074D3D8183AC9B02F /* BGXDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = C504C68FA2139D2A22BF6D9DD41C235E /* BGXDevice.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		765FC8E410C67192816AAFCEED00108D /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AD1240FB1F815FBDCEFBAA9A5B938A /* Version.m */; };
-		773E42D73291DC6F0A72A5CDDA17B657 /* UIViewController+MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 96DD2B4E3550D7E2DFC5079BB563A637 /* UIViewController+MMDrawerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		2DC3CB9F01A8C6CBC0815E8CC988D434 /* SafeType.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E72F3CC242459C5EF7EC18087F72CF6 /* SafeType.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		32DB564F2A999A3C8BD0FA9D09121A2A /* MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = A110FC2E07EB4644D7553C34680E86B7 /* MMDrawerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		4291E0FE73E03E852AD7B16063CE622B /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D91034982F675A1E9877CD0B59722EF9 /* UIViewController+MMDrawerController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		472F4ECF32800EF5611770C2BD5712E2 /* bgxpress-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 30DEBC27C570DCE486126AFBC07A6571 /* bgxpress-dummy.m */; };
+		618E65C0D09D0C72B07F76263469F15D /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD391324CD88C9D75D5D37ADAF9AEB /* MMDrawerVisualState.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		6C15977F2A726FA074D3D8183AC9B02F /* BGXDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = AD93FC45ECE153DC10EB643EABF0F456 /* BGXDevice.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		765FC8E410C67192816AAFCEED00108D /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 804714023095140ACFBF5A750A0B1642 /* Version.m */; };
+		773E42D73291DC6F0A72A5CDDA17B657 /* UIViewController+MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 14C3DD1B8378587007150DA041378C18 /* UIViewController+MMDrawerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7BCE88500C5C96E405CE094F3F2BD91F /* Pods-BGXCommanderUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E77D4373ACB403BC818C35046D24 /* Pods-BGXCommanderUITests-dummy.m */; };
-		7CE7C6971453E390A02792BED537CEF2 /* bgx_ota_update.m in Sources */ = {isa = PBXBuildFile; fileRef = CF1FC34873FF2FF30A3DC592408650D1 /* bgx_ota_update.m */; };
-		81BEC67F661AF301880178979BFC245D /* bgx_dms.m in Sources */ = {isa = PBXBuildFile; fileRef = CAF2C9C161F9CB06C3CCFF43D41332D2 /* bgx_dms.m */; };
-		93BBC5B39B21632A5D81A3CB95B01B69 /* PullRefreshTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B000DF3BFC9B2E36096DA08BEC235F64 /* PullRefreshTableViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		95E47EBA4EDB415A5A5F5BB920373A19 /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 399249B59FCB370A6F5EAEC006B5F383 /* PullRefreshTableViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		98B4D99CDD419D6EFB3E1EC439A71141 /* BGXpressScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 31648D1116A65B93ADF4A8663465BEBB /* BGXpressScanner.m */; };
-		A376EEDC21767D92D95973F0CD8E7854 /* bgx_dms.h in Headers */ = {isa = PBXBuildFile; fileRef = 1285A26B54CA2970B7768FE6B099F90D /* bgx_dms.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B586D91E27846D209C31C856C440E832 /* bgx_ota_update.h in Headers */ = {isa = PBXBuildFile; fileRef = FFA3F3DCEE8D7B6C15E51CF109695DE2 /* bgx_ota_update.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		7CE7C6971453E390A02792BED537CEF2 /* bgx_ota_update.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA23D91556A41BDA214217680E3FCC0 /* bgx_ota_update.m */; };
+		81BEC67F661AF301880178979BFC245D /* bgx_dms.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A6E7639E9082940B3D0D42B5A2950C /* bgx_dms.m */; };
+		93BBC5B39B21632A5D81A3CB95B01B69 /* PullRefreshTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 345EEE347E847C4E4048A2040C50E6EA /* PullRefreshTableViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		95E47EBA4EDB415A5A5F5BB920373A19 /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294C5E8A868C4D39DCB9ABD4F623C5F6 /* PullRefreshTableViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		98B4D99CDD419D6EFB3E1EC439A71141 /* BGXpressScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D932517811090DE1AD5156E6818EE01 /* BGXpressScanner.m */; };
+		A376EEDC21767D92D95973F0CD8E7854 /* bgx_dms.h in Headers */ = {isa = PBXBuildFile; fileRef = FCF1BC6F5A1DD05E401ED381FE18A2C3 /* bgx_dms.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B586D91E27846D209C31C856C440E832 /* bgx_ota_update.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB88661E07D87E0B0A58BE8D193095A /* bgx_ota_update.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BE52EC550965F941EC3F8E7FC265E2A3 /* Pods-BGXCommanderTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D88322A63E5282BB1EC260AC978EA534 /* Pods-BGXCommanderTests-dummy.m */; };
-		C8FBFF09BB64851AE239101A6762891C /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 22984412D37E2B6DE537A7C93D2549C2 /* MMDrawerBarButtonItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		CEAB26E63C6B1C25A2CE9E9372AFF875 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FFE095FD424A3B5EEFFCDC96485C37 /* MMDrawerController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		D2E4E752AC597CA99700DC5140E04E0E /* BGXUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = D7B07855062D56AC9C40B730F52A8CC9 /* BGXUUID.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D7A51FED198055FE1CBF35FE8EA6DB5F /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CB8E0C48B56509848E9D5ABBF3A1C84 /* Version.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		E0FA50A231B8441A6E1A3BACE8B21CC5 /* BGXpressScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 9408208297892E38F90E8D56A64AB570 /* BGXpressScanner.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		EDE12C6B1D42F3A11B598721BE3B8B96 /* PullToRefresh-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E8FD67C443DE37965CA8E6399BE5158E /* PullToRefresh-dummy.m */; };
-		FD1455BCB9152493C889EFA633522F94 /* SafeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 394E09FB45038697D694337B24C2204C /* SafeType.m */; };
+		C8FBFF09BB64851AE239101A6762891C /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 22750A0CB5474223A4E551FC078A2711 /* MMDrawerBarButtonItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		CEAB26E63C6B1C25A2CE9E9372AFF875 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FBE73A0430BAB38CB214C0445A7C2A /* MMDrawerController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		D2E4E752AC597CA99700DC5140E04E0E /* BGXUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = E8C41BB78FC313B05BBA8C90ECCA5FAE /* BGXUUID.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D7A51FED198055FE1CBF35FE8EA6DB5F /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C7CFA75F2FAE42C0BAE13E92C2591E /* Version.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E0FA50A231B8441A6E1A3BACE8B21CC5 /* BGXpressScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 5D9B69D219958B1BB847F5230B36996C /* BGXpressScanner.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		EDE12C6B1D42F3A11B598721BE3B8B96 /* PullToRefresh-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8667337AE522D12170AD6E24F5EA51 /* PullToRefresh-dummy.m */; };
+		FD1455BCB9152493C889EFA633522F94 /* SafeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 729402105863495E8CC6F8ED9A63AD26 /* SafeType.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,66 +80,69 @@
 
 /* Begin PBXFileReference section */
 		01ED8F273D56B9DE4572567071949B31 /* libbgxpress.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libbgxpress.a; path = libbgxpress.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		03FFE095FD424A3B5EEFFCDC96485C37 /* MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerController.m; path = MMDrawerController/MMDrawerController.m; sourceTree = "<group>"; };
-		0512BEBACCE2B9A41297224237BCAFBB /* MMDrawerController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController-prefix.pch"; sourceTree = "<group>"; };
-		0D439AB369973B66AF8A81187F0DBA54 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		1285A26B54CA2970B7768FE6B099F90D /* bgx_dms.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_dms.h; path = iOS/BGXpress/bgxpress/bgx_dms.h; sourceTree = "<group>"; };
-		185AFA4020DEF2E93EBB5706D6C37BA0 /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.md; sourceTree = "<group>"; };
+		04510F7D5F44237142703C216D09D987 /* arrow.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		0F30AD8FF73416EFC8DDFA80686DDC6D /* PullToRefresh.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullToRefresh.release.xcconfig; sourceTree = "<group>"; };
+		14C3DD1B8378587007150DA041378C18 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+MMDrawerController.h"; path = "MMDrawerController/UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
+		16BE0C261087BCC532473605B68339E9 /* bgxpress.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgxpress.h; path = iOS/BGXpress/bgxpress/bgxpress.h; sourceTree = "<group>"; };
 		1B4B6FA55A791F1F1742713EC7AE3353 /* libPullToRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libPullToRefresh.a; path = libPullToRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		22984412D37E2B6DE537A7C93D2549C2 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
+		1CA404AC4B6CDB31CFC3D5C1604741D0 /* MMDrawerVisualState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerVisualState.h; path = MMDrawerController/MMDrawerVisualState.h; sourceTree = "<group>"; };
+		21ECFAB48588A98CE318B07FF4A9E89B /* bgxpress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.debug.xcconfig; sourceTree = "<group>"; };
+		22750A0CB5474223A4E551FC078A2711 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
+		28F7E3930C08D1DD53961901DFE77519 /* PullToRefresh-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PullToRefresh-prefix.pch"; sourceTree = "<group>"; };
+		294C5E8A868C4D39DCB9ABD4F623C5F6 /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PullRefreshTableViewController.m; path = Classes/PullRefreshTableViewController.m; sourceTree = "<group>"; };
+		2A8CCF2FD31CAA90451C92A418743D19 /* MMDrawerController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MMDrawerController.debug.xcconfig; sourceTree = "<group>"; };
 		2E5E3959935554E49187EF2B1896C30F /* Pods-BGXCommanderTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommanderTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		2F72EB87D6E139B18115778FF685A5DC /* MMDrawerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
-		2FEE1039B99C3D33A11CA90D2D845DF5 /* PullToRefresh.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullToRefresh.xcconfig; sourceTree = "<group>"; };
-		31648D1116A65B93ADF4A8663465BEBB /* BGXpressScanner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXpressScanner.m; path = iOS/BGXpress/bgxpress/BGXpressScanner.m; sourceTree = "<group>"; };
-		3242E7A4EAB04CDB2F4DF1B04A0D0DDF /* MMDrawerVisualState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerVisualState.m; path = MMDrawerController/MMDrawerVisualState.m; sourceTree = "<group>"; };
+		2F4D36D029AE1376C6E1E550D579664F /* MMDrawerController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController-prefix.pch"; sourceTree = "<group>"; };
+		30DEBC27C570DCE486126AFBC07A6571 /* bgxpress-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "bgxpress-dummy.m"; sourceTree = "<group>"; };
 		3394CB8F38E91EE43A55572EC6929018 /* Pods-BGXCommanderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderUITests.release.xcconfig"; sourceTree = "<group>"; };
-		359BA12856DADDFBA5682964151D8A62 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Subclass.h"; path = "MMDrawerController/MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
-		394E09FB45038697D694337B24C2204C /* SafeType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SafeType.m; path = iOS/BGXpress/bgxpress/SafeType.m; sourceTree = "<group>"; };
-		399249B59FCB370A6F5EAEC006B5F383 /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PullRefreshTableViewController.m; path = Classes/PullRefreshTableViewController.m; sourceTree = "<group>"; };
-		3EF620E375AD0AE5D77E399FF58CF5F9 /* MMDrawerController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MMDrawerController.xcconfig; sourceTree = "<group>"; };
-		4E6C0E9940AF489E135A8C519BF57593 /* arrow.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		345EEE347E847C4E4048A2040C50E6EA /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PullRefreshTableViewController.h; path = Classes/PullRefreshTableViewController.h; sourceTree = "<group>"; };
+		38426EDE34A4137216DDC2D309874B54 /* bgxpress-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "bgxpress-prefix.pch"; sourceTree = "<group>"; };
+		3ECB2985F7B5ABC956F3E163F55C7B74 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		4A8667337AE522D12170AD6E24F5EA51 /* PullToRefresh-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PullToRefresh-dummy.m"; sourceTree = "<group>"; };
+		4D6244742203D2BE47D460D852C31A7C /* MMDrawerController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MMDrawerController.release.xcconfig; sourceTree = "<group>"; };
+		5BFFA5741EDB3299AE89227938581843 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		5C662866B3D08018096418B7F53F9A80 /* Pods-BGXCommander.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommander.debug.xcconfig"; sourceTree = "<group>"; };
 		5C82E77D4373ACB403BC818C35046D24 /* Pods-BGXCommanderUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommanderUITests-dummy.m"; sourceTree = "<group>"; };
+		5D932517811090DE1AD5156E6818EE01 /* BGXpressScanner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXpressScanner.m; path = iOS/BGXpress/bgxpress/BGXpressScanner.m; sourceTree = "<group>"; };
+		5D9B69D219958B1BB847F5230B36996C /* BGXpressScanner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXpressScanner.h; path = iOS/BGXpress/bgxpress/BGXpressScanner.h; sourceTree = "<group>"; };
+		5DC78B289B00ABB8B549CE2A8A58F7B9 /* PullToRefresh.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullToRefresh.debug.xcconfig; sourceTree = "<group>"; };
+		60C7CFA75F2FAE42C0BAE13E92C2591E /* Version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Version.h; path = iOS/BGXpress/bgxpress/Version.h; sourceTree = "<group>"; };
+		65A7E69F015A12B7431BD15392F9B3CF /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.md; sourceTree = "<group>"; };
 		65D434E499FD28CAC28CBEC58B38E20A /* Pods-BGXCommanderUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommanderUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		6C74481CBCB87684F62CB0E10BA4B66E /* libMMDrawerController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libMMDrawerController.a; path = libMMDrawerController.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D08BB25FE2A7C1AE5264494054828FB /* Pods-BGXCommanderUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommanderUITests-acknowledgements.plist"; sourceTree = "<group>"; };
-		700ACEC668B1E1ECA20D41DE9BEC420F /* PullToRefresh-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PullToRefresh-prefix.pch"; sourceTree = "<group>"; };
-		73597667F955D669C42FCB3FB79E8B07 /* MMDrawerController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MMDrawerController-dummy.m"; sourceTree = "<group>"; };
-		778773A1B44852D93E29CE75B60F471A /* SafeType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SafeType.h; path = iOS/BGXpress/bgxpress/SafeType.h; sourceTree = "<group>"; };
-		7CB8E0C48B56509848E9D5ABBF3A1C84 /* Version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Version.h; path = iOS/BGXpress/bgxpress/Version.h; sourceTree = "<group>"; };
+		729402105863495E8CC6F8ED9A63AD26 /* SafeType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SafeType.m; path = iOS/BGXpress/bgxpress/SafeType.m; sourceTree = "<group>"; };
+		752EC82E87B08E80C54BF7BD7E71C072 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Subclass.h"; path = "MMDrawerController/MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
+		7ACD391324CD88C9D75D5D37ADAF9AEB /* MMDrawerVisualState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerVisualState.m; path = MMDrawerController/MMDrawerVisualState.m; sourceTree = "<group>"; };
+		804714023095140ACFBF5A750A0B1642 /* Version.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = iOS/BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
 		8A2619163B85874D538FEDC12EACDD97 /* libPods-BGXCommanderUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommanderUITests.a"; path = "libPods-BGXCommanderUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8EE25BB04807FC5D0E489EF5F291910C /* bgxpress-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "bgxpress-prefix.pch"; sourceTree = "<group>"; };
-		9408208297892E38F90E8D56A64AB570 /* BGXpressScanner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXpressScanner.h; path = iOS/BGXpress/bgxpress/BGXpressScanner.h; sourceTree = "<group>"; };
-		96DD2B4E3550D7E2DFC5079BB563A637 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+MMDrawerController.h"; path = "MMDrawerController/UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A4F0585A3E4E2F63C2FBB4669D60901F /* MMDrawerVisualState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerVisualState.h; path = MMDrawerController/MMDrawerVisualState.h; sourceTree = "<group>"; };
-		A8FF4DCA2A9B2CEEEF1104CEDA428AA5 /* bgxpress.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = bgxpress.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A9CAB42984DF33A5D0AAE2E75B7B5CAB /* bgxpress.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.xcconfig; sourceTree = "<group>"; };
-		AB9F0C5D555B9DA6371FFD0420F49E60 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
-		B000DF3BFC9B2E36096DA08BEC235F64 /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PullRefreshTableViewController.h; path = Classes/PullRefreshTableViewController.h; sourceTree = "<group>"; };
+		9E72F3CC242459C5EF7EC18087F72CF6 /* SafeType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SafeType.h; path = iOS/BGXpress/bgxpress/SafeType.h; sourceTree = "<group>"; };
+		A110FC2E07EB4644D7553C34680E86B7 /* MMDrawerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
+		A9A6E7639E9082940B3D0D42B5A2950C /* bgx_dms.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_dms.m; path = iOS/BGXpress/bgxpress/bgx_dms.m; sourceTree = "<group>"; };
+		AD93FC45ECE153DC10EB643EABF0F456 /* BGXDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXDevice.h; path = iOS/BGXpress/bgxpress/BGXDevice.h; sourceTree = "<group>"; };
+		AF00D2AC6622C26CF538740719E86C21 /* bgxpress.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = bgxpress.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B35B946026AF9EA5ACEAA403D12587B7 /* Pods-BGXCommander-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommander-acknowledgements.markdown"; sourceTree = "<group>"; };
+		B9F43B3A62B8ED4E8B2BBD0DBE66F7D4 /* MMDrawerController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MMDrawerController-dummy.m"; sourceTree = "<group>"; };
 		BB91CDD63E88EEAF32D0EFA049974BCE /* Pods-BGXCommanderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C504C68FA2139D2A22BF6D9DD41C235E /* BGXDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXDevice.h; path = iOS/BGXpress/bgxpress/BGXDevice.h; sourceTree = "<group>"; };
 		C7407A8414851BD8C1D71977A92FD89D /* Pods-BGXCommanderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		CA141427D54E834E971F85A9C948C71C /* bgxpress-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "bgxpress-dummy.m"; sourceTree = "<group>"; };
-		CA5C523A532234C6186A5D754188A9D2 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+MMDrawerController.m"; path = "MMDrawerController/UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
-		CAF2C9C161F9CB06C3CCFF43D41332D2 /* bgx_dms.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_dms.m; path = iOS/BGXpress/bgxpress/bgx_dms.m; sourceTree = "<group>"; };
 		CBD786CA076B5CF898B50D02EB873A4A /* Pods-BGXCommander.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommander.release.xcconfig"; sourceTree = "<group>"; };
 		CEC84F82F309DCFE3CF9F292C271EB89 /* Pods-BGXCommander-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BGXCommander-resources.sh"; sourceTree = "<group>"; };
-		CF1FC34873FF2FF30A3DC592408650D1 /* bgx_ota_update.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_ota_update.m; path = iOS/BGXpress/bgxpress/bgx_ota_update.m; sourceTree = "<group>"; };
-		D7B07855062D56AC9C40B730F52A8CC9 /* BGXUUID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXUUID.h; path = iOS/BGXpress/bgxpress/BGXUUID.h; sourceTree = "<group>"; };
 		D88322A63E5282BB1EC260AC978EA534 /* Pods-BGXCommanderTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommanderTests-dummy.m"; sourceTree = "<group>"; };
+		D91034982F675A1E9877CD0B59722EF9 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+MMDrawerController.m"; path = "MMDrawerController/UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
 		DB9DA91F255B009963667D7D2C9BD5A8 /* Pods-BGXCommanderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderTests.release.xcconfig"; sourceTree = "<group>"; };
-		DF6AC82D486F68591D276642D4FF3D4E /* bgxpress.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgxpress.h; path = iOS/BGXpress/bgxpress/bgxpress.h; sourceTree = "<group>"; };
-		E1AD1240FB1F815FBDCEFBAA9A5B938A /* Version.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = iOS/BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
-		E1C0BBADCB5706E7C597CB2FF6292223 /* BGXDevice.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXDevice.m; path = iOS/BGXpress/bgxpress/BGXDevice.m; sourceTree = "<group>"; };
+		DDB88661E07D87E0B0A58BE8D193095A /* bgx_ota_update.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_ota_update.h; path = iOS/BGXpress/bgxpress/bgx_ota_update.h; sourceTree = "<group>"; };
 		E22C374EFEBF740E6F5D62D63B778477 /* libPods-BGXCommander.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommander.a"; path = "libPods-BGXCommander.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8FD67C443DE37965CA8E6399BE5158E /* PullToRefresh-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PullToRefresh-dummy.m"; sourceTree = "<group>"; };
+		E8C41BB78FC313B05BBA8C90ECCA5FAE /* BGXUUID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXUUID.h; path = iOS/BGXpress/bgxpress/BGXUUID.h; sourceTree = "<group>"; };
+		ECC33A45CB32A6957AA4FFD2F7811A25 /* BGXDevice.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXDevice.m; path = iOS/BGXpress/bgxpress/BGXDevice.m; sourceTree = "<group>"; };
+		F0FBE73A0430BAB38CB214C0445A7C2A /* MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerController.m; path = MMDrawerController/MMDrawerController.m; sourceTree = "<group>"; };
+		F5777383AFC63F64FCD35750EA270C53 /* bgxpress.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.release.xcconfig; sourceTree = "<group>"; };
 		F70739176F8B1168FB3DEC66530C0909 /* Pods-BGXCommander-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommander-acknowledgements.plist"; sourceTree = "<group>"; };
 		F8B0846DF89942AEA227F45F45096374 /* Pods-BGXCommander-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommander-dummy.m"; sourceTree = "<group>"; };
 		F9EE0F9917325D81599B715D0B83A235 /* Pods-BGXCommanderTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommanderTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		FAA23D91556A41BDA214217680E3FCC0 /* bgx_ota_update.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_ota_update.m; path = iOS/BGXpress/bgxpress/bgx_ota_update.m; sourceTree = "<group>"; };
+		FCF1BC6F5A1DD05E401ED381FE18A2C3 /* bgx_dms.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_dms.h; path = iOS/BGXpress/bgxpress/bgx_dms.h; sourceTree = "<group>"; };
 		FD02A362478BE6085E45A770CF19174A /* libPods-BGXCommanderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommanderTests.a"; path = "libPods-BGXCommanderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFA3F3DCEE8D7B6C15E51CF109695DE2 /* bgx_ota_update.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_ota_update.h; path = iOS/BGXpress/bgxpress/bgx_ota_update.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,15 +191,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		000CA0702AD2F151FE1612C6D688DB99 /* MMDrawerVisualStates */ = {
-			isa = PBXGroup;
-			children = (
-				A4F0585A3E4E2F63C2FBB4669D60901F /* MMDrawerVisualState.h */,
-				3242E7A4EAB04CDB2F4DF1B04A0D0DDF /* MMDrawerVisualState.m */,
-			);
-			name = MMDrawerVisualStates;
-			sourceTree = "<group>";
-		};
 		03E67E5B10CEE0E1C726DBE22031EDB5 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,86 +201,65 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		13B9D8448D20670CF8F3F3C56D0165CD /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				4E6C0E9940AF489E135A8C519BF57593 /* arrow.png */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		1E35EF2A3AE6855395107CC2C2AF1C0E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				79C331038FF4EC30867A68DE95C5FA65 /* MMDrawerController */,
-				9F7450FDF5112C48DCCAE9CA1E93069C /* PullToRefresh */,
+				2FCF77337480A1CC479245574FCF96D0 /* MMDrawerController */,
+				AEF4A2FB193FAD5C5FF6B7435C90596B /* PullToRefresh */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		27CFA67BEC59E007DA6B386FCE671E11 /* bgxpress */ = {
+		290F0E6A79CAE232AF2674AE0A3F7124 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1285A26B54CA2970B7768FE6B099F90D /* bgx_dms.h */,
-				CAF2C9C161F9CB06C3CCFF43D41332D2 /* bgx_dms.m */,
-				FFA3F3DCEE8D7B6C15E51CF109695DE2 /* bgx_ota_update.h */,
-				CF1FC34873FF2FF30A3DC592408650D1 /* bgx_ota_update.m */,
-				C504C68FA2139D2A22BF6D9DD41C235E /* BGXDevice.h */,
-				E1C0BBADCB5706E7C597CB2FF6292223 /* BGXDevice.m */,
-				DF6AC82D486F68591D276642D4FF3D4E /* bgxpress.h */,
-				9408208297892E38F90E8D56A64AB570 /* BGXpressScanner.h */,
-				31648D1116A65B93ADF4A8663465BEBB /* BGXpressScanner.m */,
-				D7B07855062D56AC9C40B730F52A8CC9 /* BGXUUID.h */,
-				778773A1B44852D93E29CE75B60F471A /* SafeType.h */,
-				394E09FB45038697D694337B24C2204C /* SafeType.m */,
-				7CB8E0C48B56509848E9D5ABBF3A1C84 /* Version.h */,
-				E1AD1240FB1F815FBDCEFBAA9A5B938A /* Version.m */,
-				405CE8B02A44896CFC1EE09A316F3B1E /* Pod */,
-				4AF7B9E9285631BF1F274B733491C737 /* Support Files */,
+				04510F7D5F44237142703C216D09D987 /* arrow.png */,
 			);
-			name = bgxpress;
-			path = ../../..;
+			name = Resources;
 			sourceTree = "<group>";
 		};
-		2EAC5DB138B1BD60EC6E9629CF2D2A62 /* MMDrawerBarButtonItem */ = {
+		2FCF77337480A1CC479245574FCF96D0 /* MMDrawerController */ = {
 			isa = PBXGroup;
 			children = (
-				22984412D37E2B6DE537A7C93D2549C2 /* MMDrawerBarButtonItem.h */,
-				AB9F0C5D555B9DA6371FFD0420F49E60 /* MMDrawerBarButtonItem.m */,
+				9FFC451F1B039E34CC464796BA5E1FD6 /* Core */,
+				D94664AFBDA5095F8A3226D57187B6D1 /* MMDrawerBarButtonItem */,
+				71E21AA68B7AF9DD206D1D16A5EA766B /* MMDrawerVisualStates */,
+				303EE3AE7BFD7ADE2949C2FA200B48C6 /* Subclass */,
+				4E8462C1C69CFFC64313709966061A78 /* Support Files */,
 			);
-			name = MMDrawerBarButtonItem;
+			name = MMDrawerController;
+			path = MMDrawerController;
 			sourceTree = "<group>";
 		};
-		405CE8B02A44896CFC1EE09A316F3B1E /* Pod */ = {
+		303EE3AE7BFD7ADE2949C2FA200B48C6 /* Subclass */ = {
 			isa = PBXGroup;
 			children = (
-				A8FF4DCA2A9B2CEEEF1104CEDA428AA5 /* bgxpress.podspec */,
-				185AFA4020DEF2E93EBB5706D6C37BA0 /* LICENSE.md */,
-				0D439AB369973B66AF8A81187F0DBA54 /* README.md */,
 			);
-			name = Pod;
+			name = Subclass;
 			sourceTree = "<group>";
 		};
-		4AF7B9E9285631BF1F274B733491C737 /* Support Files */ = {
+		436A304776D2053C7A867CED57FD0309 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				A9CAB42984DF33A5D0AAE2E75B7B5CAB /* bgxpress.xcconfig */,
-				CA141427D54E834E971F85A9C948C71C /* bgxpress-dummy.m */,
-				8EE25BB04807FC5D0E489EF5F291910C /* bgxpress-prefix.pch */,
+				30DEBC27C570DCE486126AFBC07A6571 /* bgxpress-dummy.m */,
+				38426EDE34A4137216DDC2D309874B54 /* bgxpress-prefix.pch */,
+				21ECFAB48588A98CE318B07FF4A9E89B /* bgxpress.debug.xcconfig */,
+				F5777383AFC63F64FCD35750EA270C53 /* bgxpress.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "iOS/BGXCommander/Pods/Target Support Files/bgxpress";
 			sourceTree = "<group>";
 		};
-		5DA1C70DB09191D737128BB8027F535E /* Support Files */ = {
+		4E8462C1C69CFFC64313709966061A78 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				2FEE1039B99C3D33A11CA90D2D845DF5 /* PullToRefresh.xcconfig */,
-				E8FD67C443DE37965CA8E6399BE5158E /* PullToRefresh-dummy.m */,
-				700ACEC668B1E1ECA20D41DE9BEC420F /* PullToRefresh-prefix.pch */,
+				B9F43B3A62B8ED4E8B2BBD0DBE66F7D4 /* MMDrawerController-dummy.m */,
+				2F4D36D029AE1376C6E1E550D579664F /* MMDrawerController-prefix.pch */,
+				2A8CCF2FD31CAA90451C92A418743D19 /* MMDrawerController.debug.xcconfig */,
+				4D6244742203D2BE47D460D852C31A7C /* MMDrawerController.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/PullToRefresh";
+			path = "../Target Support Files/MMDrawerController";
 			sourceTree = "<group>";
 		};
 		61EC4ED60DC3E12997BB367BEF9BB485 /* Pods-BGXCommander */ = {
@@ -303,6 +276,16 @@
 			path = "Target Support Files/Pods-BGXCommander";
 			sourceTree = "<group>";
 		};
+		6354D676F676109A4704D79B1ED4BCA8 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				AF00D2AC6622C26CF538740719E86C21 /* bgxpress.podspec */,
+				65A7E69F015A12B7431BD15392F9B3CF /* LICENSE.md */,
+				3ECB2985F7B5ABC956F3E163F55C7B74 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
 		699C750CEE0487713323BC7237629040 /* Pods-BGXCommanderTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,17 +299,13 @@
 			path = "Target Support Files/Pods-BGXCommanderTests";
 			sourceTree = "<group>";
 		};
-		79C331038FF4EC30867A68DE95C5FA65 /* MMDrawerController */ = {
+		71E21AA68B7AF9DD206D1D16A5EA766B /* MMDrawerVisualStates */ = {
 			isa = PBXGroup;
 			children = (
-				9FE1A1FEAF5A0C68A019F581B9CF44E1 /* Core */,
-				2EAC5DB138B1BD60EC6E9629CF2D2A62 /* MMDrawerBarButtonItem */,
-				000CA0702AD2F151FE1612C6D688DB99 /* MMDrawerVisualStates */,
-				A32D5FAC0A30909BB20136D6EB3890BD /* Subclass */,
-				F46F3BBBA4E71C2242D8F6E10814C998 /* Support Files */,
+				1CA404AC4B6CDB31CFC3D5C1604741D0 /* MMDrawerVisualState.h */,
+				7ACD391324CD88C9D75D5D37ADAF9AEB /* MMDrawerVisualState.m */,
 			);
-			name = MMDrawerController;
-			path = MMDrawerController;
+			name = MMDrawerVisualStates;
 			sourceTree = "<group>";
 		};
 		8E762D8C151477D762EB72659C4F10FA /* Products */ = {
@@ -342,43 +321,60 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9F7450FDF5112C48DCCAE9CA1E93069C /* PullToRefresh */ = {
+		9FFC451F1B039E34CC464796BA5E1FD6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				B000DF3BFC9B2E36096DA08BEC235F64 /* PullRefreshTableViewController.h */,
-				399249B59FCB370A6F5EAEC006B5F383 /* PullRefreshTableViewController.m */,
-				13B9D8448D20670CF8F3F3C56D0165CD /* Resources */,
-				5DA1C70DB09191D737128BB8027F535E /* Support Files */,
+				A110FC2E07EB4644D7553C34680E86B7 /* MMDrawerController.h */,
+				F0FBE73A0430BAB38CB214C0445A7C2A /* MMDrawerController.m */,
+				752EC82E87B08E80C54BF7BD7E71C072 /* MMDrawerController+Subclass.h */,
+				14C3DD1B8378587007150DA041378C18 /* UIViewController+MMDrawerController.h */,
+				D91034982F675A1E9877CD0B59722EF9 /* UIViewController+MMDrawerController.m */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		AEF4A2FB193FAD5C5FF6B7435C90596B /* PullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				345EEE347E847C4E4048A2040C50E6EA /* PullRefreshTableViewController.h */,
+				294C5E8A868C4D39DCB9ABD4F623C5F6 /* PullRefreshTableViewController.m */,
+				290F0E6A79CAE232AF2674AE0A3F7124 /* Resources */,
+				EB227C6A2FDE2F94B0D5F22B5B515015 /* Support Files */,
 			);
 			name = PullToRefresh;
 			path = PullToRefresh;
 			sourceTree = "<group>";
 		};
-		9FE1A1FEAF5A0C68A019F581B9CF44E1 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				2F72EB87D6E139B18115778FF685A5DC /* MMDrawerController.h */,
-				03FFE095FD424A3B5EEFFCDC96485C37 /* MMDrawerController.m */,
-				359BA12856DADDFBA5682964151D8A62 /* MMDrawerController+Subclass.h */,
-				96DD2B4E3550D7E2DFC5079BB563A637 /* UIViewController+MMDrawerController.h */,
-				CA5C523A532234C6186A5D754188A9D2 /* UIViewController+MMDrawerController.m */,
-			);
-			name = Core;
-			sourceTree = "<group>";
-		};
-		A32D5FAC0A30909BB20136D6EB3890BD /* Subclass */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Subclass;
-			sourceTree = "<group>";
-		};
 		B591F01C2710AAB5FA3DCE6644B3A773 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				27CFA67BEC59E007DA6B386FCE671E11 /* bgxpress */,
+				B5B728DC9612C7486B39BFE94352FDA7 /* bgxpress */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		B5B728DC9612C7486B39BFE94352FDA7 /* bgxpress */ = {
+			isa = PBXGroup;
+			children = (
+				FCF1BC6F5A1DD05E401ED381FE18A2C3 /* bgx_dms.h */,
+				A9A6E7639E9082940B3D0D42B5A2950C /* bgx_dms.m */,
+				DDB88661E07D87E0B0A58BE8D193095A /* bgx_ota_update.h */,
+				FAA23D91556A41BDA214217680E3FCC0 /* bgx_ota_update.m */,
+				AD93FC45ECE153DC10EB643EABF0F456 /* BGXDevice.h */,
+				ECC33A45CB32A6957AA4FFD2F7811A25 /* BGXDevice.m */,
+				16BE0C261087BCC532473605B68339E9 /* bgxpress.h */,
+				5D9B69D219958B1BB847F5230B36996C /* BGXpressScanner.h */,
+				5D932517811090DE1AD5156E6818EE01 /* BGXpressScanner.m */,
+				E8C41BB78FC313B05BBA8C90ECCA5FAE /* BGXUUID.h */,
+				9E72F3CC242459C5EF7EC18087F72CF6 /* SafeType.h */,
+				729402105863495E8CC6F8ED9A63AD26 /* SafeType.m */,
+				60C7CFA75F2FAE42C0BAE13E92C2591E /* Version.h */,
+				804714023095140ACFBF5A750A0B1642 /* Version.m */,
+				6354D676F676109A4704D79B1ED4BCA8 /* Pod */,
+				436A304776D2053C7A867CED57FD0309 /* Support Files */,
+			);
+			name = bgxpress;
+			path = ../../..;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -400,15 +396,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F46F3BBBA4E71C2242D8F6E10814C998 /* Support Files */ = {
+		D94664AFBDA5095F8A3226D57187B6D1 /* MMDrawerBarButtonItem */ = {
 			isa = PBXGroup;
 			children = (
-				3EF620E375AD0AE5D77E399FF58CF5F9 /* MMDrawerController.xcconfig */,
-				73597667F955D669C42FCB3FB79E8B07 /* MMDrawerController-dummy.m */,
-				0512BEBACCE2B9A41297224237BCAFBB /* MMDrawerController-prefix.pch */,
+				22750A0CB5474223A4E551FC078A2711 /* MMDrawerBarButtonItem.h */,
+				5BFFA5741EDB3299AE89227938581843 /* MMDrawerBarButtonItem.m */,
+			);
+			name = MMDrawerBarButtonItem;
+			sourceTree = "<group>";
+		};
+		EB227C6A2FDE2F94B0D5F22B5B515015 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A8667337AE522D12170AD6E24F5EA51 /* PullToRefresh-dummy.m */,
+				28F7E3930C08D1DD53961901DFE77519 /* PullToRefresh-prefix.pch */,
+				5DC78B289B00ABB8B549CE2A8A58F7B9 /* PullToRefresh.debug.xcconfig */,
+				0F30AD8FF73416EFC8DDFA80686DDC6D /* PullToRefresh.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/MMDrawerController";
+			path = "../Target Support Files/PullToRefresh";
 			sourceTree = "<group>";
 		};
 		FF91CF13718C1DEC0AD9CB262B229F66 /* Pods-BGXCommanderUITests */ = {
@@ -721,30 +727,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1D01E02FC6525CD8DDB42D1C0C15DAA0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9CAB42984DF33A5D0AAE2E75B7B5CAB /* bgxpress.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/bgxpress/bgxpress-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = bgxpress;
-				PRODUCT_NAME = bgxpress;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		1F2E81757D76E43042739BC5AEFFE429 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -805,30 +787,6 @@
 			};
 			name = Release;
 		};
-		21D369D3DD3539A3CC6831BC7CD86EEF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2FEE1039B99C3D33A11CA90D2D845DF5 /* PullToRefresh.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/PullToRefresh/PullToRefresh-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = PullToRefresh;
-				PRODUCT_NAME = PullToRefresh;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		2A943ABA7F413632D8C559CC7F2C7450 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7407A8414851BD8C1D71977A92FD89D /* Pods-BGXCommanderUITests.debug.xcconfig */;
@@ -850,6 +808,31 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
+		};
+		4D2BB4580471A2C15B6BD585DE4558D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5777383AFC63F64FCD35750EA270C53 /* bgxpress.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/bgxpress/bgxpress-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = bgxpress;
+				PRODUCT_NAME = bgxpress;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 		5CEE63AE251B4F24034067FAB049649D /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -873,9 +856,9 @@
 			};
 			name = Debug;
 		};
-		5E60958F75A59ED51FB8F4537D54B8AB /* Release */ = {
+		5F413ABE7F51A47B10A3C9795506BCC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2FEE1039B99C3D33A11CA90D2D845DF5 /* PullToRefresh.xcconfig */;
+			baseConfigurationReference = 5DC78B289B00ABB8B549CE2A8A58F7B9 /* PullToRefresh.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -894,9 +877,8 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 		6397B4FA021816797CFBBCA718EF536E /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -944,9 +926,9 @@
 			};
 			name = Release;
 		};
-		884F5A54EE708A83867D6F24ABA86107 /* Release */ = {
+		6ABED44EB7698D40282FA1B47DEE43AE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3EF620E375AD0AE5D77E399FF58CF5F9 /* MMDrawerController.xcconfig */;
+			baseConfigurationReference = 2A8CCF2FD31CAA90451C92A418743D19 /* MMDrawerController.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -964,9 +946,8 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 		9C5E4EADE13DAEEE0B4BCE6365A56BDD /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -990,9 +971,58 @@
 			};
 			name = Debug;
 		};
-		B2B96D16A56F22B0CC00BE74BBBC1B8A /* Debug */ = {
+		9E4EAEDE4CAB5906701EC53E0AFA8BE8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3EF620E375AD0AE5D77E399FF58CF5F9 /* MMDrawerController.xcconfig */;
+			baseConfigurationReference = 0F30AD8FF73416EFC8DDFA80686DDC6D /* PullToRefresh.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/PullToRefresh/PullToRefresh-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = PullToRefresh;
+				PRODUCT_NAME = PullToRefresh;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A2AA9DC5CDFE7B86C567C79661F84E6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21ECFAB48588A98CE318B07FF4A9E89B /* bgxpress.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/bgxpress/bgxpress-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = bgxpress;
+				PRODUCT_NAME = bgxpress;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7B5498D32A5279765F0E7E345870561 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D6244742203D2BE47D460D852C31A7C /* MMDrawerController.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1010,8 +1040,9 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
 		D93A6DF471F8C9D1B0E2C1D667B8C5B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1077,31 +1108,6 @@
 			};
 			name = Debug;
 		};
-		E1A45D671EA95329DE557F7E690659C9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9CAB42984DF33A5D0AAE2E75B7B5CAB /* bgxpress.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/bgxpress/bgxpress-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = bgxpress;
-				PRODUCT_NAME = bgxpress;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		EF53E27025B486B3E5E6D47DACA5B925 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CBD786CA076B5CF898B50D02EB873A4A /* Pods-BGXCommander.release.xcconfig */;
@@ -1131,8 +1137,8 @@
 		1BD455ADEE5B5CDA6105F61DA076F3AF /* Build configuration list for PBXNativeTarget "bgxpress" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1D01E02FC6525CD8DDB42D1C0C15DAA0 /* Debug */,
-				E1A45D671EA95329DE557F7E690659C9 /* Release */,
+				A2AA9DC5CDFE7B86C567C79661F84E6C /* Debug */,
+				4D2BB4580471A2C15B6BD585DE4558D2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1158,8 +1164,8 @@
 		76C4190CB4345DBDC888AA1B36091EF8 /* Build configuration list for PBXNativeTarget "PullToRefresh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				21D369D3DD3539A3CC6831BC7CD86EEF /* Debug */,
-				5E60958F75A59ED51FB8F4537D54B8AB /* Release */,
+				5F413ABE7F51A47B10A3C9795506BCC0 /* Debug */,
+				9E4EAEDE4CAB5906701EC53E0AFA8BE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1176,8 +1182,8 @@
 		D0BFDFC9B1FAF286EB46D4F2851B3E4D /* Build configuration list for PBXNativeTarget "MMDrawerController" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B2B96D16A56F22B0CC00BE74BBBC1B8A /* Debug */,
-				884F5A54EE708A83867D6F24ABA86107 /* Release */,
+				6ABED44EB7698D40282FA1B47DEE43AE /* Debug */,
+				B7B5498D32A5279765F0E7E345870561 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

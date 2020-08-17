@@ -511,7 +511,12 @@ const NSUInteger kHandlerDefaultCapacity = 0x10;
             NSArray * dotcomps = [comp0Ver componentsSeparatedByString:@"."];
             
             NSString * myPlatform = [dotcomps objectAtIndex:0];
-            _platformIdentifier = [myPlatform substringToIndex:[myPlatform length]-1];
+            
+            if ([myPlatform hasSuffix:@"P"] || [myPlatform hasSuffix:@"S"]) {
+                _platformIdentifier = [myPlatform substringToIndex:[myPlatform length]-1];
+            } else {
+                _platformIdentifier = myPlatform;
+            }
             
             if ([comp0Ver hasPrefix:versionPrefix]) {
                 // it starts with BGX - find the first . (dot) and trim from there.

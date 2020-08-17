@@ -1,16 +1,16 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 28
-        versionCode 2
-        versionName "2.0"
+        targetSdkVersion 30
+        versionCode 3
+        versionName "2.1"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles 'consumer-rules.pro'
         manifestPlaceholders = [DMS_API_KEY: System.getenv('DMS_API_KEY') ? System.getenv('DMS_API_KEY') : "MISSING_KEY"]
     }

@@ -1777,7 +1777,13 @@ public class BGXpressService extends IntentService {
                             mBootloaderVersion = -2;
                         }
                         String firmwareVers = pieces[0];
-                        mPlatformString = firmwareVers.substring(0, firmwareVers.indexOf('.')-1).toLowerCase();
+                        String platformid = firmwareVers.substring(0, firmwareVers.indexOf('.')).toLowerCase();
+
+                        if (platformid.endsWith("p") || platformid.endsWith("s")) {
+                            mPlatformString = platformid.substring(0, platformid.length()-1);
+                        } else {
+                            mPlatformString = platformid;
+                        }
 
                         if ( firmwareVers.startsWith("BGX") ) {
                             mFirmwareRevisionString = firmwareVers.substring( firmwareVers.indexOf('.')+1 );
@@ -2019,8 +2025,6 @@ public class BGXpressService extends IntentService {
                         }
 
                     }
-                } else {
-                    clearGattBusyFlagAndExecuteNext();
                 }
             }
         }
@@ -2655,18 +2659,18 @@ public class BGXpressService extends IntentService {
 
                 String bgx_platform_id = platformID;
 
-                if ( null == bgx_platform_id && ( partIdentifier.equals(BGX13P_Device_Prefix) ||
+                if (  ( partIdentifier.equals(BGX13P_Device_Prefix) ||
                         partIdentifier.equals(BGX13S_Device_Prefix) ||
                         partIdentifier.equals(BGXV3P_Device_Prefix) ||
                         partIdentifier.equals(BGXV3S_Device_Prefix) ) ) {
                     // bgx 13
                     bgx_platform_id = "bgx13";
-                } else if ( null == bgx_platform_id && ( partIdentifier.equals(BGX220P_Device_Prefix) || partIdentifier.equals(BGX220S_Device_Prefix) ) ) {
+                } else if ( ( partIdentifier.equals(BGX220P_Device_Prefix) || partIdentifier.equals(BGX220S_Device_Prefix) ) ) {
                     // bgx 220
                     bgx_platform_id = "bgx220";
                 } else if ( null == bgx_platform_id ) {
-                    Log.e("bgx_dbg", "Error: unable to determine BGX platform.");
-                    return;
+                    Log.d("bgx_dbg", "Error: unable to determine BGX platform, using bgx13.");
+                    bgx_platform_id = "bgx13";
                 }
                 dmsVersionsURL = new URL( String.format("https://xpress-api.zentri.com/platforms/%s/products/%s/versions", partIdentifier, bgx_platform_id));
             } else {
