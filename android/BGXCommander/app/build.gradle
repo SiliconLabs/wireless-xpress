@@ -10,8 +10,8 @@ android {
         applicationId "com.silabs.bgxcommander"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 27
-        versionName "2.3.7"
+        versionCode 28
+        versionName "2.3.8"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {

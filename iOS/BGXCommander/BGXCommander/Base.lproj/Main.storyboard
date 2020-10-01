@@ -39,7 +39,7 @@
                                         <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6ZC-9d-jcP">
                                             <rect key="frame" x="0.0" y="2" width="6" height="130"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" name="Silabs Orange"/>
+                                            <color key="backgroundColor" name="Silabs Red"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Device Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3y-Fj-c9X">
                                             <rect key="frame" x="21" y="21" width="338" height="21"/>
@@ -137,7 +137,7 @@
                                 <rect key="frame" x="313" y="276" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Clear">
-                                    <color key="titleColor" name="Silabs Orange"/>
+                                    <color key="titleColor" name="Silabs Red"/>
                                 </state>
                                 <connections>
                                     <action selector="clearAction:" destination="8g9-nC-huv" eventType="touchUpInside" id="5TP-9i-4Au"/>
@@ -150,7 +150,7 @@
                                     <segment title="STREAM"/>
                                     <segment title="COMMAND"/>
                                 </segments>
-                                <color key="tintColor" name="Silabs Orange"/>
+                                <color key="tintColor" name="Silabs Red"/>
                                 <connections>
                                     <action selector="userSelectedBusMode:" destination="8g9-nC-huv" eventType="valueChanged" id="X2g-eV-b5j"/>
                                 </connections>
@@ -176,7 +176,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="akJ-qd-hdK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" name="Silabs Orange"/>
+                        <color key="barTintColor" name="Silabs Red"/>
                     </navigationBar>
                     <connections>
                         <segue destination="QDL-RJ-zlT" kind="relationship" relationship="rootViewController" id="73l-o0-SCn"/>
@@ -213,7 +213,7 @@
                                                 <rect key="frame" x="187" y="205" width="34" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" title="Save">
-                                                    <color key="titleColor" name="Silabs Orange"/>
+                                                    <color key="titleColor" name="Silabs Red"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="closeAction:" destination="X5w-m2-7fG" eventType="touchUpInside" id="uq3-I4-Hsa"/>
@@ -224,7 +224,7 @@
                                                 <rect key="frame" x="30" y="205" width="48" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" title="Cancel">
-                                                    <color key="titleColor" name="Silabs Orange"/>
+                                                    <color key="titleColor" name="Silabs Red"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="cancelAction:" destination="8wy-7s-RbO" eventType="touchUpInside" id="coB-Se-tjb"/>
@@ -262,7 +262,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="Silabs Orange"/>
+                                <color key="backgroundColor" name="Silabs Red"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="9"/>
@@ -312,7 +312,7 @@
                                                 <rect key="frame" x="101" y="110" width="39" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" title="Close">
-                                                    <color key="titleColor" name="Silabs Orange"/>
+                                                    <color key="titleColor" name="Silabs Red"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="closeAction:" destination="X5w-m2-7fG" eventType="touchUpInside" id="suF-03-OJb"/>
@@ -341,7 +341,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="Silabs Orange"/>
+                                <color key="backgroundColor" name="Silabs Red"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="9"/>
@@ -405,7 +405,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.87112289669999998" green="0.55750274659999999" blue="0.005892785266" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" name="Silabs Red"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -448,7 +448,7 @@
                                                 <rect key="frame" x="92" y="123" width="48" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" title="Cancel">
-                                                    <color key="titleColor" name="Silabs Orange"/>
+                                                    <color key="titleColor" name="Silabs Red"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="cancelAction:" destination="Z7B-2g-jui" eventType="touchUpInside" id="TBd-t0-5mB"/>
@@ -468,7 +468,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="Silabs Orange"/>
+                                <color key="backgroundColor" name="Silabs Red"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="9"/>
@@ -495,8 +495,8 @@
         <namedColor name="SendBoxOutlineDarkMode">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Silabs Orange">
-            <color red="0.87058823529411766" green="0.55686274509803924" blue="0.0078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Silabs Red">
+            <color red="0.85098039215686272" green="0.11764705882352941" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TextOutlineDarkMode">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

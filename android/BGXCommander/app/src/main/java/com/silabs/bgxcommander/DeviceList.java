@@ -214,7 +214,7 @@ public class DeviceList extends AppCompatActivity {
             finish();
         }
 
-        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
 
         startService(new Intent(this, BGXpressService.class));
 
@@ -427,6 +427,12 @@ public class DeviceList extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BGXpressService.startActionStopScan(this);
     }
 
     private void scanForDevices() {

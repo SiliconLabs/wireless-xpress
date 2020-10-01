@@ -27,39 +27,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-  self.firmwareUpdateEnabled = NO;
+    self.firmwareUpdateEnabled = NO;
 
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(enableFirmwareUpdate:)
-                                               name:EnableFirmwareUpdateNotificationName
-                                             object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enableFirmwareUpdate:)
+                                                 name:EnableFirmwareUpdateNotificationName
+                                               object:nil];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(disableFirmwareUpdate:)
-                                               name:DisableFirmwareUpdateNotificationName
-                                             object:nil];
-
-
-  self.tableView.backgroundView = [[UIView alloc] init];
-    self.tableView.backgroundColor = [UIColor colorNamed:@"Silabs Orange"];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disableFirmwareUpdate:)
+                                                 name:DisableFirmwareUpdateNotificationName
+                                               object:nil];
 
 
-  UIImage * logoImg = [UIImage imageNamed:@"WhiteSilabsLogo_small"];
-  UIImageView *  logoImgView = [[UIImageView alloc] initWithImage:logoImg];
+    self.tableView.backgroundView = [[UIView alloc] init];
+    self.tableView.backgroundColor = [UIColor colorNamed:@"Silabs Red"];
+    
+    UIImage * logoImg = [UIImage imageNamed:@"WhiteSilabsLogo_small"];
+    UIImageView *  logoImgView = [[UIImageView alloc] initWithImage:logoImg];
 
-  CGSize sz = self.tableView.backgroundView.frame.size;
+    CGSize sz = self.tableView.backgroundView.frame.size;
 
-  double y = sz.height - (3 * logoImg.size.height);
-  double x = 160 - (1.5 * logoImg.size.width);
+    double y = sz.height - (3 * logoImg.size.height);
+    double x = 160 - (1.5 * logoImg.size.width);
 
-  [logoImgView setFrame:CGRectMake(x, y, logoImg.size.width, logoImg.size.height)];
+    [logoImgView setFrame:CGRectMake(x, y, logoImg.size.width, logoImg.size.height)];
 
-  [self.tableView addSubview:logoImgView];
+    [self.tableView addSubview:logoImgView];
 
-  [self.tableView bringSubviewToFront:logoImgView];
+    [self.tableView bringSubviewToFront:logoImgView];
     
     [[AppDelegate sharedAppDelegate] addObserver:self forKeyPath:@"selectedDeviceDectorator" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-    
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
@@ -114,7 +112,7 @@
         cell.imageView.image = nil;
     }
     
-    cell.contentView.backgroundColor = [UIColor colorNamed:@"Silabs Orange"];
+    cell.contentView.backgroundColor = [UIColor colorNamed:@"Silabs Red"];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.textAlignment = NSTextAlignmentRight;
     cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.0f];

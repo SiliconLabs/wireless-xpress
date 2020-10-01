@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1ECAC2C52518E6B0002E75D0 /* firmware_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1ECAC2C42518E6AF002E75D0 /* firmware_icon.png */; };
+		1EDD2DA925135764000C06B0 /* silabs_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1EDD2DA825135764000C06B0 /* silabs_logo.png */; };
 		20CFB87E181F506040EEFDA0 /* libPods-BGXCommander.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 218871DED6F0C7965691EAA7 /* libPods-BGXCommander.a */; };
 		4405F7C02007BC25006FA3B9 /* AutoScrollTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4405F7BF2007BC25006FA3B9 /* AutoScrollTextView.m */; };
 		440BA4291FFEAB6100C3946B /* bgx_tut0.png in Resources */ = {isa = PBXBuildFile; fileRef = 440BA4281FFEAB6100C3946B /* bgx_tut0.png */; };
@@ -37,7 +39,6 @@
 		446D31971FFD680D001E48D3 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 446D31961FFD680D001E48D3 /* close.png */; };
 		4472181320C8714C004FC35D /* FirmwareVersionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4472181220C8714C004FC35D /* FirmwareVersionTableViewCell.xib */; };
 		4472181620C87228004FC35D /* FirmwareVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4472181520C87228004FC35D /* FirmwareVersionTableViewCell.m */; };
-		4472181820C884E7004FC35D /* firmware_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4472181720C884E7004FC35D /* firmware_icon.png */; };
 		4472181B20C9831C004FC35D /* misc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4472181A20C9831C004FC35D /* misc.m */; };
 		447E3C2F23F4A7B800BFEA41 /* Update.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 447E3C2E23F4A7B800BFEA41 /* Update.storyboard */; };
 		447E3C3223F4B19200BFEA41 /* UpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447E3C3123F4B19200BFEA41 /* UpdateViewController.m */; };
@@ -119,6 +120,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1ECAC2C42518E6AF002E75D0 /* firmware_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firmware_icon.png; sourceTree = "<group>"; };
+		1EDD2DA825135764000C06B0 /* silabs_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = silabs_logo.png; sourceTree = "<group>"; };
 		218871DED6F0C7965691EAA7 /* libPods-BGXCommander.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGXCommander.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4405F7BE2007BC25006FA3B9 /* AutoScrollTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoScrollTextView.h; sourceTree = "<group>"; };
 		4405F7BF2007BC25006FA3B9 /* AutoScrollTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoScrollTextView.m; sourceTree = "<group>"; };
@@ -158,7 +161,6 @@
 		4472181220C8714C004FC35D /* FirmwareVersionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirmwareVersionTableViewCell.xib; sourceTree = "<group>"; };
 		4472181420C87228004FC35D /* FirmwareVersionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirmwareVersionTableViewCell.h; sourceTree = "<group>"; };
 		4472181520C87228004FC35D /* FirmwareVersionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirmwareVersionTableViewCell.m; sourceTree = "<group>"; };
-		4472181720C884E7004FC35D /* firmware_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = firmware_icon.png; sourceTree = "<group>"; };
 		4472181920C982D0004FC35D /* misc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
 		4472181A20C9831C004FC35D /* misc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = misc.m; sourceTree = "<group>"; };
 		447E3C2E23F4A7B800BFEA41 /* Update.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Update.storyboard; sourceTree = "<group>"; };
@@ -269,7 +271,7 @@
 		441F33C6202E421500EA767C /* Update */ = {
 			isa = PBXGroup;
 			children = (
-				4472181720C884E7004FC35D /* firmware_icon.png */,
+				1ECAC2C42518E6AF002E75D0 /* firmware_icon.png */,
 				444B1F72220B5AD9001A56CD /* FirmwareReleaseNotesTableViewCell.xib */,
 				4472181220C8714C004FC35D /* FirmwareVersionTableViewCell.xib */,
 				4472181420C87228004FC35D /* FirmwareVersionTableViewCell.h */,
@@ -397,6 +399,7 @@
 		44B3DB831FEAE74900A081DF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1EDD2DA825135764000C06B0 /* silabs_logo.png */,
 				4424E971200E69CD006968D3 /* overlay_close.png */,
 				44FAAC7C20081C7000072591 /* arrow2.png */,
 				44FAAC762008072000072591 /* arrow1.png */,
@@ -590,7 +593,6 @@
 				44B3DB7F1FEAD97D00A081DF /* OpenSans-SemiBold.ttf in Resources */,
 				44FAAC802009499B00072591 /* arrow3.png in Resources */,
 				440BA441200031CF00C3946B /* bgx_tut10.rtf in Resources */,
-				4472181820C884E7004FC35D /* firmware_icon.png in Resources */,
 				440BA4392000218900C3946B /* bgx_tut6.rtf in Resources */,
 				440BA43F2000304F00C3946B /* bgx_tut9.rtf in Resources */,
 				44FAAC8420094D0100072591 /* arrow5.png in Resources */,
@@ -598,8 +600,10 @@
 				44E436A31FEC089000665178 /* Gear_small.png in Resources */,
 				44B3DB671FE96DED00A081DF /* Drawer.storyboard in Resources */,
 				440BA446200032FC00C3946B /* bgx_tut11.rtf in Resources */,
+				1EDD2DA925135764000C06B0 /* silabs_logo.png in Resources */,
 				440BA4301FFFF8A800C3946B /* bgx_tut3.rtf in Resources */,
 				444B1F7C220C91CB001A56CD /* FirmwareReleaseNotesViewController.xib in Resources */,
+				1ECAC2C52518E6B0002E75D0 /* firmware_icon.png in Resources */,
 				44B3DB7B1FEAD97D00A081DF /* OpenSans-LightItalic.ttf in Resources */,
 				440BA447200032FC00C3946B /* bgx_tut12.rtf in Resources */,
 				44E436A21FEC089000665178 /* Gear.png in Resources */,
@@ -944,12 +948,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 52444FG85C;
 				GCC_PREFIX_HEADER = BGXCommander/BGXCommanderPrefixHeader.pch;
 				INFOPLIST_FILE = BGXCommander/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.3.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.BGXCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -962,12 +968,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 52444FG85C;
 				GCC_PREFIX_HEADER = BGXCommander/BGXCommanderPrefixHeader.pch;
 				INFOPLIST_FILE = BGXCommander/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.3.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.BGXCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

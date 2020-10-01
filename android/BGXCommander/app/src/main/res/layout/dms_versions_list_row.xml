@@ -37,5 +37,6 @@
         android:contentDescription="@string/FirmwareIconDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/firmware_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
