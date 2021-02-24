@@ -132,15 +132,7 @@
   switch (selectedItemIndex) {
     case 0: // Update firmware
       {
-          NSString * dms_api_key = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"DMS_API_KEY"];
-          if (!dms_api_key || 0 == dms_api_key.length) {
-              UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"DMS API Key missing" message:@"The Info.plist file for this application does not contain a DMS_API_KEY. Contact Silicon Labs for this key to support firmware updates." preferredStyle:UIAlertControllerStyleAlert];
-              UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){}];
-              [alertController addAction:okAction];
-              [self presentViewController:alertController animated:YES completion:nil];
-          } else {
-              [[NSNotificationCenter defaultCenter] postNotificationName:UpdateFirmwareNotificationName object:nil];
-          }
+          [[NSNotificationCenter defaultCenter] postNotificationName:UpdateFirmwareNotificationName object:nil];
       }
       break;
     case 1: // options.

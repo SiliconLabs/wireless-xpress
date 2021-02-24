@@ -20,6 +20,7 @@
     "iOS/BGXpress/BGXpress/*.{h,m}"
   ],
   "public_header_files": "iOS/BGXpress/BGXpress/*.h",
+  "resources": "iOS/BGXpress/bgxpress/Resources/*",
   "frameworks": [
     "Foundation",
     "CoreBluetooth"

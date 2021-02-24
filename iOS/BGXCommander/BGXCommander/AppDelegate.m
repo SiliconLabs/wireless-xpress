@@ -21,6 +21,12 @@
 
 const NSTimeInterval kScanInterval = 8.0f;
 
+@interface AppDelegate()
+
+@property (nonatomic) NSTimer * timer;
+
+@end
+
 @implementation AppDelegate
 
 + (AppDelegate *)sharedAppDelegate
@@ -250,26 +256,41 @@ const NSTimeInterval kScanInterval = 8.0f;
 
 
 /** Called to begin scanning for devices.
-    @Returns bool to indicate whether the scan call was successful.
+ @Returns bool to indicate whether the scan call was successful.
  */
 - (BOOL)scan
 {
-  BOOL fResult = NO;
-  if (self.bluetoothReady) {
+    BOOL fResult = NO;
+    if (self.bluetoothReady) {
+        if (!self.isScanning) {
+            [self startScanningWithCompletion: ^{}];
+            fResult = YES;
+        }
+        else {
+            [self stopScanning];
+        }
+    }
+    return fResult;
+}
 
-    if (!self.isScanning) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:DeviceListChangedNotificationName object: @[]];
-      [self.bgxScanner startScan];
-      self.isScanning = YES;
-      fResult = YES;
-      self.lastScan = [NSDate date];
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kScanInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+- (void)startScanningWithCompletion: (void (^)(void))completion {
+    [[NSNotificationCenter defaultCenter] postNotificationName:DeviceListChangedNotificationName object: @[]];
+    [self.bgxScanner startScan];
+    self.isScanning = YES;
+    self.lastScan = [NSDate date];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:kScanInterval repeats:NO block: ^(NSTimer *timer){
+        [self stopScanning];
+        completion();
+    }];
+}
+
+- (void)stopScanning {
+    if(self.timer != nil && [self.timer isValid]) {
+        [self.timer invalidate];
         [self.bgxScanner stopScan];
         self.isScanning = NO;
-      });
+        self.timer = nil;
     }
-  }
-  return fResult;
 }
 
 #pragma mark BGXpressDelegate

@@ -41,7 +41,7 @@ typedef enum {
 
 @property (nonatomic, strong) DecoratedMMDrawerBarButtonItem * mmDrawerBarButtonItem;
 
-@property (nonatomic, strong) bgx_dms * selected_device_bgx_dms;
+@property (nonatomic, strong) BGX_OTA_Updater * selected_device_bgx_ota_updater;
 
 @property (nonatomic, strong) BGXDevice * deviceUnderObservation;
 
@@ -145,7 +145,8 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
         ++self.timesToIgnoreViewWillAppear;
         return;
     }
-    self.selected_device_bgx_dms = nil;
+    
+    self.selected_device_bgx_ota_updater = nil;
     
     [self.deviceUnderObservation removeObserver:self forKeyPath:@"busMode"];
     [self.deviceUnderObservation removeObserver:self forKeyPath:@"deviceState"];
@@ -297,16 +298,12 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
             
             if (bootloaderVersion < kBootloaderSecurityUpdateVersion) {
                  [AppDelegate sharedAppDelegate].selectedDeviceDectorator = SecurityDecoration;
-                self.mmDrawerBarButtonItem.decorationState = SecurityDecoration;
             } else {
                 NSString * deviceID = [[AppDelegate sharedAppDelegate].selectedDevice device_unique_id];
-                NSString * platformID = [[AppDelegate sharedAppDelegate].selectedDevice platformIdentifier];
                 if (deviceID) {
-                    self.selected_device_bgx_dms = [[bgx_dms alloc] initWithBGXUniqueDeviceID: deviceID
-                                                                                  forPlatform: platformID];
-                
-                
-                    [self.selected_device_bgx_dms retrieveAvailableVersions:^(NSError * error, NSArray * availableVersions){
+                    self.selected_device_bgx_ota_updater = [[BGX_OTA_Updater alloc] initWithPeripheral: self.deviceUnderObservation.peripheral bgx_device_uuid:[self.deviceUnderObservation device_unique_id]];
+                    
+                    [self.selected_device_bgx_ota_updater retrieveAvailableFirmwareVersions:^(NSError *error, NSArray *availableVersions) {
                     
                         if (!error) {
                             executeBlockOnMainThread(^{
@@ -318,7 +315,6 @@ __weak DeviceDetailsViewController * gDeviceDetailsViewController = nil;
                                             if (NSOrderedAscending == [currentDeviceFWVersion compare: [Version versionFromString:sversion]]) {
                                                 
                                                 [AppDelegate sharedAppDelegate].selectedDeviceDectorator = UpdateDecoration;
-                                                self.mmDrawerBarButtonItem.decorationState = UpdateDecoration;
                                             }
                                         }
                                     }

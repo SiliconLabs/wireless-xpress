@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Throughput</string>
+    <string name="loopback">Loopback</string>
+    <string name="bytesrx">bytes received</string>
+    <string name="bytespersec">kbits per sec</string>
+    <string name="ack">Acknowledged Tx/Rx</string>
+    <string name="default_value">0</string>
+    <string name="clear">Clear</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="txdata">Transmit Data</string>
+    <string name="TMP_switch_label">2M Phy</string>
+
+</resources>

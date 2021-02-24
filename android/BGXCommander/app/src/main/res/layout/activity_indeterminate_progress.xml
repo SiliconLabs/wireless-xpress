@@ -2,44 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="170dp"
-    android:layout_height="156dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/progress_border"
+    android:gravity="center_vertical"
+    android:minWidth="180dp"
+    android:minHeight="160dp"
     android:orientation="vertical"
-    tools:context=".IndeterminateProgressActivity">
+    tools:context=".activities.IndeterminateProgressActivity">
 
     <ImageView
-        android:id="@+id/bond_state_image_view"
+        android:id="@+id/iv_bond_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/content_descr_bond_state"
+        android:padding="4dp"
         app:srcCompat="@drawable/unlock_small" />
 
     <ProgressBar
-        android:id="@+id/spinningProgress"
+        android:id="@+id/progress_spinner"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/connectionStatusTextView"
+        android:id="@+id/tv_connection_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ConnectionInfo"
-        android:textColor="@color/black"
-        android:textAlignment="center" />
+        android:text="@string/label_connecting"
+        android:textAlignment="center"
+        android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/deviceNameLabel"
+        android:id="@+id/tv_device_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        tools:text="BGX-9A23" />
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/btn_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Cancel" />
-
-
+        android:text="@string/button_cancel" />
 </LinearLayout>

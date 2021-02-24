@@ -1,74 +1,89 @@
 <resources>
     <string name="app_name">Commander</string>
-    <string name="title_activity_device_details">DeviceDetails</string>
-    <string name="stream_label">STREAM</string>
-    <string name="command_label">COMMAND</string>
-    <string name="send_label">SEND</string>
-    <string name="uuid_label">UUID</string>
-    <string name="rssi_label">RSSI</string>
-    <string name="about_menuitem_label">About</string>
-    <string name="scan_menuitem_label">Scan</string>
-    <string name="update_menuitem_label">Update</string>
-    <string name="device_name_tmpvalue_label">Device Name</string>
-    <string name="rssi_tmpvalue_label">-85</string>
-    <string name="device_uuid_tempvalue_label">device uuid</string>
-    <string name="fw_update_release_label">Release</string>
-    <string name="fw_update_all_label">All</string>
-    <string name="OTA_Status_Downloading">Downloading Firmware Image</string>
-    <string name="OTA_Status_Installing">Transferring firmware…</string>
-    <string name="OTA_Status_Finishing">Updating firmware - Do not disconnect!</string>
-    <string name="OTA_Status_Finished">Firmware Update Complete.</string>
-    <string name="OTA_Status_PasswordRequired">Password Required</string>
 
-    <string name="OTA_Status_UserCanceled">Firmware Update Canceled.</string>
-
-    <string name="BluetoothDisabledText">Bluetooth is currently disabled on this device.\n\nEnable Bluetooth in the device settings to continue.</string>
-    <string name="LocationPermissionDeniedText">Permission to use the device location is required in order to use Bluetooth Low Energy.</string>
-    <string name="BGX_CONNECTION_STATUS_LABEL_INTERROGATING">Reading device info…</string>
-    <string name="BGX_CONNECTION_STATUS_LABEL_CONNECTING">Connecting…</string>
-    <string name="BGX_CONNECTION_STATUS_LABEL_CONNECTED">Connected</string>
-
-    <string name="BOND_FAIL_LABEL">Bond Fail.</string>
-    <string name="DEVICE_CONNECTION_ERROR_LABEL">Device Connection Error</string>
-
-    <string name="OK_Button_Text">OK</string>
-    <string name="AboutLabel">About BGX Commander</string>
-
-    <string name="ConnectionInfo">Connecting…</string>
-    <string name="Cancel">Cancel</string>
-
-    <string name="ClearButtonExplanation">Clear Stream View Text</string>
-    <string name="BGXStreamHint">BGX Stream</string>
-    <string name="SendMessageBoxHint">Message to send</string>
-    <string name="InstallButtonText">Install Update</string>
-
-    <string name="InstallUpdateText">Install Update…</string>
-
-    <string name="VersionNumberText">Version Number</string>
-    <string name="descriptionText">description</string>
-    <string name="placeholderText">placeholder</string>
-
-    <string name="FirmwareIconDescription">Firmware Icon</string>
-
-    <string name="VersionNameLabel">Version %1$s (%2$d)</string>
-    <string name="FirmwareUpdateFailedLabel">Firmware Update Failed.</string>
-    <string name="InstallingFirmwareFormatString">Installing Firmware %1$s</string>
-    <string name="security_update_description">A security update is available for this device.</string>
-    <string name="current_firmware_label_value">Current Firmware:</string>
-
-    <string name="update_indicator">Update Indicator</string>
-    <string name="current_firmware_version_placeholder">Unknown Version</string>
-    <string name="firmware_release_notes">Firmware Release Notes</string>
+    <!-- Titles -->
     <string name="title_activity_firmware_release_notes">Firmware Release Notes</string>
-    <string name="help_item">Help</string>
-    <string name="help_url">https://www.silabs.com/bgx-docs</string>
+    <string name="title_activity_device_details">DeviceDetails</string>
+    <string name="title_dialog_about_bgx_commander">About BGX Commander</string>
+    <string name="title_dialog_location_service">Location Service</string>
+    <string name="title_dialog_options">Options</string>
 
-    <string name="password_instructions">A password is required for this operation.</string>
-    <string name="options_menuitem_label">Options</string>
-    <string name="OptionsLabel">Options</string>
+    <!-- Labels -->
+    <string name="label_install_update">Install update…</string>
+    <string name="label_uuid_with_colon">UUID:</string>
+    <string name="label_rssi_with_colon">RSSI:</string>
+    <string name="label_command">COMMAND</string>
+    <string name="label_stream">STREAM</string>
+    <string name="label_menu_item_start_scanning">START SCANNING</string>
+    <string name="label_menu_item_options">Options</string>
+    <string name="label_menu_item_update">Update</string>
+    <string name="label_menu_item_about">About</string>
+    <string name="label_menu_item_help">Help</string>
+    <string name="label_device_name">Device Name</string>
+    <string name="label_device_uuid">device uuid</string>
+    <string name="label_rssi_mock_value">-85</string>
+    <string name="label_bond_fail">Bond Fail.</string>
+    <string name="label_unknown_version">Unknown Version</string>
+    <string name="label_version_number">Version Number</string>
+    <string name="label_description">description</string>
+    <string name="label_version_name">Version %1$s (%2$d)</string>
+    <string name="label_message_to_send">Message to send</string>
+    <string name="label_bgx_stream">BGX Stream</string>
+    <string name="label_error_with_status">Error: %d</string>
+    <string name="label_connecting">Connecting…</string>
+    <string name="label_firmware_update_failed">Firmware update failed.</string>
+    <string name="label_installing_firmware">Installing firmware %1$s</string>
+    <string name="label_current_firmware">Current firmware:</string>
+    <string name="label_password_instructions">A password is required for this operation.</string>
+    <string name="label_newline_characters_on_send">Add newline characters on send</string>
+    <string name="label_use_acknowledged_ota">Use acknowledged data transfers for update</string>
 
-    <string name="send_with_newline_label">add newline characters on Send</string>
-    <string name="useAckdOTA">Use acknowledged data transfers for update</string>
-    <string name="Save">Save</string>
+    <!-- urls -->
+    <string name="url_help">https://www.silabs.com/bgx-docs</string>
+
+    <!-- Location disabled -->
+    <string name="location_info_location_service">On some Android phones you have to enable Location service in order to scan for Bluetooth Low Energy devices. If you can\'t find any Bluetooth devices please ensure you have enabled Location service.</string>
+    <string name="location_info_location_disabled">Location disabled.</string>
+
+    <!-- Bluetooth bar -->
+    <string name="bluetooth_bar_info_adapter_is_disabled">Bluetooth adapter is disabled.</string>
+    <string name="bluetooth_bar_info_turning_on_bluetooth_adapter">Turning on Bluetooth adapter…</string>
+
+    <!-- Toast messages -->
+    <string name="toast_bluetooth_not_enabled">Bluetooth not enabled!</string>
+    <string name="toast_bluetooth_enabled">Bluetooth enabled!</string>
+    <string name="toast_device_connection_error">Device connection error</string>
+
+    <!-- Connection status -->
+    <string name="bgx_connection_status_interrogating">Reading device info…</string>
+    <string name="bgx_connection_status_connecting">Connecting…</string>
+    <string name="bgx_connection_status_connected">Connected</string>
+
+    <!-- OTA Status -->
+    <string name="ota_status_downloading">Downloading firmware image.</string>
+    <string name="ota_status_installing">Transferring firmware…</string>
+    <string name="ota_status_finishing">Updating firmware - Do not disconnect!</string>
+    <string name="ota_status_finished">Firmware update complete.</string>
+    <string name="ota_status_password_required">Password required.</string>
+    <string name="ota_status_user_canceled">Firmware update canceled.</string>
+
+    <!-- Buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_info">INFO</string>
+    <string name="button_send">Send</string>
+    <string name="button_save">Save</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_enable">ENABLE</string>
+    <string name="button_stop">STOP</string>
+    <string name="button_scan">SCAN</string>
+    <string name="button_install_update">Install Update</string>
+    <string name="button_firmware_release_notes">Firmware Release Notes</string>
+
+    <!-- Content descriptions -->
+    <string name="content_descr_bond_state">bond state</string>
+    <string name="content_descr_firmware_icon">firmware icon</string>
+    <string name="content_descr_update_indicator">update indicator</string>
+    <string name="content_descr_clear_stream">Clear stream view text</string>
 
 </resources>

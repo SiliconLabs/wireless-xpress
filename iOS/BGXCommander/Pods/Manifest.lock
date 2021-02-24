@@ -29,10 +29,10 @@ EXTERNAL SOURCES:
     :path: "../.."
 
 SPEC CHECKSUMS:
-  bgxpress: bd458cdbd3bb1511f07dda0962b02611189effd2
+  bgxpress: 0cc26bce95d23046d46c1c3049c1be9f573c9cd6
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
   PullToRefresh: 718b902fea1e8db4390bee24d515a37fd49bdbd7
 
 PODFILE CHECKSUM: 8ec9df7105fa6f0e8e0b3274c2bf7eea4f201341
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

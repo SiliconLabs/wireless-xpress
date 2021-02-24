@@ -17,9 +17,8 @@ package com.silabs.bgxpress;
  * BusMode determines how the BGX interprets data it receives.
  */
 public final class BusMode {
-
-    public static final int UNKNOWN_MODE = 0; ///< An invalid bus mode value that indicates the real value has not been determined yet.
-    public static final int STREAM_MODE = 1;  ///< Send and receive serial data between the BGX data lines and Bluetooth.
-    public static final int LOCAL_COMMAND_MODE = 2; ///< Data received over the serial lines is processed as a command and results returned over the serial lines.
-    public static final int REMOTE_COMMAND_MODE = 3; ///< Data received over Bluetooth is processed as a command and results returned over Bluetooth.
+    public static final int UNKNOWN_MODE = 0;           // An invalid bus mode value that indicates the real value has not been determined yet.
+    public static final int STREAM_MODE = 1;            // Send and receive serial data between the BGX data lines and Bluetooth.
+    public static final int LOCAL_COMMAND_MODE = 2;     // Data received over the serial lines is processed as a command and results returned over the serial lines.
+    public static final int REMOTE_COMMAND_MODE = 3;    // Data received over Bluetooth is processed as a command and results returned over Bluetooth.
 }

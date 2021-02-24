@@ -1,0 +1,134 @@
+{
+    "76786556": [
+        {
+            "version": "1.2.2045.0",
+            "tag": null,
+            "size": 207888,
+            "description": "BGX13PV3 production",
+            "file": "1.2.0/1.2.2045.0/bgx13p-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2376.1",
+            "tag": "release",
+            "size": 209824,
+            "description": "",
+            "file": "1.2.1/1.2.2376.1/bgx13p-signed-encrypted.gbl"
+        }
+    ],
+    "080447D0": [
+        {
+            "version": "1.1.1229.0",
+            "tag": null,
+            "size": 206068,
+            "description": "BGX13S feature update",
+            "file": "1.1.0/1.1.1229.0/bgx13s-with-bl-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.0.927.2",
+            "tag": "release",
+            "size": 199200,
+            "description": "BGX13S production with 1229 boot loader",
+            "file": "1.0.2/1.0.927.2/bgx13s-with-bl-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.1.1524.1",
+            "tag": null,
+            "size": 206332,
+            "description": "BGX13S maintenance update",
+            "file": "1.1.1/1.1.1524.1/bgx13s-with-bl-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2045.0",
+            "tag": null,
+            "size": 208200,
+            "description": "BGX13S feature update",
+            "file": "1.2.0/1.2.2045.0/bgx13s-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2376.1",
+            "tag": null,
+            "size": 210152,
+            "description": "BGX13S maintenance update",
+            "file": "1.2.1/1.2.2376.1/bgx13s-signed-encrypted.gbl"
+        }
+    ],
+    "4C892A6A": [
+        {
+            "version": "1.0.880.1",
+            "tag": null,
+            "size": 185412,
+            "description": "BGX13P initial production",
+            "file": "1.0.1/1.0.880.1/bgx13-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.1.1229.0",
+            "tag": null,
+            "size": 206068,
+            "description": "BGX13P feature update",
+            "file": "1.1.0/1.1.1229.0/bgx13p-with-bl-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2045.0",
+            "tag": null,
+            "size": 207888,
+            "description": "BGX13P feature update", 
+            "file": "1.2.0/1.2.2045.0/bgx13p-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2376.1",
+            "tag": null,
+            "size": 209824,
+            "description": "BGX13P maintenance update",
+            "file": "1.2.1/1.2.2376.1/bgx13p-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.1.1524.1",
+            "tag": null,
+            "size": 206332,
+            "description": "BGX13P maintenance update",
+            "file": "1.1.1/1.1.1524.1/bgx13p-with-bl-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.0.927.2",
+            "tag": "release",
+            "size": 199200,
+            "description": "BGX13P production with 1229 boot loader",
+            "file": "1.0.2/1.0.927.2/bgx13p-with-bl-signed-encrypted.gbl"
+        }
+    ],
+    "F65FD7F0": [
+        {
+            "version": "1.2.2376.1",
+            "tag": "release",
+            "size": 210152,
+            "description": "BGX13SV3 maintenance update",
+            "file": "1.2.1/1.2.2376.1/bgx13s-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2045.0",
+            "tag": null,
+            "size": 208200,
+            "description": "BGX13SV3 production",
+            "file": "1.2.0/1.2.2045.0/bgx13s-signed-encrypted.gbl"
+        }
+    ],
+    "BAD1DEAD": [],
+    "9C1F257E": [
+        {
+            "version": "1.3.2653.2",
+            "tag": "release",
+            "size": 146517,
+            "description": "",
+            "file": "1.3.2/1.3.2653.2/bgx220s-signed-encrypted.gbl"
+        }
+    ],
+    "CF07449C": [
+        {
+            "version": "1.3.2482.0",
+            "tag": "release",
+            "size": 146450,
+            "description": "BGX220P initial production",
+            "file": "1.3.0/1.3.2482.0/bgx220p-signed-encrypted.gbl"
+        }
+    ]
+}

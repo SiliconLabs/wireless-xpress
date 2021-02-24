@@ -21,9 +21,8 @@
 
 @property (nonatomic, strong) BGX_OTA_Updater * bgx_ota_updater;
 @property (nonatomic, strong) NSDictionary * infoRecord;
-@property (nonatomic, strong) NSDictionary * dmsVersionRecord;
+@property (nonatomic, strong) NSDictionary * versionRecord;
 @property (nonatomic, strong) NSString * bgx_part_id;
-@property (nonatomic, strong) bgx_dms * bgx_dms_manager;
 @property (nonatomic, strong) BGXDevice * deviceBeingUpdated;
 
 @end
@@ -66,8 +65,6 @@
     
         [self.bgx_ota_updater cancelUpdate];
         
-        
-        
     } else if (ota_step_upload_finish != self.bgx_ota_updater.ota_step) {
     
         UpdateViewController * myParentViewController = SafeType(self.presentingViewController, [UpdateViewController class]);
@@ -94,61 +91,30 @@
     self.bgx_part_id = [self.infoRecord objectForKey:@"bgx_part_id"];
     
     self.bgx_ota_updater = [[BGX_OTA_Updater alloc] initWithPeripheral: self.deviceBeingUpdated.peripheral bgx_device_uuid:bgx_unique_device_id];
+    [self.bgx_ota_updater retrieveAvailableFirmwareVersions:^(NSError *err, NSArray *array) {
+        if (err) {
+            NSLog(@"Error retrieving versions file: %@.", [err description]);
+            [self dismissViewControllerAnimated:YES completion:^{}];
+            return;
+        }
+    }];
     
     [self.bgx_ota_updater setOTAUploadWithResponse: [[NSUserDefaults standardUserDefaults] boolForKey:(NSString *)kAckdWritesForOTA]];
     
     self.bgx_ota_updater.delegate = self;
     [self setupUpdaterObservation];
-    
-    self.bgx_dms_manager = [[bgx_dms alloc] initWithBGXUniqueDeviceID:bgx_unique_device_id
-                                                          forPlatform:self.deviceBeingUpdated.platformIdentifier];
 }
 
-- (void)performUpdate:(NSDictionary *)dmsVersionDict
+- (void)performUpdate:(NSDictionary *)versionDict
 {
-    NSLog(@"Start the update: %@", [dmsVersionDict description]);
-    self.dmsVersionRecord = dmsVersionDict;
+    NSLog(@"Start the update: %@", [versionDict description]);
+    self.versionRecord = versionDict;
     [spinner setHidden:YES];
 
-    NSString * version = SafeType([self.dmsVersionRecord objectForKey:@"version"], [NSString class]);
+    NSString * version = SafeType([self.versionRecord objectForKey:@"version"], [NSString class]);
     
-    NSString * local_file = [[NSString stringWithFormat:@"~/Documents/%@/%@.gbl", self.bgx_part_id, version] stringByExpandingTildeInPath];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:local_file]) {
-        // download version.
-        updateLabel.text = @"Downloading firmware update...";
-
-        
-        
-        [_bgx_dms_manager loadFirmwareVersion:version completion:^(NSError * err, NSString * firmwarePath){
-            if (err) {
-                NSLog(@"Error downloading version: %@", [err description]);
-                return;
-            }
-            NSLog(@"Firmware is downloaded to path %@", firmwarePath);
-            
-            NSError * myError = nil;
-            
-            // create folder if needed.
-            
-            NSString * partidDirectory = [[NSString stringWithFormat:@"~/Documents/%@/", self.bgx_part_id] stringByExpandingTildeInPath];
-            
-            if (![[NSFileManager defaultManager] createDirectoryAtPath:partidDirectory withIntermediateDirectories:YES attributes:nil error:&myError]) {
-                if (myError) {
-                    NSLog(@"An error occured trying to create the directory: %@. The error is %@.", partidDirectory, [myError description]);
-                }
-            }
-            
-            [[NSFileManager defaultManager] moveItemAtPath:firmwarePath toPath:local_file error:&myError];
-            
-            NSAssert1(nil == myError, @"Error moving firmware file: %@.", [myError description]);
-            
-            
-            [self.bgx_ota_updater updateFirmwareWithImageAtPath: local_file withVersion: version ];
-        }];
-    } else {
-        [self.bgx_ota_updater updateFirmwareWithImageAtPath: local_file withVersion: version ];
-    }
+    NSString * firmwarePath = [self.bgx_ota_updater getPathOfFirmwareFileWithVersion:version];
+    [self.bgx_ota_updater updateFirmwareWithImageAtPath:firmwarePath];
 }
 
 - (void)setupUpdaterObservation

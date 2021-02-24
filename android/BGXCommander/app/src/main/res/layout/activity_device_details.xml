@@ -1,25 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DeviceDetails">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        tools:context=".activities.DeviceDetailsActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:id="@+id/ll_modes"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <RadioButton
+                android:id="@+id/rb_stream"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="@string/label_stream" />
 
-    <include layout="@layout/content_device_details" />
+            <RadioButton
+                android:id="@+id/rb_command"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/label_command" />
+        </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <EditText
+            android:id="@+id/et_stream"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@id/ll_modes"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/black"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:focusable="false"
+            android:gravity="start"
+            android:hint="@string/label_bgx_stream"
+            android:inputType="none"
+            android:padding="4dp"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textIsSelectable="false"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_stream"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/label_message_to_send"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btn_send"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:text="@string/button_send"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/ib_clear"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_descr_clear_stream"
+                android:text="@string/button_clear"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

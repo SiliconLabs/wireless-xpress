@@ -232,6 +232,7 @@
 		44FAAC8320094D0000072591 /* arrow5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow5.png; sourceTree = "<group>"; };
 		4886226626E0B855D8B1BD59 /* libPods-BGXCommanderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGXCommanderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		540CF1CB5296D0DE7B1022E0 /* Pods-BGXCommander.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGXCommander.release.xcconfig"; path = "Pods/Target Support Files/Pods-BGXCommander/Pods-BGXCommander.release.xcconfig"; sourceTree = "<group>"; };
+		80D5AB2A25C861E600FBF43F /* libbgxpress.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libbgxpress.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF63C302551484F4E554671 /* Pods-BGXCommanderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGXCommanderUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGXCommanderUITests/Pods-BGXCommanderUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		99557AD46E897BA8B6A0F694 /* Pods-BGXCommander.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGXCommander.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGXCommander/Pods-BGXCommander.debug.xcconfig"; sourceTree = "<group>"; };
 		9E0AFEA16240AAB287E86C50 /* Pods-BGXCommanderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGXCommanderTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGXCommanderTests/Pods-BGXCommanderTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -452,6 +453,7 @@
 		6E37102AC0C197CBC1904301 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80D5AB2A25C861E600FBF43F /* libbgxpress.a */,
 				218871DED6F0C7965691EAA7 /* libPods-BGXCommander.a */,
 				4886226626E0B855D8B1BD59 /* libPods-BGXCommanderTests.a */,
 				D7C96EF02AF10E9AD7B71B15 /* libPods-BGXCommanderUITests.a */,
@@ -731,10 +733,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BGXCommander/Pods-BGXCommander-resources.sh",
 				"${PODS_ROOT}/PullToRefresh/arrow.png",
+				"${PODS_ROOT}/../../BGXpress/bgxpress/Resources/firmware_files",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/arrow.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/firmware_files",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -948,14 +952,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 52444FG85C;
 				GCC_PREFIX_HEADER = BGXCommander/BGXCommanderPrefixHeader.pch;
 				INFOPLIST_FILE = BGXCommander/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.3.8;
+				MARKETING_VERSION = 2.3.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.BGXCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -968,14 +972,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 52444FG85C;
 				GCC_PREFIX_HEADER = BGXCommander/BGXCommanderPrefixHeader.pch;
 				INFOPLIST_FILE = BGXCommander/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.3.8;
+				MARKETING_VERSION = 2.3.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.BGXCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

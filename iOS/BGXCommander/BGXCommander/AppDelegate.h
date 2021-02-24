@@ -39,6 +39,8 @@
 @property (strong, nonatomic) id tutorial_observer;
 
 - (BOOL)scan;
+- (void)startScanningWithCompletion: (void (^)(void))completion;
+- (void)stopScanning;
 
 @property (strong, nonatomic) BGXpressScanner * bgxScanner;
 @property (strong, nonatomic) BGXDevice * selectedDevice;

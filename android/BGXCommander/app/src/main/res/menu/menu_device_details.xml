@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_options"
+        android:title="@string/label_menu_item_options"/>
+    <item
+        android:id="@+id/menu_item_state_icon"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_item_update"
+        android:title="@string/label_menu_item_update"
+        app:showAsAction="always" />
+</menu>

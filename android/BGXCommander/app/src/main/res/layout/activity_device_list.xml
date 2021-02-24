@@ -1,49 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeviceList">
+    tools:context=".activities.DeviceListActivity">
+
+    <include
+        android:id="@+id/bluetooth_enable"
+        layout="@layout/bluetooth_enable_bar" />
+
+    <include
+        android:id="@+id/location_disabled"
+        layout="@layout/location_disabled_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bluetooth_enable" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/DeviceListRecyclerView"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/rv_device_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/adapter_devices_list"
+        android:layout_below="@id/location_disabled" />
 
-    <TextView
-        android:id="@+id/BluetoothDisabledWarning"
-        android:layout_width="345dp"
-        android:layout_height="178dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/BluetoothDisabledText"
-        android:textSize="24sp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/LocationPermissionDenied"
-        android:layout_width="345dp"
-        android:layout_height="178dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="200dp"
-        android:text="@string/LocationPermissionDeniedText"
-        android:textSize="24sp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

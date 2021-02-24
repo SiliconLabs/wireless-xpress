@@ -19,14 +19,14 @@ package com.silabs.bgxpress;
  * OTA_STATUS_MESSAGE.
  */
 public enum OTA_Status {
-    Invalid             /**< Should never see this. It indicates an error has occured */
-    ,Idle               /**< No OTA is happening. */
-    ,Password_Required  /**< a password is required for OTA. */
-    ,Downloading        /**< the firmware image is being downloaded through DMS. */
-    ,Installing         /**< the firmware image is being sent to the BGX device. */
-    ,Finishing          /**< the firmware image has been written and the bgx is being commanded to load it. */
-    ,Finished           /**< the BGX has acknowledged the command to load the firmware. The BGX is being rebooted. */
-    ,Failed             /**< The OTA operation has failed. */
-    ,UserCanceled       /**< the intent ACTION_OTA_CANCEL has been received and the OTA operation is being canceled */
+    Invalid,            // Should never see this. It indicates an error has occured
+    Idle,               // No OTA is happening.
+    Password_Required,  // A password is required for OTA.
+    Downloading,        // The firmware image is being downloaded through DMS.
+    Installing,         // The firmware image is being sent to the BGX device.
+    Finishing,          // The firmware image has been written and the bgx is being commanded to load it.
+    Finished,           // The BGX has acknowledged the command to load the firmware. The BGX is being rebooted.
+    Failed,             // The OTA operation has failed.
+    UserCanceled,       // The intent ACTION_OTA_CANCEL has been received and the OTA operation is being canceled
 }
 

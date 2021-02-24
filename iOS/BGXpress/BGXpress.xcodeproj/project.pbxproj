@@ -20,8 +20,22 @@
 		447284E6216FFDDC002C7148 /* BGXDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 447284E4216FFDDC002C7148 /* BGXDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		447284E7216FFDDC002C7148 /* BGXDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 447284E5216FFDDC002C7148 /* BGXDevice.m */; };
 		447284EB217108C1002C7148 /* BGXpress.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EFC7DE1E44076200D19263 /* BGXpress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		80D5AB5125C8692700FBF43F /* firmware_files in CopyFiles */ = {isa = PBXBuildFile; fileRef = 804ECB8B25C83EFD00E28B13 /* firmware_files */; };
 		F4EFC7F71E44081100D19263 /* BGXUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EFC7F51E44081100D19263 /* BGXUUID.h */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		80D5AB4F25C8691200FBF43F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				80D5AB5125C8692700FBF43F /* firmware_files in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		441F33D72031D92000EA767C /* bgx_ota_update.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bgx_ota_update.h; sourceTree = "<group>"; };
@@ -36,6 +50,7 @@
 		447284E1216FFC10002C7148 /* BGXpressScanner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGXpressScanner.m; sourceTree = "<group>"; };
 		447284E4216FFDDC002C7148 /* BGXDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGXDevice.h; sourceTree = "<group>"; };
 		447284E5216FFDDC002C7148 /* BGXDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGXDevice.m; sourceTree = "<group>"; };
+		804ECB8B25C83EFD00E28B13 /* firmware_files */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = firmware_files; path = bgxpress/Resources/firmware_files; sourceTree = SOURCE_ROOT; };
 		F4EFC7DB1E44076200D19263 /* BGXpress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BGXpress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EFC7DE1E44076200D19263 /* BGXpress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGXpress.h; sourceTree = "<group>"; };
 		F4EFC7DF1E44076200D19263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -72,6 +87,7 @@
 		F4EFC7DD1E44076200D19263 /* BGXpress */ = {
 			isa = PBXGroup;
 			children = (
+				804ECB8B25C83EFD00E28B13 /* firmware_files */,
 				443E9BCF2080F30000ED0A8A /* SafeType.h */,
 				443E9BD02080F30000ED0A8A /* SafeType.m */,
 				F4EFC7F51E44081100D19263 /* BGXUUID.h */,
@@ -120,6 +136,7 @@
 				F4EFC7D71E44076200D19263 /* Frameworks */,
 				F4EFC7D81E44076200D19263 /* Headers */,
 				F4EFC7D91E44076200D19263 /* Resources */,
+				80D5AB4F25C8691200FBF43F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -316,6 +333,7 @@
 				INFOPLIST_FILE = BGXpress/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.bgxpress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -335,6 +353,7 @@
 				INFOPLIST_FILE = BGXpress/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.bgxpress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

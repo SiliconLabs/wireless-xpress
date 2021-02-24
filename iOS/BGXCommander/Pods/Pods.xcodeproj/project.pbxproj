@@ -7,69 +7,69 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08244A65900EAC954042037FF1542169 /* bgxpress.h in Headers */ = {isa = PBXBuildFile; fileRef = 16BE0C261087BCC532473605B68339E9 /* bgxpress.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		08244A65900EAC954042037FF1542169 /* bgxpress.h in Headers */ = {isa = PBXBuildFile; fileRef = 02F673BDF788F7B59BB211AF5A9425FC /* bgxpress.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0BFAE0B6D633CF482AD04E90B7469628 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFA5741EDB3299AE89227938581843 /* MMDrawerBarButtonItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		0C5C488B5FA36873808A6901C8AA665B /* MMDrawerVisualState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CA404AC4B6CDB31CFC3D5C1604741D0 /* MMDrawerVisualState.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0E9F36316C3BBE2C9D951852C8631BB2 /* MMDrawerController+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 752EC82E87B08E80C54BF7BD7E71C072 /* MMDrawerController+Subclass.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		166BB02DB8DA4FB6A93516B320FD502D /* BGXDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC33A45CB32A6957AA4FFD2F7811A25 /* BGXDevice.m */; };
+		145B51FF6BB4A2376D6E7EB9E40E5D47 /* Pods-BGXCommanderUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E77D4373ACB403BC818C35046D24 /* Pods-BGXCommanderUITests-dummy.m */; };
+		166BB02DB8DA4FB6A93516B320FD502D /* BGXDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = ACDC1DC4EDA06A655B61AD920171B48A /* BGXDevice.m */; };
 		18D62F969C931A3B1C68BAC121BF4C1C /* MMDrawerController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F43B3A62B8ED4E8B2BBD0DBE66F7D4 /* MMDrawerController-dummy.m */; };
-		2A488557ECAD07819B3821A5F96D964B /* Pods-BGXCommander-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B0846DF89942AEA227F45F45096374 /* Pods-BGXCommander-dummy.m */; };
-		2DC3CB9F01A8C6CBC0815E8CC988D434 /* SafeType.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E72F3CC242459C5EF7EC18087F72CF6 /* SafeType.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		2DC3CB9F01A8C6CBC0815E8CC988D434 /* SafeType.h in Headers */ = {isa = PBXBuildFile; fileRef = BF45BCE88BC364E0DC76D0DB78F34A50 /* SafeType.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		32DB564F2A999A3C8BD0FA9D09121A2A /* MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = A110FC2E07EB4644D7553C34680E86B7 /* MMDrawerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4291E0FE73E03E852AD7B16063CE622B /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D91034982F675A1E9877CD0B59722EF9 /* UIViewController+MMDrawerController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		472F4ECF32800EF5611770C2BD5712E2 /* bgxpress-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 30DEBC27C570DCE486126AFBC07A6571 /* bgxpress-dummy.m */; };
+		472F4ECF32800EF5611770C2BD5712E2 /* bgxpress-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D1332DD7E6F70FE8A3A34F6F1F771702 /* bgxpress-dummy.m */; };
 		618E65C0D09D0C72B07F76263469F15D /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD391324CD88C9D75D5D37ADAF9AEB /* MMDrawerVisualState.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		6C15977F2A726FA074D3D8183AC9B02F /* BGXDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = AD93FC45ECE153DC10EB643EABF0F456 /* BGXDevice.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		765FC8E410C67192816AAFCEED00108D /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 804714023095140ACFBF5A750A0B1642 /* Version.m */; };
+		6C15977F2A726FA074D3D8183AC9B02F /* BGXDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 44009D4E8AFBBED0A2A85C168D613B39 /* BGXDevice.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		765FC8E410C67192816AAFCEED00108D /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D9D22336F5212C73D49E84AD3B864C /* Version.m */; };
 		773E42D73291DC6F0A72A5CDDA17B657 /* UIViewController+MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 14C3DD1B8378587007150DA041378C18 /* UIViewController+MMDrawerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		7BCE88500C5C96E405CE094F3F2BD91F /* Pods-BGXCommanderUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E77D4373ACB403BC818C35046D24 /* Pods-BGXCommanderUITests-dummy.m */; };
-		7CE7C6971453E390A02792BED537CEF2 /* bgx_ota_update.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA23D91556A41BDA214217680E3FCC0 /* bgx_ota_update.m */; };
-		81BEC67F661AF301880178979BFC245D /* bgx_dms.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A6E7639E9082940B3D0D42B5A2950C /* bgx_dms.m */; };
+		7CE7C6971453E390A02792BED537CEF2 /* bgx_ota_update.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A8818E908ADC96C185B60BAF24A437 /* bgx_ota_update.m */; };
+		81BEC67F661AF301880178979BFC245D /* bgx_dms.m in Sources */ = {isa = PBXBuildFile; fileRef = 740461A8E8033DA3E2BC4287E4F3F6AA /* bgx_dms.m */; };
+		8F63C69231EC8E25097D950277177129 /* Pods-BGXCommander-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B0846DF89942AEA227F45F45096374 /* Pods-BGXCommander-dummy.m */; };
 		93BBC5B39B21632A5D81A3CB95B01B69 /* PullRefreshTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 345EEE347E847C4E4048A2040C50E6EA /* PullRefreshTableViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		95E47EBA4EDB415A5A5F5BB920373A19 /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294C5E8A868C4D39DCB9ABD4F623C5F6 /* PullRefreshTableViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		98B4D99CDD419D6EFB3E1EC439A71141 /* BGXpressScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D932517811090DE1AD5156E6818EE01 /* BGXpressScanner.m */; };
-		A376EEDC21767D92D95973F0CD8E7854 /* bgx_dms.h in Headers */ = {isa = PBXBuildFile; fileRef = FCF1BC6F5A1DD05E401ED381FE18A2C3 /* bgx_dms.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B586D91E27846D209C31C856C440E832 /* bgx_ota_update.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB88661E07D87E0B0A58BE8D193095A /* bgx_ota_update.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		BE52EC550965F941EC3F8E7FC265E2A3 /* Pods-BGXCommanderTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D88322A63E5282BB1EC260AC978EA534 /* Pods-BGXCommanderTests-dummy.m */; };
+		98B4D99CDD419D6EFB3E1EC439A71141 /* BGXpressScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 91103D970B4908B83C63E8DFD0DBE103 /* BGXpressScanner.m */; };
+		A376EEDC21767D92D95973F0CD8E7854 /* bgx_dms.h in Headers */ = {isa = PBXBuildFile; fileRef = 91EFCA5C248FFFE953523AAE098036D6 /* bgx_dms.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B586D91E27846D209C31C856C440E832 /* bgx_ota_update.h in Headers */ = {isa = PBXBuildFile; fileRef = 617CE48A1D12C9CEE41A9111203D263D /* bgx_ota_update.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B68B429452E3AE047A2CE94CC4555C80 /* Pods-BGXCommanderTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D88322A63E5282BB1EC260AC978EA534 /* Pods-BGXCommanderTests-dummy.m */; };
 		C8FBFF09BB64851AE239101A6762891C /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 22750A0CB5474223A4E551FC078A2711 /* MMDrawerBarButtonItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CEAB26E63C6B1C25A2CE9E9372AFF875 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FBE73A0430BAB38CB214C0445A7C2A /* MMDrawerController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		D2E4E752AC597CA99700DC5140E04E0E /* BGXUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = E8C41BB78FC313B05BBA8C90ECCA5FAE /* BGXUUID.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D7A51FED198055FE1CBF35FE8EA6DB5F /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C7CFA75F2FAE42C0BAE13E92C2591E /* Version.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		E0FA50A231B8441A6E1A3BACE8B21CC5 /* BGXpressScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 5D9B69D219958B1BB847F5230B36996C /* BGXpressScanner.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D2E4E752AC597CA99700DC5140E04E0E /* BGXUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = C85BAC6202F09C9CB1CFB749D9E2E4AA /* BGXUUID.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D7A51FED198055FE1CBF35FE8EA6DB5F /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB6FE8D4AFA077F31DEC3113E0B2D3C /* Version.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E0FA50A231B8441A6E1A3BACE8B21CC5 /* BGXpressScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 96DD486C5701C5CACDB2E3BFBAFF6AB7 /* BGXpressScanner.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EDE12C6B1D42F3A11B598721BE3B8B96 /* PullToRefresh-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8667337AE522D12170AD6E24F5EA51 /* PullToRefresh-dummy.m */; };
-		FD1455BCB9152493C889EFA633522F94 /* SafeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 729402105863495E8CC6F8ED9A63AD26 /* SafeType.m */; };
+		FD1455BCB9152493C889EFA633522F94 /* SafeType.m in Sources */ = {isa = PBXBuildFile; fileRef = B308D3CC9FE71BA55639E790CEDF4B29 /* SafeType.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		10389C316D9D21319F2F0681FAE5E99C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C7E4C2A7FC80BA612284F4B22564355F;
-			remoteInfo = MMDrawerController;
-		};
-		971D9E2E785A20842774F22FF6D2C518 /* PBXContainerItemProxy */ = {
+		6B528268A0F7464C48D0F2547514DF73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 23549A5859A17FD7F7FD3136A3768FB8;
 			remoteInfo = "Pods-BGXCommander";
 		};
-		9F3EE7B5F68DFD6C91D4F682F9DDF140 /* PBXContainerItemProxy */ = {
+		8DDAE8E111F65901F46283F577952DBE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F2E327E83359AEDDE727618FDDD7C4B6;
 			remoteInfo = PullToRefresh;
 		};
-		A1B6B99937B8CE22B7F0F60EA88DFCF4 /* PBXContainerItemProxy */ = {
+		99235E52FA7EA390DC5FE6D66AFB0851 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7E4C2A7FC80BA612284F4B22564355F;
+			remoteInfo = MMDrawerController;
+		};
+		AE1CA6206265A25B3EEE59E9B8024029 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C45CF34ADE164ADCF0E4DB2F43BDAB78;
 			remoteInfo = bgxpress;
 		};
-		F75F6F7DCF6B122BE2223F086E3E9746 /* PBXContainerItemProxy */ = {
+		FF389F184642207EE8240B3BA6728AB0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -79,74 +79,75 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		001EEF5E365ACC8A6A4041E9A6B008DD /* bgxpress-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "bgxpress-prefix.pch"; sourceTree = "<group>"; };
 		01ED8F273D56B9DE4572567071949B31 /* libbgxpress.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libbgxpress.a; path = libbgxpress.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		02F673BDF788F7B59BB211AF5A9425FC /* bgxpress.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgxpress.h; path = iOS/BGXpress/bgxpress/bgxpress.h; sourceTree = "<group>"; };
 		04510F7D5F44237142703C216D09D987 /* arrow.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		0F30AD8FF73416EFC8DDFA80686DDC6D /* PullToRefresh.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullToRefresh.release.xcconfig; sourceTree = "<group>"; };
 		14C3DD1B8378587007150DA041378C18 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+MMDrawerController.h"; path = "MMDrawerController/UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
-		16BE0C261087BCC532473605B68339E9 /* bgxpress.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgxpress.h; path = iOS/BGXpress/bgxpress/bgxpress.h; sourceTree = "<group>"; };
+		185C783EF10EEB55150FF7B4B671BCE1 /* firmware_files */ = {isa = PBXFileReference; includeInIndex = 1; name = firmware_files; path = iOS/BGXpress/bgxpress/Resources/firmware_files; sourceTree = "<group>"; };
 		1B4B6FA55A791F1F1742713EC7AE3353 /* libPullToRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libPullToRefresh.a; path = libPullToRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CA404AC4B6CDB31CFC3D5C1604741D0 /* MMDrawerVisualState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerVisualState.h; path = MMDrawerController/MMDrawerVisualState.h; sourceTree = "<group>"; };
-		21ECFAB48588A98CE318B07FF4A9E89B /* bgxpress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.debug.xcconfig; sourceTree = "<group>"; };
 		22750A0CB5474223A4E551FC078A2711 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		28F7E3930C08D1DD53961901DFE77519 /* PullToRefresh-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PullToRefresh-prefix.pch"; sourceTree = "<group>"; };
 		294C5E8A868C4D39DCB9ABD4F623C5F6 /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PullRefreshTableViewController.m; path = Classes/PullRefreshTableViewController.m; sourceTree = "<group>"; };
 		2A8CCF2FD31CAA90451C92A418743D19 /* MMDrawerController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MMDrawerController.debug.xcconfig; sourceTree = "<group>"; };
 		2E5E3959935554E49187EF2B1896C30F /* Pods-BGXCommanderTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommanderTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2F4D36D029AE1376C6E1E550D579664F /* MMDrawerController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController-prefix.pch"; sourceTree = "<group>"; };
-		30DEBC27C570DCE486126AFBC07A6571 /* bgxpress-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "bgxpress-dummy.m"; sourceTree = "<group>"; };
 		3394CB8F38E91EE43A55572EC6929018 /* Pods-BGXCommanderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderUITests.release.xcconfig"; sourceTree = "<group>"; };
 		345EEE347E847C4E4048A2040C50E6EA /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PullRefreshTableViewController.h; path = Classes/PullRefreshTableViewController.h; sourceTree = "<group>"; };
-		38426EDE34A4137216DDC2D309874B54 /* bgxpress-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "bgxpress-prefix.pch"; sourceTree = "<group>"; };
-		3ECB2985F7B5ABC956F3E163F55C7B74 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		44009D4E8AFBBED0A2A85C168D613B39 /* BGXDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXDevice.h; path = iOS/BGXpress/bgxpress/BGXDevice.h; sourceTree = "<group>"; };
+		49A8818E908ADC96C185B60BAF24A437 /* bgx_ota_update.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_ota_update.m; path = iOS/BGXpress/bgxpress/bgx_ota_update.m; sourceTree = "<group>"; };
 		4A8667337AE522D12170AD6E24F5EA51 /* PullToRefresh-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PullToRefresh-dummy.m"; sourceTree = "<group>"; };
 		4D6244742203D2BE47D460D852C31A7C /* MMDrawerController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MMDrawerController.release.xcconfig; sourceTree = "<group>"; };
+		50D9D22336F5212C73D49E84AD3B864C /* Version.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = iOS/BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
 		5BFFA5741EDB3299AE89227938581843 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		5C662866B3D08018096418B7F53F9A80 /* Pods-BGXCommander.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommander.debug.xcconfig"; sourceTree = "<group>"; };
 		5C82E77D4373ACB403BC818C35046D24 /* Pods-BGXCommanderUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommanderUITests-dummy.m"; sourceTree = "<group>"; };
-		5D932517811090DE1AD5156E6818EE01 /* BGXpressScanner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXpressScanner.m; path = iOS/BGXpress/bgxpress/BGXpressScanner.m; sourceTree = "<group>"; };
-		5D9B69D219958B1BB847F5230B36996C /* BGXpressScanner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXpressScanner.h; path = iOS/BGXpress/bgxpress/BGXpressScanner.h; sourceTree = "<group>"; };
 		5DC78B289B00ABB8B549CE2A8A58F7B9 /* PullToRefresh.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullToRefresh.debug.xcconfig; sourceTree = "<group>"; };
-		60C7CFA75F2FAE42C0BAE13E92C2591E /* Version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Version.h; path = iOS/BGXpress/bgxpress/Version.h; sourceTree = "<group>"; };
-		65A7E69F015A12B7431BD15392F9B3CF /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.md; sourceTree = "<group>"; };
+		617CE48A1D12C9CEE41A9111203D263D /* bgx_ota_update.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_ota_update.h; path = iOS/BGXpress/bgxpress/bgx_ota_update.h; sourceTree = "<group>"; };
 		65D434E499FD28CAC28CBEC58B38E20A /* Pods-BGXCommanderUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommanderUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		6C74481CBCB87684F62CB0E10BA4B66E /* libMMDrawerController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libMMDrawerController.a; path = libMMDrawerController.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D08BB25FE2A7C1AE5264494054828FB /* Pods-BGXCommanderUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommanderUITests-acknowledgements.plist"; sourceTree = "<group>"; };
-		729402105863495E8CC6F8ED9A63AD26 /* SafeType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SafeType.m; path = iOS/BGXpress/bgxpress/SafeType.m; sourceTree = "<group>"; };
+		740461A8E8033DA3E2BC4287E4F3F6AA /* bgx_dms.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_dms.m; path = iOS/BGXpress/bgxpress/bgx_dms.m; sourceTree = "<group>"; };
 		752EC82E87B08E80C54BF7BD7E71C072 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Subclass.h"; path = "MMDrawerController/MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
 		7ACD391324CD88C9D75D5D37ADAF9AEB /* MMDrawerVisualState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerVisualState.m; path = MMDrawerController/MMDrawerVisualState.m; sourceTree = "<group>"; };
-		804714023095140ACFBF5A750A0B1642 /* Version.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = iOS/BGXpress/bgxpress/Version.m; sourceTree = "<group>"; };
+		82CF29B1507E5B0B3DB230256F28E138 /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.md; sourceTree = "<group>"; };
 		8A2619163B85874D538FEDC12EACDD97 /* libPods-BGXCommanderUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommanderUITests.a"; path = "libPods-BGXCommanderUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		91103D970B4908B83C63E8DFD0DBE103 /* BGXpressScanner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXpressScanner.m; path = iOS/BGXpress/bgxpress/BGXpressScanner.m; sourceTree = "<group>"; };
+		91EFCA5C248FFFE953523AAE098036D6 /* bgx_dms.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_dms.h; path = iOS/BGXpress/bgxpress/bgx_dms.h; sourceTree = "<group>"; };
+		96851C9B31F9BB83F49D62FF7130A9EE /* bgxpress.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = bgxpress.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		96DD486C5701C5CACDB2E3BFBAFF6AB7 /* BGXpressScanner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXpressScanner.h; path = iOS/BGXpress/bgxpress/BGXpressScanner.h; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9E72F3CC242459C5EF7EC18087F72CF6 /* SafeType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SafeType.h; path = iOS/BGXpress/bgxpress/SafeType.h; sourceTree = "<group>"; };
 		A110FC2E07EB4644D7553C34680E86B7 /* MMDrawerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
-		A9A6E7639E9082940B3D0D42B5A2950C /* bgx_dms.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_dms.m; path = iOS/BGXpress/bgxpress/bgx_dms.m; sourceTree = "<group>"; };
-		AD93FC45ECE153DC10EB643EABF0F456 /* BGXDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXDevice.h; path = iOS/BGXpress/bgxpress/BGXDevice.h; sourceTree = "<group>"; };
-		AF00D2AC6622C26CF538740719E86C21 /* bgxpress.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = bgxpress.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		ABB6FE8D4AFA077F31DEC3113E0B2D3C /* Version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Version.h; path = iOS/BGXpress/bgxpress/Version.h; sourceTree = "<group>"; };
+		ACDC1DC4EDA06A655B61AD920171B48A /* BGXDevice.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXDevice.m; path = iOS/BGXpress/bgxpress/BGXDevice.m; sourceTree = "<group>"; };
+		B308D3CC9FE71BA55639E790CEDF4B29 /* SafeType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SafeType.m; path = iOS/BGXpress/bgxpress/SafeType.m; sourceTree = "<group>"; };
 		B35B946026AF9EA5ACEAA403D12587B7 /* Pods-BGXCommander-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BGXCommander-acknowledgements.markdown"; sourceTree = "<group>"; };
 		B9F43B3A62B8ED4E8B2BBD0DBE66F7D4 /* MMDrawerController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MMDrawerController-dummy.m"; sourceTree = "<group>"; };
+		BAAC209410B9FD1F74DAB536F3D77FC4 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		BB91CDD63E88EEAF32D0EFA049974BCE /* Pods-BGXCommanderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BF45BCE88BC364E0DC76D0DB78F34A50 /* SafeType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SafeType.h; path = iOS/BGXpress/bgxpress/SafeType.h; sourceTree = "<group>"; };
 		C7407A8414851BD8C1D71977A92FD89D /* Pods-BGXCommanderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C85BAC6202F09C9CB1CFB749D9E2E4AA /* BGXUUID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXUUID.h; path = iOS/BGXpress/bgxpress/BGXUUID.h; sourceTree = "<group>"; };
 		CBD786CA076B5CF898B50D02EB873A4A /* Pods-BGXCommander.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommander.release.xcconfig"; sourceTree = "<group>"; };
 		CEC84F82F309DCFE3CF9F292C271EB89 /* Pods-BGXCommander-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BGXCommander-resources.sh"; sourceTree = "<group>"; };
+		D1332DD7E6F70FE8A3A34F6F1F771702 /* bgxpress-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "bgxpress-dummy.m"; sourceTree = "<group>"; };
 		D88322A63E5282BB1EC260AC978EA534 /* Pods-BGXCommanderTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommanderTests-dummy.m"; sourceTree = "<group>"; };
 		D91034982F675A1E9877CD0B59722EF9 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+MMDrawerController.m"; path = "MMDrawerController/UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
 		DB9DA91F255B009963667D7D2C9BD5A8 /* Pods-BGXCommanderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BGXCommanderTests.release.xcconfig"; sourceTree = "<group>"; };
-		DDB88661E07D87E0B0A58BE8D193095A /* bgx_ota_update.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_ota_update.h; path = iOS/BGXpress/bgxpress/bgx_ota_update.h; sourceTree = "<group>"; };
 		E22C374EFEBF740E6F5D62D63B778477 /* libPods-BGXCommander.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommander.a"; path = "libPods-BGXCommander.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8C41BB78FC313B05BBA8C90ECCA5FAE /* BGXUUID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BGXUUID.h; path = iOS/BGXpress/bgxpress/BGXUUID.h; sourceTree = "<group>"; };
-		ECC33A45CB32A6957AA4FFD2F7811A25 /* BGXDevice.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BGXDevice.m; path = iOS/BGXpress/bgxpress/BGXDevice.m; sourceTree = "<group>"; };
+		EDCE6485D24C8A49F395FAF93478C94C /* bgxpress.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.release.xcconfig; sourceTree = "<group>"; };
+		F01D738ADDB6E685F7E441A780FF758E /* bgxpress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.debug.xcconfig; sourceTree = "<group>"; };
 		F0FBE73A0430BAB38CB214C0445A7C2A /* MMDrawerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMDrawerController.m; path = MMDrawerController/MMDrawerController.m; sourceTree = "<group>"; };
-		F5777383AFC63F64FCD35750EA270C53 /* bgxpress.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = bgxpress.release.xcconfig; sourceTree = "<group>"; };
 		F70739176F8B1168FB3DEC66530C0909 /* Pods-BGXCommander-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommander-acknowledgements.plist"; sourceTree = "<group>"; };
 		F8B0846DF89942AEA227F45F45096374 /* Pods-BGXCommander-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BGXCommander-dummy.m"; sourceTree = "<group>"; };
 		F9EE0F9917325D81599B715D0B83A235 /* Pods-BGXCommanderTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BGXCommanderTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		FAA23D91556A41BDA214217680E3FCC0 /* bgx_ota_update.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = bgx_ota_update.m; path = iOS/BGXpress/bgxpress/bgx_ota_update.m; sourceTree = "<group>"; };
-		FCF1BC6F5A1DD05E401ED381FE18A2C3 /* bgx_dms.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bgx_dms.h; path = iOS/BGXpress/bgxpress/bgx_dms.h; sourceTree = "<group>"; };
 		FD02A362478BE6085E45A770CF19174A /* libPods-BGXCommanderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-BGXCommanderTests.a"; path = "libPods-BGXCommanderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		131849452C95B8240C624CB054CF336A /* Frameworks */ = {
+		04B099BCAB511DD6F82D6655833344EA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -167,14 +168,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6311FC9E5E632E2C443E93D30DF60F04 /* Frameworks */ = {
+		7943973C202CBAD1ACD916A339C82EB6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A64C4B77A9CB70CA27B5E80FECCE1EC9 /* Frameworks */ = {
+		A570364F17DCCEC0E0D51F2964EA879E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -238,18 +239,6 @@
 			name = Subclass;
 			sourceTree = "<group>";
 		};
-		436A304776D2053C7A867CED57FD0309 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				30DEBC27C570DCE486126AFBC07A6571 /* bgxpress-dummy.m */,
-				38426EDE34A4137216DDC2D309874B54 /* bgxpress-prefix.pch */,
-				21ECFAB48588A98CE318B07FF4A9E89B /* bgxpress.debug.xcconfig */,
-				F5777383AFC63F64FCD35750EA270C53 /* bgxpress.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "iOS/BGXCommander/Pods/Target Support Files/bgxpress";
-			sourceTree = "<group>";
-		};
 		4E8462C1C69CFFC64313709966061A78 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +249,14 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/MMDrawerController";
+			sourceTree = "<group>";
+		};
+		5B7762601949E25702587D91CD25DF38 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B55120761BF5294CD123FA691656A809 /* bgxpress */,
+			);
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		61EC4ED60DC3E12997BB367BEF9BB485 /* Pods-BGXCommander */ = {
@@ -274,16 +271,6 @@
 			);
 			name = "Pods-BGXCommander";
 			path = "Target Support Files/Pods-BGXCommander";
-			sourceTree = "<group>";
-		};
-		6354D676F676109A4704D79B1ED4BCA8 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				AF00D2AC6622C26CF538740719E86C21 /* bgxpress.podspec */,
-				65A7E69F015A12B7431BD15392F9B3CF /* LICENSE.md */,
-				3ECB2985F7B5ABC956F3E163F55C7B74 /* README.md */,
-			);
-			name = Pod;
 			sourceTree = "<group>";
 		};
 		699C750CEE0487713323BC7237629040 /* Pods-BGXCommanderTests */ = {
@@ -345,33 +332,26 @@
 			path = PullToRefresh;
 			sourceTree = "<group>";
 		};
-		B591F01C2710AAB5FA3DCE6644B3A773 /* Development Pods */ = {
+		B55120761BF5294CD123FA691656A809 /* bgxpress */ = {
 			isa = PBXGroup;
 			children = (
-				B5B728DC9612C7486B39BFE94352FDA7 /* bgxpress */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		B5B728DC9612C7486B39BFE94352FDA7 /* bgxpress */ = {
-			isa = PBXGroup;
-			children = (
-				FCF1BC6F5A1DD05E401ED381FE18A2C3 /* bgx_dms.h */,
-				A9A6E7639E9082940B3D0D42B5A2950C /* bgx_dms.m */,
-				DDB88661E07D87E0B0A58BE8D193095A /* bgx_ota_update.h */,
-				FAA23D91556A41BDA214217680E3FCC0 /* bgx_ota_update.m */,
-				AD93FC45ECE153DC10EB643EABF0F456 /* BGXDevice.h */,
-				ECC33A45CB32A6957AA4FFD2F7811A25 /* BGXDevice.m */,
-				16BE0C261087BCC532473605B68339E9 /* bgxpress.h */,
-				5D9B69D219958B1BB847F5230B36996C /* BGXpressScanner.h */,
-				5D932517811090DE1AD5156E6818EE01 /* BGXpressScanner.m */,
-				E8C41BB78FC313B05BBA8C90ECCA5FAE /* BGXUUID.h */,
-				9E72F3CC242459C5EF7EC18087F72CF6 /* SafeType.h */,
-				729402105863495E8CC6F8ED9A63AD26 /* SafeType.m */,
-				60C7CFA75F2FAE42C0BAE13E92C2591E /* Version.h */,
-				804714023095140ACFBF5A750A0B1642 /* Version.m */,
-				6354D676F676109A4704D79B1ED4BCA8 /* Pod */,
-				436A304776D2053C7A867CED57FD0309 /* Support Files */,
+				91EFCA5C248FFFE953523AAE098036D6 /* bgx_dms.h */,
+				740461A8E8033DA3E2BC4287E4F3F6AA /* bgx_dms.m */,
+				617CE48A1D12C9CEE41A9111203D263D /* bgx_ota_update.h */,
+				49A8818E908ADC96C185B60BAF24A437 /* bgx_ota_update.m */,
+				44009D4E8AFBBED0A2A85C168D613B39 /* BGXDevice.h */,
+				ACDC1DC4EDA06A655B61AD920171B48A /* BGXDevice.m */,
+				02F673BDF788F7B59BB211AF5A9425FC /* bgxpress.h */,
+				96DD486C5701C5CACDB2E3BFBAFF6AB7 /* BGXpressScanner.h */,
+				91103D970B4908B83C63E8DFD0DBE103 /* BGXpressScanner.m */,
+				C85BAC6202F09C9CB1CFB749D9E2E4AA /* BGXUUID.h */,
+				185C783EF10EEB55150FF7B4B671BCE1 /* firmware_files */,
+				BF45BCE88BC364E0DC76D0DB78F34A50 /* SafeType.h */,
+				B308D3CC9FE71BA55639E790CEDF4B29 /* SafeType.m */,
+				ABB6FE8D4AFA077F31DEC3113E0B2D3C /* Version.h */,
+				50D9D22336F5212C73D49E84AD3B864C /* Version.m */,
+				E9448B0352327363CC6AAE68C41D2816 /* Pod */,
+				E388C823715AC0DC962DEBCC133AD47C /* Support Files */,
 			);
 			name = bgxpress;
 			path = ../../..;
@@ -381,7 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				B591F01C2710AAB5FA3DCE6644B3A773 /* Development Pods */,
+				5B7762601949E25702587D91CD25DF38 /* Development Pods */,
 				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
 				1E35EF2A3AE6855395107CC2C2AF1C0E /* Pods */,
 				8E762D8C151477D762EB72659C4F10FA /* Products */,
@@ -403,6 +383,28 @@
 				5BFFA5741EDB3299AE89227938581843 /* MMDrawerBarButtonItem.m */,
 			);
 			name = MMDrawerBarButtonItem;
+			sourceTree = "<group>";
+		};
+		E388C823715AC0DC962DEBCC133AD47C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D1332DD7E6F70FE8A3A34F6F1F771702 /* bgxpress-dummy.m */,
+				001EEF5E365ACC8A6A4041E9A6B008DD /* bgxpress-prefix.pch */,
+				F01D738ADDB6E685F7E441A780FF758E /* bgxpress.debug.xcconfig */,
+				EDCE6485D24C8A49F395FAF93478C94C /* bgxpress.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "iOS/BGXCommander/Pods/Target Support Files/bgxpress";
+			sourceTree = "<group>";
+		};
+		E9448B0352327363CC6AAE68C41D2816 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				96851C9B31F9BB83F49D62FF7130A9EE /* bgxpress.podspec */,
+				82CF29B1507E5B0B3DB230256F28E138 /* LICENSE.md */,
+				BAAC209410B9FD1F74DAB536F3D77FC4 /* README.md */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		EB227C6A2FDE2F94B0D5F22B5B515015 /* Support Files */ = {
@@ -433,7 +435,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		3415A253466F33AA6F9B1C894CF253DF /* Headers */ = {
+		31F431DCBE52FD95C6D974AEA13F56BA /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -455,7 +457,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A03B2417F50224DFC556B8E71565C7E2 /* Headers */ = {
+		A4B5108D7F826055BA7A8F2A450E17D7 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -470,7 +472,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A65E24D896A4C8C584AD06143F761824 /* Headers */ = {
+		B572C0A790C49EC18E80C8178CC57FD1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -494,18 +496,18 @@
 /* Begin PBXNativeTarget section */
 		23549A5859A17FD7F7FD3136A3768FB8 /* Pods-BGXCommander */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F7C0001636865E85AFF60EBC583F35E5 /* Build configuration list for PBXNativeTarget "Pods-BGXCommander" */;
+			buildConfigurationList = E0184EE4863CFE6CE4DC6C5624ED2D41 /* Build configuration list for PBXNativeTarget "Pods-BGXCommander" */;
 			buildPhases = (
-				3415A253466F33AA6F9B1C894CF253DF /* Headers */,
-				534E87B5771404F0A960D8462D0196E2 /* Sources */,
-				131849452C95B8240C624CB054CF336A /* Frameworks */,
+				B572C0A790C49EC18E80C8178CC57FD1 /* Headers */,
+				32F18791126F679B8667DB4CC61F4A8A /* Sources */,
+				7943973C202CBAD1ACD916A339C82EB6 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				1E1D73C1BD22B490DC64478E90DEDC28 /* PBXTargetDependency */,
-				68C8D422F57D2BB5C69B17641557B3D2 /* PBXTargetDependency */,
-				3BDD90882DB53EFBDCF47E96874265B3 /* PBXTargetDependency */,
+				DB0BCFD8158166768E150917A78B9355 /* PBXTargetDependency */,
+				79647EAC1F46D89596BBA533BF4E2462 /* PBXTargetDependency */,
+				D476E6BAB653B1354AD18ED4796C7AC0 /* PBXTargetDependency */,
 			);
 			name = "Pods-BGXCommander";
 			productName = "Pods-BGXCommander";
@@ -514,16 +516,16 @@
 		};
 		69D6D25492639ABE43BC4680C8835CD2 /* Pods-BGXCommanderUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8AEE7218CE47ECBCF3405BF20A5C021A /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderUITests" */;
+			buildConfigurationList = 2B3D35D985E4131E22FA67D04A877C18 /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderUITests" */;
 			buildPhases = (
-				A03B2417F50224DFC556B8E71565C7E2 /* Headers */,
-				87A02AC94E27CAC0B747ADA06089FBB4 /* Sources */,
-				A64C4B77A9CB70CA27B5E80FECCE1EC9 /* Frameworks */,
+				A4B5108D7F826055BA7A8F2A450E17D7 /* Headers */,
+				64B3E62BB327CD28972A15F20FA2AD2A /* Sources */,
+				04B099BCAB511DD6F82D6655833344EA /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DF84764D73CC979D737F9CD2A3D42FFC /* PBXTargetDependency */,
+				56AA8D3848945B0ED1A5406BDE090669 /* PBXTargetDependency */,
 			);
 			name = "Pods-BGXCommanderUITests";
 			productName = "Pods-BGXCommanderUITests";
@@ -532,16 +534,16 @@
 		};
 		7DDCC044785AB998AB417C9299FFC78E /* Pods-BGXCommanderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 70DA405325E8C53FDBD4195C9331DE4A /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderTests" */;
+			buildConfigurationList = F6C40933AB36BBEB1B419F31D6B238CA /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderTests" */;
 			buildPhases = (
-				A65E24D896A4C8C584AD06143F761824 /* Headers */,
-				C7E7EE8287088240CA3505F313823149 /* Sources */,
-				6311FC9E5E632E2C443E93D30DF60F04 /* Frameworks */,
+				31F431DCBE52FD95C6D974AEA13F56BA /* Headers */,
+				3F05CFB3D1D7B37F54259A42317EA3AF /* Sources */,
+				A570364F17DCCEC0E0D51F2964EA879E /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CC8472101CED73B12534AE28EAC05BBD /* PBXTargetDependency */,
+				B2A006FFE3D46816C15CDF56E95C2C73 /* PBXTargetDependency */,
 			);
 			name = "Pods-BGXCommanderTests";
 			productName = "Pods-BGXCommanderTests";
@@ -632,19 +634,27 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		534E87B5771404F0A960D8462D0196E2 /* Sources */ = {
+		32F18791126F679B8667DB4CC61F4A8A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A488557ECAD07819B3821A5F96D964B /* Pods-BGXCommander-dummy.m in Sources */,
+				8F63C69231EC8E25097D950277177129 /* Pods-BGXCommander-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		87A02AC94E27CAC0B747ADA06089FBB4 /* Sources */ = {
+		3F05CFB3D1D7B37F54259A42317EA3AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BCE88500C5C96E405CE094F3F2BD91F /* Pods-BGXCommanderUITests-dummy.m in Sources */,
+				B68B429452E3AE047A2CE94CC4555C80 /* Pods-BGXCommanderTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64B3E62BB327CD28972A15F20FA2AD2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				145B51FF6BB4A2376D6E7EB9E40E5D47 /* Pods-BGXCommanderUITests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,14 +667,6 @@
 				CEAB26E63C6B1C25A2CE9E9372AFF875 /* MMDrawerController.m in Sources */,
 				618E65C0D09D0C72B07F76263469F15D /* MMDrawerVisualState.m in Sources */,
 				4291E0FE73E03E852AD7B16063CE622B /* UIViewController+MMDrawerController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C7E7EE8287088240CA3505F313823149 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BE52EC550965F941EC3F8E7FC265E2A3 /* Pods-BGXCommanderTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,43 +696,132 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1E1D73C1BD22B490DC64478E90DEDC28 /* PBXTargetDependency */ = {
+		56AA8D3848945B0ED1A5406BDE090669 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = MMDrawerController;
-			target = C7E4C2A7FC80BA612284F4B22564355F /* MMDrawerController */;
-			targetProxy = 10389C316D9D21319F2F0681FAE5E99C /* PBXContainerItemProxy */;
+			name = "Pods-BGXCommander";
+			target = 23549A5859A17FD7F7FD3136A3768FB8 /* Pods-BGXCommander */;
+			targetProxy = 6B528268A0F7464C48D0F2547514DF73 /* PBXContainerItemProxy */;
 		};
-		3BDD90882DB53EFBDCF47E96874265B3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = bgxpress;
-			target = C45CF34ADE164ADCF0E4DB2F43BDAB78 /* bgxpress */;
-			targetProxy = A1B6B99937B8CE22B7F0F60EA88DFCF4 /* PBXContainerItemProxy */;
-		};
-		68C8D422F57D2BB5C69B17641557B3D2 /* PBXTargetDependency */ = {
+		79647EAC1F46D89596BBA533BF4E2462 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PullToRefresh;
 			target = F2E327E83359AEDDE727618FDDD7C4B6 /* PullToRefresh */;
-			targetProxy = 9F3EE7B5F68DFD6C91D4F682F9DDF140 /* PBXContainerItemProxy */;
+			targetProxy = 8DDAE8E111F65901F46283F577952DBE /* PBXContainerItemProxy */;
 		};
-		CC8472101CED73B12534AE28EAC05BBD /* PBXTargetDependency */ = {
+		B2A006FFE3D46816C15CDF56E95C2C73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-BGXCommander";
 			target = 23549A5859A17FD7F7FD3136A3768FB8 /* Pods-BGXCommander */;
-			targetProxy = F75F6F7DCF6B122BE2223F086E3E9746 /* PBXContainerItemProxy */;
+			targetProxy = FF389F184642207EE8240B3BA6728AB0 /* PBXContainerItemProxy */;
 		};
-		DF84764D73CC979D737F9CD2A3D42FFC /* PBXTargetDependency */ = {
+		D476E6BAB653B1354AD18ED4796C7AC0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-BGXCommander";
-			target = 23549A5859A17FD7F7FD3136A3768FB8 /* Pods-BGXCommander */;
-			targetProxy = 971D9E2E785A20842774F22FF6D2C518 /* PBXContainerItemProxy */;
+			name = bgxpress;
+			target = C45CF34ADE164ADCF0E4DB2F43BDAB78 /* bgxpress */;
+			targetProxy = AE1CA6206265A25B3EEE59E9B8024029 /* PBXContainerItemProxy */;
+		};
+		DB0BCFD8158166768E150917A78B9355 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MMDrawerController;
+			target = C7E4C2A7FC80BA612284F4B22564355F /* MMDrawerController */;
+			targetProxy = 99235E52FA7EA390DC5FE6D66AFB0851 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1F2E81757D76E43042739BC5AEFFE429 /* Release */ = {
+		0918FD7C37D8850C658F8B710247F15F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F01D738ADDB6E685F7E441A780FF758E /* bgxpress.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/bgxpress/bgxpress-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = bgxpress;
+				PRODUCT_NAME = bgxpress;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		09D45C7B7070C729427A32C4696E1900 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB91CDD63E88EEAF32D0EFA049974BCE /* Pods-BGXCommanderTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A7DBF4513D5A9E5A5E53AE69E0302D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A8CCF2FD31CAA90451C92A418743D19 /* MMDrawerController.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/MMDrawerController/MMDrawerController-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = MMDrawerController;
+				PRODUCT_NAME = MMDrawerController;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		24A1E39469E209FFA64B08A1300CA3AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB9DA91F255B009963667D7D2C9BD5A8 /* Pods-BGXCommanderTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		260A2927EDAB3FCA24C812C71871A859 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -753,6 +844,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -787,60 +879,12 @@
 			};
 			name = Release;
 		};
-		2A943ABA7F413632D8C559CC7F2C7450 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7407A8414851BD8C1D71977A92FD89D /* Pods-BGXCommanderUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		4D2BB4580471A2C15B6BD585DE4558D2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5777383AFC63F64FCD35750EA270C53 /* bgxpress.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/bgxpress/bgxpress-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = bgxpress;
-				PRODUCT_NAME = bgxpress;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		5CEE63AE251B4F24034067FAB049649D /* Debug */ = {
+		34235E367068A599BE6C32E7635EDCF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5C662866B3D08018096418B7F53F9A80 /* Pods-BGXCommander.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -856,37 +900,55 @@
 			};
 			name = Debug;
 		};
-		5F413ABE7F51A47B10A3C9795506BCC0 /* Debug */ = {
+		3444DC6569415A2BE45A40C51B85F978 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5DC78B289B00ABB8B549CE2A8A58F7B9 /* PullToRefresh.debug.xcconfig */;
+			baseConfigurationReference = CBD786CA076B5CF898B50D02EB873A4A /* Pods-BGXCommander.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/PullToRefresh/PullToRefresh-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = PullToRefresh;
-				PRODUCT_NAME = PullToRefresh;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5D6ED158526240BA76D1BF9D2F9B703F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7407A8414851BD8C1D71977A92FD89D /* Pods-BGXCommanderUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		6397B4FA021816797CFBBCA718EF536E /* Release */ = {
+		6A17F70AD987F29E3B586B767086CED3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3394CB8F38E91EE43A55572EC6929018 /* Pods-BGXCommanderUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -903,34 +965,10 @@
 			};
 			name = Release;
 		};
-		66E3CA01B70F36244FD8E964D85299B1 /* Release */ = {
+		6C7332F309712030AE50E278723C5702 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB9DA91F255B009963667D7D2C9BD5A8 /* Pods-BGXCommanderTests.release.xcconfig */;
+			baseConfigurationReference = 4D6244742203D2BE47D460D852C31A7C /* MMDrawerController.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		6ABED44EB7698D40282FA1B47DEE43AE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A8CCF2FD31CAA90451C92A418743D19 /* MMDrawerController.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -946,37 +984,15 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
-		9C5E4EADE13DAEEE0B4BCE6365A56BDD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB91CDD63E88EEAF32D0EFA049974BCE /* Pods-BGXCommanderTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		9E4EAEDE4CAB5906701EC53E0AFA8BE8 /* Release */ = {
+		712534757EC50E6883328E166FDE696A /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0F30AD8FF73416EFC8DDFA80686DDC6D /* PullToRefresh.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -996,12 +1012,34 @@
 			};
 			name = Release;
 		};
-		A2AA9DC5CDFE7B86C567C79661F84E6C /* Debug */ = {
+		7E6681BBA467707EA9AF63F6CEC4E696 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21ECFAB48588A98CE318B07FF4A9E89B /* bgxpress.debug.xcconfig */;
+			baseConfigurationReference = 5DC78B289B00ABB8B549CE2A8A58F7B9 /* PullToRefresh.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/PullToRefresh/PullToRefresh-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = PullToRefresh;
+				PRODUCT_NAME = PullToRefresh;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCB5C9AA606E8A9420069B31E46D806B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDCE6485D24C8A49F395FAF93478C94C /* bgxpress.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -1017,37 +1055,15 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		B7B5498D32A5279765F0E7E345870561 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D6244742203D2BE47D460D852C31A7C /* MMDrawerController.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/MMDrawerController/MMDrawerController-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = MMDrawerController;
-				PRODUCT_NAME = MMDrawerController;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		D93A6DF471F8C9D1B0E2C1D667B8C5B0 /* Debug */ = {
+		E29FF4F65AD894C364B2973A5C9A6DD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1070,6 +1086,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1108,37 +1125,23 @@
 			};
 			name = Debug;
 		};
-		EF53E27025B486B3E5E6D47DACA5B925 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBD786CA076B5CF898B50D02EB873A4A /* Pods-BGXCommander.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		1BD455ADEE5B5CDA6105F61DA076F3AF /* Build configuration list for PBXNativeTarget "bgxpress" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A2AA9DC5CDFE7B86C567C79661F84E6C /* Debug */,
-				4D2BB4580471A2C15B6BD585DE4558D2 /* Release */,
+				0918FD7C37D8850C658F8B710247F15F /* Debug */,
+				BCB5C9AA606E8A9420069B31E46D806B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B3D35D985E4131E22FA67D04A877C18 /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D6ED158526240BA76D1BF9D2F9B703F /* Debug */,
+				6A17F70AD987F29E3B586B767086CED3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1146,17 +1149,8 @@
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D93A6DF471F8C9D1B0E2C1D667B8C5B0 /* Debug */,
-				1F2E81757D76E43042739BC5AEFFE429 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		70DA405325E8C53FDBD4195C9331DE4A /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9C5E4EADE13DAEEE0B4BCE6365A56BDD /* Debug */,
-				66E3CA01B70F36244FD8E964D85299B1 /* Release */,
+				E29FF4F65AD894C364B2973A5C9A6DD8 /* Debug */,
+				260A2927EDAB3FCA24C812C71871A859 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1164,17 +1158,8 @@
 		76C4190CB4345DBDC888AA1B36091EF8 /* Build configuration list for PBXNativeTarget "PullToRefresh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5F413ABE7F51A47B10A3C9795506BCC0 /* Debug */,
-				9E4EAEDE4CAB5906701EC53E0AFA8BE8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8AEE7218CE47ECBCF3405BF20A5C021A /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2A943ABA7F413632D8C559CC7F2C7450 /* Debug */,
-				6397B4FA021816797CFBBCA718EF536E /* Release */,
+				7E6681BBA467707EA9AF63F6CEC4E696 /* Debug */,
+				712534757EC50E6883328E166FDE696A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1182,17 +1167,26 @@
 		D0BFDFC9B1FAF286EB46D4F2851B3E4D /* Build configuration list for PBXNativeTarget "MMDrawerController" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6ABED44EB7698D40282FA1B47DEE43AE /* Debug */,
-				B7B5498D32A5279765F0E7E345870561 /* Release */,
+				1A7DBF4513D5A9E5A5E53AE69E0302D2 /* Debug */,
+				6C7332F309712030AE50E278723C5702 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F7C0001636865E85AFF60EBC583F35E5 /* Build configuration list for PBXNativeTarget "Pods-BGXCommander" */ = {
+		E0184EE4863CFE6CE4DC6C5624ED2D41 /* Build configuration list for PBXNativeTarget "Pods-BGXCommander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5CEE63AE251B4F24034067FAB049649D /* Debug */,
-				EF53E27025B486B3E5E6D47DACA5B925 /* Release */,
+				34235E367068A599BE6C32E7635EDCF8 /* Debug */,
+				3444DC6569415A2BE45A40C51B85F978 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F6C40933AB36BBEB1B419F31D6B238CA /* Build configuration list for PBXNativeTarget "Pods-BGXCommanderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09D45C7B7070C729427A32C4696E1900 /* Debug */,
+				24A1E39469E209FFA64B08A1300CA3AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

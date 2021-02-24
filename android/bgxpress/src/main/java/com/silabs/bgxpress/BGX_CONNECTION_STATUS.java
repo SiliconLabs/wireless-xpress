@@ -18,10 +18,10 @@ package com.silabs.bgxpress;
  * status of a BGX Device.
  */
 public enum BGX_CONNECTION_STATUS {
-    DISCONNECTED       ///< The BGXpressService is not connected to a BGX.
-    ,CONNECTING         ///< The BGXpressService is connecting to a BGX device.
-    ,INTERROGATING      ///< The BGXpressService has connected to a BGX device and is discovering bluetooth services and characteristics.
-    ,CONNECTED          ///< The BGXpressService is connected to a BGX device.
-    ,DISCONNECTING      ///< The BGXpressService is in the process of disconnecting from a BGX device.
-    ,CONNECTIONTIMEDOUT ///< A connection that was in progress has timed out.
+    DISCONNECTED,       // The BGXpressService is not connected to a BGX.
+    CONNECTING,         // The BGXpressService is connecting to a BGX device.
+    INTERROGATING,      // The BGXpressService has connected to a BGX device and is discovering bluetooth services and characteristics.
+    CONNECTED,          // The BGXpressService is connected to a BGX device.
+    DISCONNECTING,      // The BGXpressService is in the process of disconnecting from a BGX device.
+    CONNECTIONTIMEDOUT  // A connection that was in progress has timed out.
 }

@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -20,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name="com.silabs.bgxcommander.AccountAuthenticator" >
+            android:name=".accounts.BusModeAuthenticationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -31,7 +33,8 @@
         </service>
 
         <service
-            android:name="com.silabs.bgxcommander.AccountAuthenticator2" >
+            android:name=".accounts.OtaAuthenticationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -41,33 +44,28 @@
                 android:resource="@xml/ota_authenticator" />
         </service>
 
+        <activity android:name=".activities.PasswordActivity" />
 
-        <activity android:name=".Password"></activity>
         <activity
-            android:name=".FirmwareReleaseNotesActivity"
+            android:name=".activities.FirmwareReleaseNotesActivity"
             android:label="@string/title_activity_firmware_release_notes"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DeviceList">
+
+        <activity android:name=".activities.DeviceListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".DeviceDetails"
-            android:label="@string/title_activity_device_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.DeviceDetailsActivity"
+            android:label="@string/title_activity_device_details" />
 
-        <activity android:name=".IndeterminateProgressActivity" />
+        <activity android:name=".activities.IndeterminateProgressActivity" />
 
-        <activity android:name=".FirmwareUpdate" />
-
-
-
+        <activity android:name=".activities.FirmwareUpdateActivity" />
 
     </application>
-
-
-
 </manifest>

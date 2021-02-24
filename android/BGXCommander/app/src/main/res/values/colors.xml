@@ -3,9 +3,11 @@
     <color name="colorPrimary">#D91E2A</color>
     <color name="colorPrimaryDark">#D91E2A</color>
     <color name="colorAccent">#0086D9</color>
+    <color name="blue">#0086D9</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="textColor">#828282</color>
+    <color name="text_color">#828282</color>
     <color name="black_overlay">#66000000</color>
     <color name="light_gray">#ddd</color>
+    <color name="dark_red">#A1171F</color>
 </resources>

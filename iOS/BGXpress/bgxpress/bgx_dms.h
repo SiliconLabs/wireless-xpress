@@ -46,7 +46,8 @@
  * @returns the intialized instance of bgx_dms
  */
 - (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id
-                    forPlatform:(NSString *)platformIdentifier;
+                    forPlatform:(NSString *)platformIdentifier
+                            __attribute__((deprecated));
 
 /**
  * Initialize DMS for a specific BGX device ID.
@@ -54,7 +55,8 @@
  * @param bgx_unique_device_id - the unique device ID of the device being updated
  * @returns the intialized instance of bgx_dms
  */
-- (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id;
+- (id)initWithBGXUniqueDeviceID:(NSString *)bgx_unique_device_id
+                            __attribute__((deprecated));
 
 /**
  * Pull a list of available firmware
@@ -63,7 +65,8 @@
  *        Parameters to this block include an error (nil on success, non-nil on error)
  *        and an NSArray of the available versions of firmware.
  */
-- (void)retrieveAvailableVersions:(void (^)(NSError *, NSArray *))completionBlock;
+- (void)retrieveAvailableVersions:(void (^)(NSError *, NSArray *))completionBlock
+                            __attribute__((deprecated("Use method retrieveAvailableFirmwareVersions:completionBlock from bgx_ota_update")));
 
 /**
  * Retrieve the specified firmware image from DMS by version number.
@@ -75,7 +78,8 @@
  * @param version is the firmware version to load
  * @param completionBlock Block to be called when the operation is complete.
  */
-- (void)loadFirmwareVersion:(NSString *)version completion:(void (^)(NSError *, NSString * firmware_path))completionBlock;
+- (void)loadFirmwareVersion:(NSString *)version completion:(void (^)(NSError *, NSString * firmware_path))completionBlock
+                            __attribute__((deprecated("Use method getPathOfFirmwareFileWithVersion:version from bgx_ota_update")));
 
 /**
  * Reports the installation to the DMS system for the purpose of analytic
@@ -84,7 +88,8 @@
  * @param bgx_device_uuid is the UUID of the BGX device to report.
  * @param bundleid is the firmware bundle ID that was loaded.
 */
-+ (void)reportInstallationResultWithDeviceUUID:(NSString*)bgx_device_uuid version:(NSString*)bundleid;
++ (void)reportInstallationResultWithDeviceUUID:(NSString*)bgx_device_uuid version:(NSString*)bundleid
+                                        __attribute__((deprecated));
 
 /**
  * This array contains NSDictionary objects with
@@ -95,7 +100,7 @@
  * - tag - NSString containing the firmware flavor.
  * - size - NSNumber containing the size of the firmware in bytes.
  */
-@property (nonatomic, strong) NSArray * firmwareList;
+@property (nonatomic, strong) NSArray * firmwareList __attribute__((deprecated));;
 
 @end
 

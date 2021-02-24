@@ -25,10 +25,14 @@ DevicesTableViewController * gDevicesTableViewController = nil;
 @property (nonatomic, strong) id errorObserverReference;
 
 @property (nonatomic, strong) ConnectingViewController * connectingViewController;
+@property (nonatomic) BOOL isScanning;
+@property (nonatomic) BOOL bluetoothReady;
 
 @end
 
 @implementation DevicesTableViewController
+NSString* const StartButtonTitle = @"SCAN";
+NSString* const StopButtonTitle = @"STOP";
 
 + (instancetype)devicesTableViewController
 {
@@ -60,16 +64,14 @@ DevicesTableViewController * gDevicesTableViewController = nil;
     [mmDrawerBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = mmDrawerBarButtonItem;
     
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Scan" style:UIBarButtonItemStylePlain target:self action:@selector(scanAction:)];
-    
-    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor lightGrayColor] } forState:UIControlStateDisabled];
-    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:StartButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(scanAction:)];
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor lightGrayColor], NSFontAttributeName : [UIFont systemFontOfSize: 14.0 ] } forState:UIControlStateDisabled];
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Disconnect" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-    
+    self.isScanning = NO;
+    self.bluetoothReady = NO;
     [[AppDelegate sharedAppDelegate] addObserver:self forKeyPath:@"bluetoothReady" options:NSKeyValueObservingOptionNew context:nil];
     [[AppDelegate sharedAppDelegate] addObserver:self forKeyPath:@"isScanning" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -151,33 +153,76 @@ DevicesTableViewController * gDevicesTableViewController = nil;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"isScanning"]) {
-        if ([AppDelegate sharedAppDelegate].isScanning) {
-            [self startLoading];
-        } else {
-            [self stopLoading];
-        }
+        self.isScanning = [[change objectForKey:@"new"] boolValue];
     }
-    
-    self.navigationItem.leftBarButtonItem.enabled =  (! [AppDelegate sharedAppDelegate].isScanning) && ([AppDelegate sharedAppDelegate].bluetoothReady);
     
     if ([keyPath isEqualToString:@"bluetoothReady"]) {
-        if ([AppDelegate sharedAppDelegate].bluetoothReady && ! [AppDelegate sharedAppDelegate].isScanning) {
-            [[AppDelegate sharedAppDelegate] scan];
-        } else if (! [AppDelegate sharedAppDelegate].bluetoothReady) {
-            self.navigationItem.leftBarButtonItem.enabled = NO;
+        BOOL bluetoothReady = [[change objectForKey:@"new"] boolValue];
+        self.bluetoothReady = bluetoothReady;
+        if (bluetoothReady && ! [AppDelegate sharedAppDelegate].isScanning) {
+            [self startLoading];
         }
+        self.navigationItem.leftBarButtonItem.enabled = bluetoothReady;
     }
-}
-
-extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
-- (void)refresh
-{
-    [self scanAction:nil];
 }
 
 - (IBAction)scanAction:(id)sender
 {
-    [[AppDelegate sharedAppDelegate] scan];
+    if (!self.isScanning) {
+        [self startLoading];
+    } else {
+        [self stopScanning];
+    }
+}
+
+- (void)startScanning {
+    [[AppDelegate sharedAppDelegate] startScanningWithCompletion: ^{
+        [self stopLoading];
+        self.navigationItem.leftBarButtonItem.title = StartButtonTitle;
+    }];
+    self.navigationItem.leftBarButtonItem.title = StopButtonTitle;
+}
+
+- (void)stopScanning {
+    [[AppDelegate sharedAppDelegate] stopScanning];
+    [self stopLoading];
+    self.navigationItem.leftBarButtonItem.title = StartButtonTitle;
+}
+
+#pragma mark PullRefreshTableViewController overriting methods
+
+extern const NSTimeInterval kScanInterval; // defined in AppDelegate.m
+- (void)refresh
+{
+    if (self.bluetoothReady) {
+        [self startScanning];
+    } else {
+        [self stopLoading];
+    }
+}
+
+- (void)stopLoading {
+    isLoading = NO;
+
+    // Hide the header
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    // set shorter time of stopping animation
+    [UIView setAnimationDuration:0.1];
+    self.tableView.contentInset = UIEdgeInsetsZero;
+    [UIView setAnimationDidStopSelector:@selector(stopLoadingComplete:finished:context:)];
+    [refreshArrow layer].transform = CATransform3DMakeRotation(M_PI * 2, 0, 0, 1);
+    [UIView commitAnimations];
+}
+
+- (void)stopLoadingComplete:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+    // Reset the header
+    if ([finished boolValue]) {
+        refreshLabel.text = self.textPull;
+        refreshArrow.hidden = NO;
+        [refreshSpinner stopAnimating];
+    }
 }
 
 - (void)deviceListChanged:(NSNotification *)deviceListChangedNotification

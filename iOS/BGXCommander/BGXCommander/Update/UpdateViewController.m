@@ -19,9 +19,9 @@
 
 @interface UpdateViewController ()
 
-@property (nonatomic, strong) NSArray * dms_firmware_versions;
+@property (nonatomic, strong) NSArray * firmware_versions;
 
-@property (nonatomic, strong) bgx_dms * bgx_dms_manager;
+@property (nonatomic, strong) BGX_OTA_Updater * bgx_ota_updater;
 
 @property (nonatomic, strong) Version * currentFirmwareVersion;
 @property (atomic) NSInteger bootloaderVersion;
@@ -29,6 +29,7 @@
 @property (nonatomic, strong) BGXDevice * deviceBeingUpdated;
 
 @property (nonatomic, strong) IBOutlet UIImageView * firmwareDecoratorImageView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (nonatomic) BOOL fSetup;
 @property (nonatomic, strong) BGXDevice * device2Update;
@@ -38,16 +39,13 @@
 
 enum {
   Release_Notes_Section=0,
-  DMS_Section =1,
+  Firmware_Section =1,
 };
 
 @implementation UpdateViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    waitingForReachable = NO;
     self.fSetup = NO;
 
     firmwareVersions.rowHeight = UITableViewAutomaticDimension;
@@ -73,10 +71,10 @@ enum {
     NSInteger myBootloaderVersion;
     
     [self->firmwareQuerySpinner startAnimating];
-        
+    
     NSAssert(self.device2Update, @"No device selected");
     NSAssert(self.device_unique_id, @"No device unique id");
-
+    
     currentFirmwareVersionLabel.text = self.device2Update.firmwareRevision;
     
     self.currentFirmwareVersion = [Version versionFromString:self.device2Update.firmwareRevision];
@@ -84,122 +82,68 @@ enum {
     if ([[NSScanner scannerWithString:self.device2Update.bootloaderVersion] scanInteger:&myBootloaderVersion]) {
         self.bootloaderVersion = myBootloaderVersion;
     }
+    self.titleLabel.text = [NSString stringWithFormat:@"Firmware Available for %@", self.device2Update.name];
     
     self.firmwareDecoratorImageView.image = nil;
     
-    self.bgx_dms_manager = [[bgx_dms alloc] initWithBGXUniqueDeviceID:self.device_unique_id forPlatform:self.device2Update.platformIdentifier];
-    
-    [self.bgx_dms_manager retrieveAvailableVersions:^(NSError * err, NSArray * versions){
-            if (err) {
-              NSLog(@"Error retriving DMS versions: %@.", [err description]);
-              return;
-            }
-
-              // sort versions.
-              
-              self.dms_firmware_versions = [versions sortedArrayUsingComparator:^(id obj1, id obj2){
-                  NSDictionary * d1 = SafeType(obj1, [NSDictionary class]);
-                  NSDictionary * d2 = SafeType(obj2, [NSDictionary class]);
-                  Version * v1 = [Version versionFromString: [d1 objectForKey:@"version"]];
-                  Version * v2 = [Version versionFromString: [d2 objectForKey:@"version"]];
-
-                  return [v2 compare:v1];
-              }];
-              
-        dispatch_async(dispatch_get_main_queue(), ^{
-
-            if (self.bootloaderVersion < kBootloaderSecurityUpdateVersion) {
-                // show the security decorator.
-                self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Security_Decoration"];
-            } else  {
-                for (NSDictionary * iVerRec in  versions) {
-                    NSString * sversion = SafeType([iVerRec objectForKey:@"version"], [NSString class]);
-                    Version * iVersion = [Version versionFromString:sversion];
-                    if (NSOrderedAscending == [self.currentFirmwareVersion compare:iVersion]) {
-                      self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Update_Decoration"];
-                      break;
-                    }
-                }
-            }
-              
-            
-                [self->firmwareVersions reloadData];
-
-                [self->firmwareQuerySpinner stopAnimating];
-            });
+    self.bgx_ota_updater = [[BGX_OTA_Updater alloc] initWithPeripheral: self.device2Update.peripheral bgx_device_uuid:self.device_unique_id];
+    [self.bgx_ota_updater retrieveAvailableFirmwareVersions:^(NSError * err, NSArray * versions){
+        [self retrieveFirmwareVersionFunctionWithError:err versions:versions];
     }];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:DMSServerReachabilityChangedNotificationName object:nil];
     
     self.fSetup = YES;
 }
 
 - (void)tearDown
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DMSServerReachabilityChangedNotificationName object:nil];
     self.fSetup = NO;
     self.device2Update = nil;
 }
 
-- (void)reachabilityChanged:(NSNotification *)notification
+- (void)retrieveFirmwareVersionFunctionWithError:(NSError *)err versions:(NSArray *)versions
 {
-  if (waitingForReachable) {
-    NSNumber * reachable = SafeType([notification object], [NSNumber class]);
-
-    if ([reachable boolValue]) {
-      waitingForReachable = NO;
-      [self.bgx_dms_manager retrieveAvailableVersions:^(NSError * err, NSArray * versions){
-        if (err) {
-          NSLog(@"Error retriving DMS versions: %@.", [err description]);
-          return;
-        }
-
-          // sort versions.
-          
-          self.dms_firmware_versions = [versions sortedArrayUsingComparator:^(id obj1, id obj2){
-              NSDictionary * d1 = SafeType(obj1, [NSDictionary class]);
-              NSDictionary * d2 = SafeType(obj2, [NSDictionary class]);
-              Version * v1 = [Version versionFromString: [d1 objectForKey:@"version"]];
-              Version * v2 = [Version versionFromString: [d2 objectForKey:@"version"]];
-
-              return [v2 compare:v1];
-          }];
-          
+    if (err) {
+        NSLog(@"Error retriving versions file: %@.", [err description]);
+        return;
+    }
+    
+    // sort versions
+    self.firmware_versions = [versions sortedArrayUsingComparator:^(id obj1, id obj2){
+        NSDictionary * d1 = SafeType(obj1, [NSDictionary class]);
+        NSDictionary * d2 = SafeType(obj2, [NSDictionary class]);
+        Version * v1 = [Version versionFromString: [d1 objectForKey:@"version"]];
+        Version * v2 = [Version versionFromString: [d2 objectForKey:@"version"]];
+        
+        return [v2 compare:v1];
+    }];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-
+        
         if (self.bootloaderVersion < kBootloaderSecurityUpdateVersion) {
             // show the security decorator.
             self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Security_Decoration"];
-        } else  {
+        } else {
             for (NSDictionary * iVerRec in  versions) {
                 NSString * sversion = SafeType([iVerRec objectForKey:@"version"], [NSString class]);
                 Version * iVersion = [Version versionFromString:sversion];
                 if (NSOrderedAscending == [self.currentFirmwareVersion compare:iVersion]) {
-                  self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Update_Decoration"];
-                  break;
+                    self.firmwareDecoratorImageView.image = [UIImage imageNamed:@"Update_Decoration"];
+                    break;
                 }
             }
         }
-          
         
-            [self->firmwareVersions reloadData];
-
-            [self->firmwareQuerySpinner stopAnimating];
-        });
-
-      }];
-    }
-  }
+        [self->firmwareVersions reloadData];
+        [self->firmwareQuerySpinner stopAnimating];
+    });
 }
-
-
 
 - (IBAction)installFirmwareAction:(id)sender
 {
     UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Update" bundle:nil];
     OTAViewController * otaVC = SafeType([sb instantiateViewControllerWithIdentifier:@"OTAViewController"], [OTAViewController class]);
     
-    NSDictionary * versionToInstall = SafeType([self.dms_firmware_versions objectAtIndex:firmwareVersions.indexPathForSelectedRow.row], [NSDictionary class]);
+    NSDictionary * versionToInstall = SafeType([self.firmware_versions objectAtIndex:firmwareVersions.indexPathForSelectedRow.row], [NSDictionary class]);
     
     Version * toVersion = [Version versionFromString: [versionToInstall objectForKey:@"version"] ];
     
@@ -244,7 +188,7 @@ enum {
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case DMS_Section:
+        case Firmware_Section:
             return 18.0f;
         case Release_Notes_Section:
             return 0;
@@ -256,7 +200,7 @@ enum {
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case DMS_Section:
+        case Firmware_Section:
             return @"Available firmware";
             break;
         case Release_Notes_Section:
@@ -273,8 +217,8 @@ enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch(section) {
-        case DMS_Section:
-            return self.dms_firmware_versions ? self.dms_firmware_versions.count : 0;
+        case Firmware_Section:
+            return self.firmware_versions ? self.firmware_versions.count : 0;
             break;
             
         case Release_Notes_Section:
@@ -291,7 +235,7 @@ enum {
 {
     UITableViewCell * cell = nil;
     
-    if (DMS_Section == indexPath.section) {
+    if (Firmware_Section == indexPath.section) {
         FirmwareVersionTableViewCell * fwcell = SafeType([tableView dequeueReusableCellWithIdentifier:@"firmwareVersionCell"], [FirmwareVersionTableViewCell class]);
         
         if (!fwcell) {
@@ -302,7 +246,7 @@ enum {
         
         NSDictionary * iDict;
         
-        iDict = SafeType([self.dms_firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
+        iDict = SafeType([self.firmware_versions objectAtIndex:indexPath.row], [NSDictionary class]);
         
         fwcell.firmwareVersion.text = SafeType([iDict objectForKey:@"version"], [NSString class]);
         fwcell.firmwareVersionDescription.text = SafeType([iDict objectForKey:@"description"], [NSString class]);
@@ -331,7 +275,7 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    installFirmwareButton.enabled = (DMS_Section == tableView.indexPathForSelectedRow.section) ? YES : NO;
+    installFirmwareButton.enabled = (Firmware_Section == tableView.indexPathForSelectedRow.section) ? YES : NO;
     
     if (Release_Notes_Section == tableView.indexPathForSelectedRow.section) {
 

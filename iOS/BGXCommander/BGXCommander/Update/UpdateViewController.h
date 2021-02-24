@@ -17,10 +17,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UpdateViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
-
-    
-    BOOL waitingForReachable;
-    
     IBOutlet UITableView * firmwareVersions;
     IBOutlet UILabel * currentFirmwareVersionLabel;
     

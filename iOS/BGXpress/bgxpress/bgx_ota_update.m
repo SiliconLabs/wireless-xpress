@@ -45,6 +45,7 @@ const NSUInteger kChunkSize = 244;
 @property (nonatomic) NSUInteger data_offset;
 @property (nonatomic) NSUInteger amount2write;
 @property (nonatomic, strong) NSData * payload;
+@property (nonatomic, strong) NSArray * firmwareList;
 
 /*
  This field is used for installation result analytics. If it is nil,
@@ -59,6 +60,10 @@ const NSUInteger kChunkSize = 244;
 @end
 
 @implementation BGX_OTA_Updater
+
+NSString* const FirmwareFilesDirectoryName = @"firmware_files";
+NSString* const FirmwareFileName = @"firmware";
+NSString* const FirmwareFilesExtension = @"gbl";
 
 - (id)initWithPeripheral:(CBPeripheral *)peripheral bgx_device_uuid:(NSString *)bgx_device_uuid
 {
@@ -299,28 +304,105 @@ const NSUInteger kChunkSize = 244;
     NSLog(@"peripheral %@ didModifyServices: %@.", [peripheral description], [invalidatedServices description]);
 }
 
-#pragma mark -
+#pragma mark - Firmware Files Retrieving
+
+- (void)retrieveAvailableFirmwareVersions:(void (^)(NSError *, NSArray *))completionBlock
+{
+    if (!completionBlock) {
+        return;
+    }
+    NSBundle *xpressBundle = [NSBundle bundleForClass:self.class];
+    NSString *versionFilePath = [xpressBundle pathForResource:@"firmware" ofType:@"json" inDirectory:FirmwareFilesDirectoryName];
+    
+    if (versionFilePath == nil) {
+        completionBlock([NSError errorWithDomain:[xpressBundle bundleIdentifier]
+                                            code:NSFileNoSuchFileError
+                                        userInfo:@{ NSLocalizedDescriptionKey: @"The firmware.json not found"}], nil);
+        return;
+    }
+    NSError *error = nil;
+    NSData *firmwareData = [NSData dataWithContentsOfFile:versionFilePath options:0 error:&error];
+    if (error) {
+        completionBlock(error, nil);
+        return;
+    }
+    NSDictionary *firmwareDictionary = SafeType([NSJSONSerialization JSONObjectWithData:firmwareData options:NSJSONReadingMutableContainers error:&error], [NSDictionary class]);
+    
+    if (error) {
+        completionBlock(error, nil);
+        return;
+    }
+    self.firmwareList = [self getFirmwareListFromFirmwareData:firmwareDictionary];
+    completionBlock(nil, self.firmwareList);
+}
+
+- (NSArray *)getFirmwareListFromFirmwareData:(NSDictionary*) firmwareDictionary {
+    if (!firmwareDictionary) {
+        return [[NSArray alloc] init];
+    }
+    NSString * partid = [self.bgx_device_uuid substringWithRange:NSMakeRange(0, 8)];
+    NSBundle *xpressBundle = [NSBundle bundleForClass:self.class];
+
+    NSMutableArray *firmwareList = firmwareDictionary[partid];
+    NSMutableArray *resultFirmwareList = [NSMutableArray arrayWithArray:firmwareList];
+    for ( NSDictionary *firmware in firmwareList) {
+        NSString *file = firmware[@"file"];
+        NSString *filename = [file stringByDeletingPathExtension];
+        NSString *filePath = [xpressBundle pathForResource:filename ofType:FirmwareFilesExtension inDirectory:FirmwareFilesDirectoryName];
+        if (filePath == nil) {
+            [resultFirmwareList removeObject:firmware];
+        }
+    }
+    return resultFirmwareList;
+}
+
+- (NSString *)getPathOfFirmwareFileWithVersion:(NSString *)version
+{
+    NSString * result = nil;
+    for ( NSDictionary *firmware in self.firmwareList) {
+        if ([version isEqualToString:firmware[@"version"]]) {
+            NSString *file = firmware[@"file"];
+            NSString *filename = [file stringByDeletingPathExtension];
+            NSBundle *xpressBundle = [NSBundle bundleForClass:self.class];
+            result = [xpressBundle pathForResource:filename ofType:FirmwareFilesExtension inDirectory:FirmwareFilesDirectoryName];
+            break;
+        }
+    }
+    return result;
+}
 
 - (void)updateFirmwareWithImageAtPath:(NSString *)path2FWImage withVersion:(NSString *)version
 {
     dispatch_async(self.update_dispatch_queue, ^{
         self.installation_version = version;
-        NSAssert(ota_no_operation_in_progress == self->_operationInProgress, @"Invalid operation in progress value.");
-        NSAssert(ota_step_no_ota == self->_ota_step, @"Invalid OTA Step.");
-        self.upload_progress = -1.0f;
-        self.operationInProgress = ota_firmware_update_in_progress;
-        self.ota_step = ota_step_init;
-        
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path2FWImage]) {
-            self.fw_image_path = path2FWImage;
-            [self takeStep];
-        } else {
-            
-            NSLog(@"FileNotFound Error:  %@", path2FWImage);
-            self.ota_step = ota_step_error;
-            return;
-        }
+        [self updateFirmwareWithFilePath:path2FWImage];
     });
+}
+
+- (void)updateFirmwareWithImageAtPath:(NSString *)path2FWImage
+{
+    dispatch_async(self.update_dispatch_queue, ^{
+        [self updateFirmwareWithFilePath:path2FWImage];
+    });
+}
+
+- (void)updateFirmwareWithFilePath:(NSString *)path2FWImage
+{
+    NSAssert(ota_no_operation_in_progress == self->_operationInProgress, @"Invalid operation in progress value.");
+    NSAssert(ota_step_no_ota == self->_ota_step, @"Invalid OTA Step.");
+    self.upload_progress = -1.0f;
+    self.operationInProgress = ota_firmware_update_in_progress;
+    self.ota_step = ota_step_init;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path2FWImage]) {
+        self.fw_image_path = path2FWImage;
+        [self takeStep];
+    } else {
+        
+        NSLog(@"FileNotFound Error:  %@", path2FWImage);
+        self.ota_step = ota_step_error;
+        return;
+    }
 }
 
 - (void)cancelUpdate
@@ -598,7 +680,7 @@ const NSUInteger kChunkSize = 244;
     if (self.installation_version) {
         [bgx_dms reportInstallationResultWithDeviceUUID: self.bgx_device_uuid version: self.installation_version];
     }
-    
+
     self.cb_central_manager = nil;
 }
 

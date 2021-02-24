@@ -113,6 +113,23 @@ typedef NS_ENUM(int, ota_operation_t) {
 - (id)initWithPeripheral:(CBPeripheral *)peripheral bgx_device_uuid:(NSString *)bgx_device_id;
 
 /**
+ * Retrieve a list of available firmware versions for device with bgx_device_uuid given while initializing this instance of BGX Ota Updater
+ *
+ * @param completionBlock to be called when the operation is complete.
+ *        Parameters to this block include an error (nil on success, non-nil on error)
+ *        and an NSArray of the available versions of firmware. These versions are NSDictionaries with fields: version, tag, size, description, file.
+ */
+- (void)retrieveAvailableFirmwareVersions:(void (^)(NSError *, NSArray *))completionBlock;
+
+/**
+ * Get  the path of  specified firmware image by version number.
+ * It returns nil, when version number is not correct.
+ *
+ * @param version is the firmware version to load. It is value from field "version" in NSDictionary retrieved in method retrieveAvailableFirmwareVersions:
+ */
+- (NSString *)getPathOfFirmwareFileWithVersion:(NSString *)version;
+
+/**
  * Update the firmware using the specified image and bundle ID.
  *
  * @param path2FWImage The path to the firmware image to be used for the update.
@@ -125,7 +142,16 @@ typedef NS_ENUM(int, ota_operation_t) {
  * the latest release, then pass a version number. Pass nil if you are installing firmware from a
  * source other than DMS or wish to suppress analytics.
  */
-- (void)updateFirmwareWithImageAtPath:(NSString *)path2FWImage withVersion:(NSString *)version;
+- (void)updateFirmwareWithImageAtPath:(NSString *)path2FWImage withVersion:(NSString *)version __attribute__((deprecated("Use method updateFirmwareWithImageAtPath:")));
+
+/**
+ * Update the firmware using the specified firmware image file and bundle ID.
+ *
+ * @param path2FWImage The path to the firmware image to be used for the update.
+ * The update will be finished when the opeartionInProgress is ota_firmware_update_complete.
+ * At that point, you can release the instances of the BGX_OTA_Updater.
+ */
+- (void)updateFirmwareWithImageAtPath:(NSString *)path2FWImage;
 
 /**
  * If a password is required for an OTA operation to be performed or a previously

@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Creates a new version object from a string object from the BGX.
  * One good place to get this is the firmwareRevision property of BGXDevice.
- * Also, the DMS firmware list will contain a version string. You can use
+ * Also, the firmware list will contain a version string. You can use
  * Version class to compare these strings.
  */
 + (Version *)versionFromString:(NSString *)versionString;
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Initializes an instance from a string object from the BGX.
  * One good place to get this is the firmwareRevision property of BGXDevice.
- * Also, the DMS firmware list will contain a version string. You can use
+ * Also, the firmware list will contain a version string. You can use
  * Version class to compare these strings.
  */
 - (id)initWithString:(NSString *)versionString;

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.silabs.bgxcommander.views.LocationDisabledBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_red"
+    android:orientation="horizontal"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-medium"
+        android:padding="12dp"
+        android:text="@string/location_info_location_disabled"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/enable_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:background="?android:listChoiceBackgroundIndicator"
+        android:fontFamily="sans-serif-medium"
+        android:padding="12dp"
+        android:text="@string/button_enable"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/location_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="8dp"
+        android:background="?android:listChoiceBackgroundIndicator"
+        android:fontFamily="sans-serif-medium"
+        android:padding="12dp"
+        android:text="@string/button_info"
+        android:textColor="@color/white" />
+</com.silabs.bgxcommander.views.LocationDisabledBar>

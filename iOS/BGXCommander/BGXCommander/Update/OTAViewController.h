@@ -31,12 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 /**
- * infoDict contains some keys to tell this controller what ought to be updated.
+ * @param infoDict contains some keys to tell this controller what ought to be updated.
  */
 - (void)prepareToUpdate:(NSDictionary *)infoDict;
 
+
 // start the update.
-- (void)performUpdate:(NSDictionary *)dmsVersionDict;
+- (void)performUpdate:(NSDictionary *)versionDict;
 
 - (IBAction)cancelAction:(id)sender;
 
