@@ -13,6 +13,13 @@
             "size": 209824,
             "description": "",
             "file": "1.2.1/1.2.2376.1/bgx13p-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2738.2",
+            "tag": null,
+            "size": 209808,
+            "description": "BGX13P maintenance update",
+            "file": "1.2.2/1.2.2738.2/bgx13p-signed-encrypted.gbl"
         }
     ],
     "080447D0": [
@@ -50,6 +57,13 @@
             "size": 210152,
             "description": "BGX13S maintenance update",
             "file": "1.2.1/1.2.2376.1/bgx13s-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2738.2",
+            "tag": null,
+            "size": 210136,
+            "description": "BGX13S maintenance update",
+            "file": "1.2.2/1.2.2738.2/bgx13s-signed-encrypted.gbl"
         }
     ],
     "4C892A6A": [
@@ -94,6 +108,13 @@
             "size": 199200,
             "description": "BGX13P production with 1229 boot loader",
             "file": "1.0.2/1.0.927.2/bgx13p-with-bl-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2738.2",
+            "tag": null,
+            "size": 209808,
+            "description": "BGX13P maintenance update",
+            "file": "1.2.2/1.2.2738.2/bgx13p-signed-encrypted.gbl"
         }
     ],
     "F65FD7F0": [
@@ -110,6 +131,13 @@
             "size": 208200,
             "description": "BGX13SV3 production",
             "file": "1.2.0/1.2.2045.0/bgx13s-signed-encrypted.gbl"
+        },
+        {
+            "version": "1.2.2738.2",
+            "tag": null,
+            "size": 210136,
+            "description": "BGX13S maintenance update",
+            "file": "1.2.2/1.2.2738.2/bgx13s-signed-encrypted.gbl"
         }
     ],
     "BAD1DEAD": [],
